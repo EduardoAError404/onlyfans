@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card label {
+            display: block;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .stat-card input {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 Painel Administrativo</h1>
+            <p>Gerencie todas as informações do perfil</p>
+        </div>
+
+        <div class="content">
+            <!-- Login Form -->
+            <div id="loginSection" class="login-form">
+                <div id="loginAlert"></div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginUsername">Usuário</label>
+                        <input type="text" id="loginUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Senha</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn">Entrar</button>
+                </form>
+            </div>
+
+            <!-- Admin Panel -->
+            <div id="adminPanel" class="hidden">
+                <div id="adminAlert"></div>
+                <button id="logoutBtn" class="btn btn-logout">Sair</button>
+
+                <form id="profileForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="displayName">Nome de Exibição</label>
+                            <input type="text" id="displayName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Nome de Usuário</label>
+                            <input type="text" id="username" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bio">Biografia (HTML permitido)</label>
+                        <textarea id="bio" required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="location">Localização</label>
+                            <input type="text" id="location" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="link">Link</label>
+                            <input type="url" id="link" required>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <label for="photosCount">Fotos</label>
+                            <input type="number" id="photosCount" required>
+                        </div>
+                        <div class="stat-card">
+                            <label for="videosCount">Vídeos</label>
+                            <input type="number" id="videosCount" required>
+                        </div>
+                        <div class="stat-card">
+                            <label for="likesCount">Likes</label>
+                            <input type="text" id="likesCount" required>
+                        </div>
+                        <div class="stat-card">
+                            <label for="postsCount">Posts</label>
+                            <input type="number" id="postsCount" required>
+                        </div>
+                        <div class="stat-card">
+                            <label for="mediaCount">Mídia</label>
+                            <input type="number" id="mediaCount" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn">Salvar Alterações</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+
+        // Elementos
+        const loginSection = document.getElementById('loginSection');
+        const adminPanel = document.getElementById('adminPanel');
+        const loginForm = document.getElementById('loginForm');
+        const profileForm = document.getElementById('profileForm');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const loginAlert = document.getElementById('loginAlert');
+        const adminAlert = document.getElementById('adminAlert');
+
+        // Verificar autenticação ao carregar
+        checkAuth();
+
+        async function checkAuth() {
+            try {
+                const response = await fetch(`${API_BASE}/check-auth`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+
+                if (data.authenticated) {
+                    showAdminPanel();
+                    loadProfile();
+                } else {
+                    showLoginForm();
+                }
+            } catch (error) {
+                console.error('Erro ao verificar autenticação:', error);
+                showLoginForm();
+            }
+        }
+
+        // Login
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await fetch(`${API_BASE}/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showAlert(loginAlert, 'Login realizado com sucesso!', 'success');
+                    setTimeout(() => {
+                        showAdminPanel();
+                        loadProfile();
+                    }, 500);
+                } else {
+                    showAlert(loginAlert, data.error || 'Credenciais inválidas', 'error');
+                }
+            } catch (error) {
+                showAlert(loginAlert, 'Erro ao fazer login', 'error');
+                console.error('Erro:', error);
+            }
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await fetch(`${API_BASE}/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                showLoginForm();
+                loginForm.reset();
+            } catch (error) {
+                console.error('Erro ao fazer logout:', error);
+            }
+        });
+
+        // Carregar perfil
+        async function loadProfile() {
+            try {
+                const response = await fetch(`${API_BASE}/profile`);
+                const profile = await response.json();
+
+                document.getElementById('displayName').value = profile.display_name;
+                document.getElementById('username').value = profile.username;
+                document.getElementById('bio').value = profile.bio;
+                document.getElementById('location').value = profile.location;
+                document.getElementById('link').value = profile.link;
+                document.getElementById('photosCount').value = profile.photos_count;
+                document.getElementById('videosCount').value = profile.videos_count;
+                document.getElementById('likesCount').value = profile.likes_count;
+                document.getElementById('postsCount').value = profile.posts_count;
+                document.getElementById('mediaCount').value = profile.media_count;
+            } catch (error) {
+                showAlert(adminAlert, 'Erro ao carregar perfil', 'error');
+                console.error('Erro:', error);
+            }
+        }
+
+        // Salvar perfil
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const profileData = {
+                display_name: document.getElementById('displayName').value,
+                username: document.getElementById('username').value,
+                bio: document.getElementById('bio').value,
+                location: document.getElementById('location').value,
+                link: document.getElementById('link').value,
+                photos_count: parseInt(document.getElementById('photosCount').value),
+                videos_count: parseInt(document.getElementById('videosCount').value),
+                likes_count: document.getElementById('likesCount').value,
+                posts_count: parseInt(document.getElementById('postsCount').value),
+                media_count: parseInt(document.getElementById('mediaCount').value)
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(profileData)
+                });
+
+                if (response.ok) {
+                    showAlert(adminAlert, 'Perfil atualizado com sucesso!', 'success');
+                } else {
+                    const data = await response.json();
+                    showAlert(adminAlert, data.error || 'Erro ao atualizar perfil', 'error');
+                }
+            } catch (error) {
+                showAlert(adminAlert, 'Erro ao salvar alterações', 'error');
+                console.error('Erro:', error);
+            }
+        });
+
+        // Funções auxiliares
+        function showLoginForm() {
+            loginSection.classList.remove('hidden');
+            adminPanel.classList.add('hidden');
+        }
+
+        function showAdminPanel() {
+            loginSection.classList.add('hidden');
+            adminPanel.classList.remove('hidden');
+        }
+
+        function showAlert(element, message, type) {
+            element.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            setTimeout(() => {
+                element.innerHTML = '';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
+
