@@ -1,9 +1,19 @@
 from flask import Blueprint, request, jsonify, session
 from src.models.profile import db, Profile, Admin
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from functools import wraps
+import os
+import uuid
 
 profile_bp = Blueprint('profile', __name__)
+
+# Configuração de uploads
+UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static', 'uploads')
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def login_required(f):
     @wraps(f)
@@ -52,9 +62,83 @@ def update_profile():
         profile.posts_count = data['posts_count']
     if 'media_count' in data:
         profile.media_count = data['media_count']
+    if 'banner_image' in data:
+        profile.banner_image = data['banner_image']
+    if 'profile_image' in data:
+        profile.profile_image = data['profile_image']
     
     db.session.commit()
     return jsonify(profile.to_dict()), 200
+
+# Rota para upload de imagem
+@profile_bp.route('/upload-image', methods=['POST'])
+@login_required
+def upload_image():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file provided'}), 400
+    
+    file = request.files['file']
+    image_type = request.form.get('type', 'profile')  # 'profile' ou 'banner'
+    
+    if file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
+    
+    if file and allowed_file(file.filename):
+        # Gerar nome único para o arquivo
+        ext = file.filename.rsplit('.', 1)[1].lower()
+        filename = f"{image_type}_{uuid.uuid4().hex}.{ext}"
+        filepath = os.path.join(UPLOAD_FOLDER, filename)
+        
+        # Salvar arquivo
+        file.save(filepath)
+        
+        # Retornar caminho relativo
+        relative_path = f"uploads/{filename}"
+        
+        # Atualizar no banco de dados
+        profile = Profile.query.first()
+        if profile:
+            if image_type == 'profile':
+                profile.profile_image = relative_path
+            elif image_type == 'banner':
+                profile.banner_image = relative_path
+            db.session.commit()
+        
+        return jsonify({
+            'message': 'Image uploaded successfully',
+            'filename': relative_path,
+            'type': image_type
+        }), 200
+    
+    return jsonify({'error': 'Invalid file type'}), 400
+
+# Rota para atualizar imagem por URL
+@profile_bp.route('/update-image-url', methods=['POST'])
+@login_required
+def update_image_url():
+    data = request.get_json()
+    image_url = data.get('url')
+    image_type = data.get('type', 'profile')  # 'profile' ou 'banner'
+    
+    if not image_url:
+        return jsonify({'error': 'No URL provided'}), 400
+    
+    profile = Profile.query.first()
+    if not profile:
+        return jsonify({'error': 'Profile not found'}), 404
+    
+    if image_type == 'profile':
+        profile.profile_image = image_url
+    elif image_type == 'banner':
+        profile.banner_image = image_url
+    
+    db.session.commit()
+    
+    return jsonify({
+        'message': 'Image URL updated successfully',
+        'url': image_url,
+        'type': image_type
+    }), 200
 
 # Rota de login
 @profile_bp.route('/login', methods=['POST'])
