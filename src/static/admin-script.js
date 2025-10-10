@@ -67,10 +67,20 @@ function populateForm(data) {
     const profileImg = document.getElementById('profile-preview');
     const bannerImg = document.getElementById('banner-preview');
     
-    profileImg.src = data.profile_image.startsWith('http') ? 
+    const profileSrc = data.profile_image.startsWith('http') ? 
         data.profile_image : `/${data.profile_image}`;
-    bannerImg.src = data.banner_image.startsWith('http') ? 
+    const bannerSrc = data.banner_image.startsWith('http') ? 
         data.banner_image : `/${data.banner_image}`;
+    
+    console.log('Atualizando imagens:', {
+        profile: profileSrc,
+        banner: bannerSrc,
+        profileImg: profileImg,
+        bannerImg: bannerImg
+    });
+    
+    if (profileImg) profileImg.src = profileSrc;
+    if (bannerImg) bannerImg.src = bannerSrc;
 }
 
 // Salvar perfil
