@@ -119,6 +119,8 @@ function openCreateModal() {
     document.getElementById('modal-title').textContent = 'Novo Perfil';
     document.getElementById('profile-form').reset();
     document.getElementById('profile-id').value = '';
+    document.getElementById('profile_image_url').value = '';
+    document.getElementById('banner_image_url').value = '';
     document.getElementById('username-feedback').textContent = '';
     document.getElementById('save-btn').textContent = '💾 Criar Perfil';
     document.getElementById('profile-modal').classList.add('active');
@@ -141,6 +143,8 @@ async function saveProfile(event) {
         bio: document.getElementById('bio').value,
         location: document.getElementById('location').value,
         link: document.getElementById('link').value,
+        profile_image: document.getElementById('profile_image_url').value || null,
+        banner_image: document.getElementById('banner_image_url').value || null,
         photos_count: parseInt(document.getElementById('photos_count').value) || 0,
         videos_count: parseInt(document.getElementById('videos_count').value) || 0,
         likes_count: document.getElementById('likes_count').value,

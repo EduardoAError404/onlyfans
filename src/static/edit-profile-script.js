@@ -211,6 +211,7 @@ async function uploadImage() {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('type', currentImageType);
+    formData.append('profile_id', profileId); // Adicionar ID do perfil
     
     try {
         const response = await fetch('/api/upload-image', {
@@ -258,7 +259,8 @@ async function updateImageUrl() {
             credentials: 'include',
             body: JSON.stringify({
                 url: url,
-                type: currentImageType
+                type: currentImageType,
+                profile_id: profileId // Adicionar ID do perfil
             })
         });
         
