@@ -192,8 +192,14 @@ async function uploadImage() {
         
         if (response.ok) {
             showAlert('✅ Imagem enviada com sucesso!', 'success');
+            
+            // Atualizar preview imediatamente
+            const previewImg = document.getElementById(currentImageType === 'profile' ? 'profile-preview' : 'banner-preview');
+            if (previewImg && data.filename) {
+                previewImg.src = `/${data.filename}`;
+            }
+            
             closeImageModal();
-            loadProfile(); // Recarregar para mostrar nova imagem
         } else {
             showAlert(`❌ ${data.error}`, 'error');
         }
@@ -229,8 +235,14 @@ async function updateImageUrl() {
         
         if (response.ok) {
             showAlert('✅ Imagem atualizada com sucesso!', 'success');
+            
+            // Atualizar preview imediatamente
+            const previewImg = document.getElementById(currentImageType === 'profile' ? 'profile-preview' : 'banner-preview');
+            if (previewImg) {
+                previewImg.src = url;
+            }
+            
             closeImageModal();
-            loadProfile(); // Recarregar para mostrar nova imagem
         } else {
             showAlert(`❌ ${data.error}`, 'error');
         }
