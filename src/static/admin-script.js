@@ -17,13 +17,13 @@ async function checkAuth() {
         const data = await response.json();
         
         if (!data.authenticated) {
-            window.location.href = '/admin.html';
+            window.location.href = '/login.html';
         } else {
             loadProfile();
         }
     } catch (error) {
         console.error('Erro ao verificar autenticação:', error);
-        showAlert('Erro ao verificar autenticação', 'error');
+        window.location.href = '/login.html';
     }
 }
 
@@ -116,9 +116,10 @@ async function logout() {
             method: 'POST',
             credentials: 'include'
         });
-        window.location.href = '/admin.html';
+        window.location.href = '/login.html';
     } catch (error) {
         console.error('Erro ao fazer logout:', error);
+        window.location.href = '/login.html';
     }
 }
 
