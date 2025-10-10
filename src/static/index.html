@@ -237,10 +237,35 @@ async function loadProfile() {
             }
         });
         
+        // Atualizar imagens de perfil
+        const profileImages = document.querySelectorAll('img[alt*="Victoria"], .b-avatar__image img, .g-avatar img');
+        profileImages.forEach(img => {
+            const newSrc = profile.profile_image.startsWith('http') ? 
+                profile.profile_image : `/${profile.profile_image}`;
+            img.src = newSrc;
+            img.alt = profile.display_name;
+        });
+        
+        // Atualizar imagem de banner
+        const bannerElements = document.querySelectorAll('.b-profile__cover-img, [style*="background-image"]');
+        bannerElements.forEach(el => {
+            const newBanner = profile.banner_image.startsWith('http') ? 
+                profile.banner_image : `/${profile.banner_image}`;
+            
+            if (el.tagName === 'IMG') {
+                el.src = newBanner;
+            } else {
+                el.style.backgroundImage = `url('${newBanner}')`;
+            }
+        });
+        
         // Atualizar título da página
         document.title = profile.display_name + ' OnlyFans';
         
-        console.log('Página atualizada com sucesso!');
+        console.log('Página atualizada com sucesso! Imagens:', {
+            profile: profile.profile_image,
+            banner: profile.banner_image
+        });
         
     } catch (error) {
         console.error('Erro ao carregar perfil:', error);
