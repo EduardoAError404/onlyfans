@@ -121,31 +121,8 @@ function openCreateModal() {
 
 // Editar perfil
 async function editProfile(profileId) {
-    showLoading(true);
-    
-    try {
-        const response = await fetch(`/api/profiles/${profileId}`);
-        
-        if (!response.ok) {
-            throw new Error('Erro ao carregar perfil');
-        }
-        
-        const profile = await response.json();
-        
-        currentProfileId = profileId;
-        document.getElementById('modal-title').textContent = 'Editar Perfil';
-        document.getElementById('profile-id').value = profile.id;
-        document.getElementById('username').value = profile.username;
-        document.getElementById('display_name').value = profile.display_name;
-        document.getElementById('bio').value = profile.bio || '';
-        document.getElementById('location').value = profile.location || '';
-        document.getElementById('link').value = profile.link || '';
-        document.getElementById('photos_count').value = profile.photos_count || 0;
-        document.getElementById('videos_count').value = profile.videos_count || 0;
-        document.getElementById('likes_count').value = profile.likes_count || '0';
-        document.getElementById('posts_count').value = profile.posts_count || 0;
-        document.getElementById('username-feedback').textContent = '';
-        document.getElementById('save-btn').textContent = '💾 Salvar Alterações';
+    // Redirecionar para página de edição
+    window.location.href = `/edit-profile.html?id=${profileId}`;
         
         document.getElementById('profile-modal').classList.add('active');
     } catch (error) {
