@@ -12,15 +12,20 @@ document.addEventListener('DOMContentLoaded', () => {
 // Verificar autenticação
 async function checkAuth() {
     try {
-        const response = await fetch('/api/check-auth');
+        const response = await fetch('/api/check-auth', {
+            credentials: 'include'
+        });
         const data = await response.json();
         
         if (!data.authenticated) {
             window.location.href = '/login.html';
+            return false;
         }
+        return true;
     } catch (error) {
         console.error('Erro ao verificar autenticação:', error);
         window.location.href = '/login.html';
+        return false;
     }
 }
 
@@ -120,17 +125,9 @@ function openCreateModal() {
 }
 
 // Editar perfil
-async function editProfile(profileId) {
+function editProfile(profileId) {
     // Redirecionar para página de edição
     window.location.href = `/edit-profile.html?id=${profileId}`;
-        
-        document.getElementById('profile-modal').classList.add('active');
-    } catch (error) {
-        console.error('Erro:', error);
-        showAlert('Erro ao carregar perfil', 'error');
-    } finally {
-        showLoading(false);
-    }
 }
 
 // Salvar perfil (criar ou atualizar)
@@ -272,5 +269,28 @@ function showAlert(message, type = 'success') {
     setTimeout(() => {
         alert.remove();
     }, 3000);
+}
+
+
+
+// Logout
+async function logout() {
+    if (!confirm('Deseja realmente sair?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/logout', {
+            method: 'POST',
+            credentials: 'include'
+        });
+        
+        if (response.ok) {
+            window.location.href = '/login.html';
+        }
+    } catch (error) {
+        console.error('Erro ao fazer logout:', error);
+        window.location.href = '/login.html';
+    }
 }
 
