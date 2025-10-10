@@ -247,13 +247,16 @@ async function loadProfile() {
         });
         
         // Atualizar imagem de banner
-        const bannerElements = document.querySelectorAll('.b-profile__cover-img, [style*="background-image"]');
+        const bannerElements = document.querySelectorAll('.b-profile__header__cover-img, .b-profile__cover-img, [style*="background-image"]');
         bannerElements.forEach(el => {
             const newBanner = profile.banner_image.startsWith('http') ? 
                 profile.banner_image : `/${profile.banner_image}`;
             
+            console.log('Atualizando banner:', el, 'com:', newBanner);
+            
             if (el.tagName === 'IMG') {
                 el.src = newBanner;
+                el.srcset = '';  // Limpar srcset para forçar usar src
             } else {
                 el.style.backgroundImage = `url('${newBanner}')`;
             }
