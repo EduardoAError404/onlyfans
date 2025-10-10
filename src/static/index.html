@@ -142,7 +142,24 @@
 // Carregar dados do perfil da API
 async function loadProfile() {
     try {
-        const response = await fetch('/api/profile');
+        // Pegar username da URL
+        const pathname = window.location.pathname;
+        const username = pathname.substring(1); // Remove a barra inicial
+        
+        // Se não houver username na URL ou for um arquivo estático, usar API padrão
+        const apiUrl = username && !username.includes('.') && !username.includes('/') 
+            ? `/api/profile/${username}`
+            : '/api/profile';
+        
+        console.log('Carregando perfil de:', apiUrl);
+        
+        const response = await fetch(apiUrl);
+        
+        if (!response.ok) {
+            console.error('Perfil não encontrado');
+            return;
+        }
+        
         const profile = await response.json();
         
         console.log('Perfil carregado:', profile);

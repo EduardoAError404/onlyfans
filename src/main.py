@@ -61,21 +61,43 @@ def init_database():
 
 init_database()
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve(path):
-    static_folder_path = app.static_folder
-    if static_folder_path is None:
-            return "Static folder not configured", 404
+@app.route('/')
+def index():
+    """Página inicial - redireciona para o primeiro perfil ou mostra lista"""
+    first_profile = Profile.query.first()
+    if first_profile:
+        return serve_profile(first_profile.username)
+    return "Nenhum perfil encontrado. <a href='/admin.html'>Ir para Admin</a>", 404
 
-    if path != "" and os.path.exists(os.path.join(static_folder_path, path)):
-        return send_from_directory(static_folder_path, path)
-    else:
+@app.route('/<username>')
+def serve_profile(username):
+    """Servir perfil por username"""
+    # Verificar se é um arquivo estático
+    static_folder_path = app.static_folder
+    if static_folder_path and os.path.exists(os.path.join(static_folder_path, username)):
+        return send_from_directory(static_folder_path, username)
+    
+    # Verificar se o perfil existe
+    profile = Profile.query.filter_by(username=username).first()
+    if profile:
+        # Servir index.html que carregará os dados via API
         index_path = os.path.join(static_folder_path, 'index.html')
         if os.path.exists(index_path):
             return send_from_directory(static_folder_path, 'index.html')
-        else:
-            return "index.html not found", 404
+    
+    return f"Perfil @{username} não encontrado", 404
+
+@app.route('/<path:path>')
+def serve_static(path):
+    """Servir arquivos estáticos"""
+    static_folder_path = app.static_folder
+    if static_folder_path is None:
+        return "Static folder not configured", 404
+    
+    if os.path.exists(os.path.join(static_folder_path, path)):
+        return send_from_directory(static_folder_path, path)
+    
+    return "File not found", 404
 
 
 if __name__ == '__main__':
