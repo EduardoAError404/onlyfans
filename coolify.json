@@ -1,0 +1,27 @@
+{
+  "services": [
+    {
+      "name": "flask-frontend",
+      "type": "python",
+      "buildCommand": "python3 -m venv venv && source venv/bin/activate && pip install flask flask-cors flask-sqlalchemy werkzeug requests",
+      "startCommand": "venv/bin/python src/main.py",
+      "port": 5000,
+      "healthcheck": "/api/profile/babymatosao"
+    },
+    {
+      "name": "nodejs-payments",
+      "type": "nodejs",
+      "buildCommand": "cd payment_server && npm install",
+      "startCommand": "node payment_server/server.js",
+      "port": 3000,
+      "healthcheck": "/api/health"
+    }
+  ],
+  "volumes": [
+    {
+      "source": "./src/database",
+      "target": "/app/src/database",
+      "persistent": true
+    }
+  ]
+}

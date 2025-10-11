@@ -84,6 +84,7 @@ function populateForm(data) {
     document.getElementById('likes_count').value = data.likes_count || '0';
     document.getElementById('posts_count').value = data.posts_count || 0;
     document.getElementById('media_count').value = data.media_count || 0;
+    document.getElementById('subscription_price').value = data.subscription_price || 9.99;
     
     // Atualizar previews de imagens
     const profileImg = document.getElementById('profile-preview');
@@ -117,7 +118,8 @@ async function saveProfile() {
         videos_count: parseInt(document.getElementById('videos_count').value) || 0,
         likes_count: document.getElementById('likes_count').value,
         posts_count: parseInt(document.getElementById('posts_count').value) || 0,
-        media_count: parseInt(document.getElementById('media_count').value) || 0
+        media_count: parseInt(document.getElementById('media_count').value) || 0,
+        subscription_price: parseFloat(document.getElementById('subscription_price').value) || 9.99
     };
 
     try {

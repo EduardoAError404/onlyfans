@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento Aprovado ✓</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #00b4d8 0%, #0096c7 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .success-circle {
+            width: 150px;
+            height: 150px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: scaleIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 4;
+            stroke: #10b981;
+            stroke-miterlimit: 10;
+            box-shadow: inset 0px 0px 0px #10b981;
+            animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+        }
+
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 4;
+            stroke-miterlimit: 10;
+            stroke: #10b981;
+            fill: #10b981;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            stroke: white;
+            stroke-width: 4;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            animation: fadeIn 0.6s ease-out 0.3s both;
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            animation: fadeIn 0.6s ease-out 0.5s both;
+        }
+
+        .details {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px auto;
+            max-width: 400px;
+            animation: fadeInUp 0.6s ease-out 0.7s both;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .details div {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            color: white;
+        }
+
+        .details div:last-child {
+            margin-bottom: 0;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+
+        /* Confetti Animation */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            position: absolute;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes stroke {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes scale {
+            0%, 100% {
+                transform: none;
+            }
+            50% {
+                transform: scale3d(1.1, 1.1, 1);
+            }
+        }
+
+        @keyframes fill {
+            100% {
+                box-shadow: inset 0px 0px 0px 60px #10b981;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            p {
+                font-size: 1rem;
+            }
+            .success-circle {
+                width: 120px;
+                height: 120px;
+            }
+            .checkmark {
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-circle">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+        </div>
+
+        <h1>Pagamento Aprovado!</h1>
+        <p>Sua transação foi processada com sucesso</p>
+
+        <div class="details">
+            <div>
+                <span>Valor:</span>
+                <span id="amount">Carregando...</span>
+            </div>
+            <div>
+                <span>Método:</span>
+                <span id="payment-method">Cartão de Crédito</span>
+            </div>
+            <div>
+                <span>Data:</span>
+                <span id="date">Carregando...</span>
+            </div>
+            <div>
+                <span>ID da Transação:</span>
+                <span id="transaction-id">Carregando...</span>
+            </div>
+        </div>
+
+        
+    </div>
+
+    <script>
+        // Buscar session_id da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('session_id');
+
+        // Buscar dados da sessão
+        if (sessionId) {
+            fetch(`/api/session/${sessionId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Atualizar valor
+                    document.getElementById('amount').textContent = `$${data.amount.toFixed(2)}`;
+                    
+                    // Atualizar data
+                    const date = new Date(data.createdAt);
+                    document.getElementById('date').textContent = date.toLocaleDateString('pt-BR');
+                    
+                    // Atualizar ID da transação
+                    const shortId = data.transactionId.substring(data.transactionId.length - 8).toUpperCase();
+                    document.getElementById('transaction-id').textContent = `#${shortId}`;
+                    
+                    console.log('✅ Dados do pagamento carregados:', data);
+                })
+                .catch(error => {
+                    console.error('❌ Erro ao carregar dados:', error);
+                    // Manter valores padrão em caso de erro
+                    document.getElementById('amount').textContent = '$0.00';
+                    document.getElementById('date').textContent = new Date().toLocaleDateString('pt-BR');
+                    document.getElementById('transaction-id').textContent = '#XXXXXXXX';
+                });
+        } else {
+            // Sem session_id, usar valores padrão
+            document.getElementById('amount').textContent = '$0.00';
+            document.getElementById('date').textContent = new Date().toLocaleDateString('pt-BR');
+            document.getElementById('transaction-id').textContent = '#XXXXXXXX';
+        }
+
+        // Criar confetti
+        function createConfetti() {
+            const colors = ['#00b4d8', '#0096c7', '#00d9ff', '#48cae4', '#90e0ef', '#ade8f4'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                document.body.appendChild(confetti);
+                
+                // Remover após animação
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        // Criar confetti ao carregar
+        window.addEventListener('load', createConfetti);
+
+        // Som de sucesso (opcional - pode comentar se não quiser)
+        const playSuccessSound = () => {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+        };
+
+        // Tocar som após 0.5s (opcional)
+        // setTimeout(playSuccessSound, 500);
+
+        // Redirecionar para OnlyFans após 4 segundos
+        setTimeout(() => {
+            window.location.href = 'https://onlyfans.com/';
+        }, 4000);
+
+        // Mostrar contador regressivo (opcional)
+        let countdown = 4;
+        const countdownElement = document.createElement('p');
+        countdownElement.style.cssText = 'color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; margin-top: 20px;';
+        countdownElement.textContent = `Redirecionando em ${countdown} segundos...`;
+        document.querySelector('.container').appendChild(countdownElement);
+
+        const countdownInterval = setInterval(() => {
+            countdown--;
+            if (countdown > 0) {
+                countdownElement.textContent = `Redirecionando em ${countdown} segundos...`;
+            } else {
+                countdownElement.textContent = 'Redirecionando...';
+                clearInterval(countdownInterval);
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

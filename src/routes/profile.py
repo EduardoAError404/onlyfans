@@ -79,7 +79,8 @@ def create_profile():
         posts_count=data.get('posts_count', 0),
         media_count=data.get('media_count', 0),
         banner_image=data.get('banner_image', 'baneronly.png'),
-        profile_image=data.get('profile_image', 'perfil.png')
+        profile_image=data.get('profile_image', 'perfil.png'),
+        subscription_price=data.get('subscription_price', 9.99)
     )
     
     db.session.add(profile)
@@ -123,6 +124,8 @@ def update_profile(profile_id):
         profile.posts_count = data['posts_count']
     if 'media_count' in data:
         profile.media_count = data['media_count']
+    if 'subscription_price' in data:
+        profile.subscription_price = data['subscription_price']
     
     db.session.commit()
     return jsonify(profile.to_dict()), 200

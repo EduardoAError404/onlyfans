@@ -1,0 +1,48 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.log
+*.egg-info/
+dist/
+build/
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Banco de dados (NÃO fazer commit!)
+src/database/app.db
+src/database/*.db
+*.db
+*.sqlite
+*.sqlite3
+
+# Ambiente e Secrets
+.env
+*.env
+.env.local
+.env.production
+
+# Backups
+*.backup
+*.bak
+*_backup_*
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads
+uploads/
+static/uploads/

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - Sistema de Pagamentos</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="/subscription-modal.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #00aff0, #0088cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            font-size: 18px;
+            color: #999;
+        }
+        
+        .status-card {
+            background: #2a2a2a;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid #3a3a3a;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #3a3a3a;
+        }
+        
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status-label {
+            font-size: 16px;
+            color: #999;
+        }
+        
+        .status-value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .status-ok {
+            color: #10b981;
+        }
+        
+        .status-error {
+            color: #ef4444;
+        }
+        
+        .test-button {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #00aff0, #0088cc);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 175, 240, 0.3);
+        }
+        
+        .info-box {
+            background: rgba(0, 175, 240, 0.1);
+            border: 1px solid #00aff0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .info-box h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #00aff0;
+        }
+        
+        .info-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .info-box li {
+            padding: 8px 0;
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        .info-box li::before {
+            content: "✓ ";
+            color: #00aff0;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .warning-box h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #ef4444;
+        }
+        
+        .warning-box p {
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .code {
+            background: #1a1a1a;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #00aff0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Teste de Pagamentos</h1>
+            <p>Sistema de Assinaturas com Stripe</p>
+        </div>
+        
+        <div class="warning-box">
+            <h3>⚠️ Aviso de Segurança</h3>
+            <p>
+                As chaves do Stripe compartilhadas anteriormente eram chaves de <strong>PRODUÇÃO</strong> e foram expostas publicamente. 
+                Por segurança, esta demonstração usa chaves de teste simuladas. 
+                <strong>Revogue as chaves reais imediatamente</strong> no dashboard do Stripe.
+            </p>
+        </div>
+        
+        <div class="status-card">
+            <h2 style="margin-bottom: 20px;">Status dos Servidores</h2>
+            <div class="status-item">
+                <span class="status-label">Servidor Flask</span>
+                <span class="status-value status-ok" id="flask-status">Verificando...</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Servidor de Pagamentos</span>
+                <span class="status-value status-ok" id="payment-status">Verificando...</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Stripe API</span>
+                <span class="status-value status-ok" id="stripe-status">Configurado (modo teste)</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Banco de Dados</span>
+                <span class="status-value status-ok" id="db-status">Conectado</span>
+            </div>
+        </div>
+        
+        <button class="test-button" onclick="openSubscriptionModal('babymatosao')">
+            🚀 Testar Sistema de Assinatura
+        </button>
+        
+        <div class="info-box">
+            <h3>📋 Informações do Teste</h3>
+            <ul>
+                <li>Perfil de teste: <span class="code">babymatosao</span></li>
+                <li>Preço base: <span class="code">$9.99/mês</span></li>
+                <li>Planos disponíveis: 1, 3 e 6 meses</li>
+                <li>Descontos: 10% (3 meses) e 20% (6 meses)</li>
+                <li>Modo: <span class="code">TEST</span> - Nenhuma cobrança real</li>
+            </ul>
+        </div>
+        
+        <div class="info-box">
+            <h3>💳 Cartões de Teste do Stripe</h3>
+            <ul>
+                <li>Sucesso: <span class="code">4242 4242 4242 4242</span></li>
+                <li>Recusado: <span class="code">4000 0000 0000 0002</span></li>
+                <li>Sem fundos: <span class="code">4000 0000 0000 9995</span></li>
+                <li>Data: Qualquer futura | CVC: Qualquer 3 dígitos</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Verificar status dos servidores
+        async function checkServers() {
+            try {
+                const flaskResponse = await fetch('/api/check-auth');
+                document.getElementById('flask-status').textContent = flaskResponse.ok ? '✅ Online' : '❌ Offline';
+                document.getElementById('flask-status').className = flaskResponse.ok ? 'status-value status-ok' : 'status-value status-error';
+            } catch (error) {
+                document.getElementById('flask-status').textContent = '❌ Offline';
+                document.getElementById('flask-status').className = 'status-value status-error';
+            }
+            
+            try {
+                const paymentResponse = await fetch('https://3000-i2ejz6b6w70y9z0vkkk48-edd9f582.manusvm.computer/health');
+                document.getElementById('payment-status').textContent = paymentResponse.ok ? '✅ Online' : '❌ Offline';
+                document.getElementById('payment-status').className = paymentResponse.ok ? 'status-value status-ok' : 'status-value status-error';
+            } catch (error) {
+                document.getElementById('payment-status').textContent = '❌ Offline';
+                document.getElementById('payment-status').className = 'status-value status-error';
+            }
+        }
+        
+        // Verificar ao carregar
+        checkServers();
+        
+        // Atualizar a cada 30 segundos
+        setInterval(checkServers, 30000);
+    </script>
+</body>
+</html>
+

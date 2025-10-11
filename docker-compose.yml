@@ -1,20 +1,24 @@
 version: '3.8'
 
 services:
-  web:
-    build: .
+  flask:
+    build:
+      context: .
+      dockerfile: Dockerfile.flask
     ports:
       - "5000:5000"
     volumes:
       - ./src/database:/app/src/database
     environment:
-      - SECRET_KEY=${SECRET_KEY:-change-this-secret-key}
       - FLASK_ENV=production
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/api/profile"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
 
+  nodejs:
+    build:
+      context: ./payment_server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - FRONTEND_URL=${FRONTEND_URL}

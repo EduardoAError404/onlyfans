@@ -18,6 +18,7 @@ class Profile(db.Model):
     media_count = db.Column(db.Integer, default=0)
     banner_image = db.Column(db.String(200), default="baneronly.png")
     profile_image = db.Column(db.String(200), default="perfil.png")
+    subscription_price = db.Column(db.Float, default=9.99)  # Preço mensal da assinatura
     
     def to_dict(self):
         return {
@@ -33,7 +34,11 @@ class Profile(db.Model):
             'posts_count': self.posts_count,
             'media_count': self.media_count,
             'banner_image': self.banner_image,
-            'profile_image': self.profile_image
+            'profile_image': self.profile_image,
+            'subscription_price': self.subscription_price,
+            # Adicionar URLs completas para as imagens
+            'profile_photo': f'/static/{self.profile_image}' if self.profile_image else None,
+            'cover_photo': f'/static/{self.banner_image}' if self.banner_image else None
         }
 
 class Admin(db.Model):

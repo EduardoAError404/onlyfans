@@ -1,0 +1,25 @@
+<!-- Adicionar no <head> do index.html -->
+<script src="https://js.stripe.com/v3/"></script>
+<script src="/subscription-modal.js"></script>
+
+<!-- Substituir os botões de Subscribe existentes por estes -->
+<div class="b-offer-join">
+    <div role="button" tabindex="0" 
+         class="m-fluid-width m-rounded m-flex m-space-between m-lg g-btn subscription-trigger"
+         onclick="openSubscriptionModal(window.currentUsername)">
+        <span class="b-btn-text">Subscribe</span>
+        <span class="b-btn-text__small" id="monthly-price">$9.99 <span class="g-btn__new-line-text">per month</span></span>
+    </div>
+</div>
+
+<!-- Script para atualizar preço dinamicamente -->
+<script>
+// Atualizar preço do botão quando perfil carregar
+document.addEventListener('profileLoaded', function(e) {
+    const profile = e.detail;
+    const priceElement = document.getElementById('monthly-price');
+    if (priceElement && profile.subscription_price) {
+        priceElement.innerHTML = `$${profile.subscription_price.toFixed(2)} <span class="g-btn__new-line-text">per month</span>`;
+    }
+});
+</script>
