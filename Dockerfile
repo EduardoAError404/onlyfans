@@ -1,4 +1,5 @@
-FROM python:3.11-slim
+# Multi-stage build para OnlyFans Clone
+FROM python:3.11-slim as python-base
 
 WORKDIR /app
 
@@ -8,21 +9,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiar requirements
+# Copiar requirements e instalar dependências Python
 COPY requirements.txt .
-
-# Instalar dependências Python
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir gunicorn python-dotenv
 
-# Copiar o projeto
-COPY . .
+# Copiar código da aplicação
+COPY src ./src
+COPY payment_server ./payment_server
 
-# Criar diretório do banco de dados se não existir
+# Criar diretórios necessários
 RUN mkdir -p src/database src/static/uploads
 
 # Expor porta
 EXPOSE 5000
 
-# Comando para iniciar a aplicação
-CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:5000", "--timeout", "120", "src.main:app"]
+# Comando para iniciar
+CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:5000", "--timeout", "120", "--access-logfile", "-", "--error-logfile", "-", "src.main:app"]

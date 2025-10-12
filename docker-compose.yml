@@ -1,20 +1,35 @@
 version: '3.8'
 
 services:
-  web:
-    build: .
+  flask:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "5000:5000"
+    environment:
+      - FLASK_ENV=${FLASK_ENV:-production}
+      - SECRET_KEY=${SECRET_KEY:-default-secret-key}
+      - PAYMENT_SERVER_URL=http://payment:3000
     volumes:
       - ./src/database:/app/src/database
-    environment:
-      - SECRET_KEY=${SECRET_KEY:-change-this-secret-key}
-      - FLASK_ENV=production
+      - ./src/static/uploads:/app/src/static/uploads
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/api/profile"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
 
+  payment:
+    image: node:20-slim
+    working_dir: /app
+    command: sh -c "npm install && node server.js"
+    ports:
+      - "3000:3000"
+    environment:
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET:-whsec_test_placeholder}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:5000}
+      - PORT=3000
+      - NODE_ENV=${NODE_ENV:-production}
+    volumes:
+      - ./payment_server:/app
+      - ./src/database:/app/../src/database
+    restart: unless-stopped

@@ -190,6 +190,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @profile_bp.route('/upload', methods=['POST'])
+@profile_bp.route('/upload-image', methods=['POST'])  # Alias para compatibilidade
 @login_required
 def upload_file():
     """Upload de imagem de perfil ou banner"""

@@ -10,6 +10,10 @@ from src.models.profile import db, Profile, Admin
 from src.routes.profile import profile_bp
 from src.routes.auth import auth_bp
 from werkzeug.security import generate_password_hash
+from dotenv import load_dotenv
+
+# Carregar variáveis de ambiente
+load_dotenv()
 
 app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
 app.config['SECRET_KEY'] = 'f8a3c9e7d2b1a4f6e9c8d7b3a2f1e4d9c8b7a6f5e4d3c2b1a9f8e7d6c5b4a3f2'
