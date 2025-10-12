@@ -32,10 +32,20 @@
         
         try {
             const response = await fetch(`${PAYMENT_SERVER_URL}/api/subscription-plans/${username}`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
             const data = await response.json();
             
-            currentProfile = data.profile;
-            subscriptionPlans = data.plans;
+            // A API agora retorna os planos diretamente: {1_month: {...}, 6_months: {...}, 12_months: {...}}
+            // Converter para array de planos
+            subscriptionPlans = [
+                { ...data['1_month'], id: '1_month' },
+                { ...data['6_months'], id: '6_months' },
+                { ...data['12_months'], id: '12_months' }
+            ];
             
             console.log('✅ Planos carregados:', subscriptionPlans);
             

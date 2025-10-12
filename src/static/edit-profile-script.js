@@ -247,6 +247,34 @@ async function uploadImage() {
                 previewImg.src = `/${data.filename}`;
             }
             
+            // IMPORTANTE: Atualizar o perfil no banco de dados com o novo caminho da imagem
+            const fieldName = currentImageType === 'profile' ? 'profile_image' : 'banner_image';
+            const updateData = {};
+            updateData[fieldName] = data.filename;
+            
+            try {
+                const updateResponse = await fetch(`/api/profiles/${profileId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(updateData)
+                });
+                
+                if (updateResponse.ok) {
+                    console.log('✅ Imagem salva no banco de dados');
+                    // Recarregar a página para mostrar a nova imagem
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    console.error('❌ Erro ao salvar imagem no banco');
+                }
+            } catch (err) {
+                console.error('❌ Erro ao atualizar perfil:', err);
+            }
+            
             closeImageModal();
         } else {
             showAlert(`❌ ${data.error}`, 'error');
