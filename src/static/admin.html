@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo - Social Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root[data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --accent: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --success: #10b981;
+            --danger: #ef4444;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        :root[data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --accent: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --success: #10b981;
+            --danger: #ef4444;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent), #ec4899);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .header-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+            
+            .header-actions button {
+                width: 100%;
+            }
+            
+            .card {
+                padding: 1rem;
+            }
+            
+            .image-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .image-upload-box {
+                min-height: 200px;
+            }
+            
+            .image-preview {
+                max-height: 150px;
+            }
+            
+            .form-group label {
+                font-size: 0.9rem;
+            }
+            
+            .form-group input,
+            .form-group textarea {
+                font-size: 1rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                max-width: none;
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.25rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.25rem;
+            }
+            
+            .header p {
+                font-size: 0.875rem;
+            }
+            
+            .btn {
+                padding: 0.625rem 1rem;
+                font-size: 0.875rem;
+            }
+            
+            .image-upload-box {
+                min-height: 150px;
+            }
+            
+            .modal-content {
+                padding: 1rem;
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-secondary);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px var(--shadow);
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        /* Image Upload Section */
+        .image-upload-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .image-upload-section {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        .image-upload-box {
+            position: relative;
+            border: 2px dashed var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--bg-tertiary);
+        }
+
+        .image-upload-box:hover {
+            border-color: var(--accent);
+            background: var(--bg-secondary);
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+            max-width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .image-preview {
+                height: 180px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .image-preview {
+                height: 150px;
+            }
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            box-shadow: 0 2px 4px var(--shadow);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px var(--shadow);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .close-btn:hover {
+            color: var(--text-primary);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid var(--border);
+            border-top: 4px solid var(--accent);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Alert */
+        .alert {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert.active {
+            display: block;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-title">
+                <div class="logo">✨</div>
+                <div>
+                    <h1>Painel Administrativo</h1>
+                    <p style="color: var(--text-muted); font-size: 0.875rem;">Gerencie seu perfil</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+                    <span id="theme-icon">🌙</span>
+                </button>
+                <button class="btn btn-secondary" onclick="window.location.href='/profiles.html'" style="background: var(--bg-tertiary);">
+                    📋 Gerenciar Perfis
+                </button>
+                <button class="btn btn-primary" onclick="saveProfile()">
+                    💾 Salvar Alterações
+                </button>
+                <button class="btn btn-danger" onclick="logout()">
+                    🚪 Sair
+                </button>
+            </div>
+        </div>
+
+        <!-- Alert -->
+        <div id="alert" class="alert"></div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 1rem; color: var(--text-muted);">Carregando...</p>
+        </div>
+
+        <!-- Main Content -->
+        <div id="main-content" style="display: none;">
+            <!-- Image Upload Section -->
+            <div class="card">
+                <h2 class="card-title">📸 Imagens do Perfil</h2>
+                <div class="image-upload-section">
+                    <!-- Profile Image -->
+                    <div>
+                        <label>Foto de Perfil</label>
+                        <div class="image-upload-box" onclick="openImageModal('profile')">
+                            <img id="profile-preview" class="image-preview" src="" alt="Foto de perfil">
+                            <div class="upload-icon">📷</div>
+                            <p class="upload-text">Clique para alterar</p>
+                        </div>
+                    </div>
+
+                    <!-- Banner Image -->
+                    <div>
+                        <label>Banner</label>
+                        <div class="image-upload-box" onclick="openImageModal('banner')">
+                            <img id="banner-preview" class="image-preview" src="" alt="Banner">
+                            <div class="upload-icon">🖼️</div>
+                            <p class="upload-text">Clique para alterar</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Information -->
+            <div class="grid">
+                <div class="card">
+                    <h2 class="card-title">👤 Informações Básicas</h2>
+                    <div class="form-group">
+                        <label>Nome de Exibição</label>
+                        <input type="text" id="display_name" placeholder="Seu nome">
+                    </div>
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="username" placeholder="@username">
+                    </div>
+                    <div class="form-group">
+                        <label>Localização</label>
+                        <input type="text" id="location" placeholder="Cidade, País">
+                    </div>
+                    <div class="form-group">
+                        <label>Link</label>
+                        <input type="url" id="link" placeholder="https://...">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">📝 Biografia</h2>
+                    <div class="form-group">
+                        <label>Bio (HTML permitido)</label>
+                        <textarea id="bio" placeholder="Escreva sua biografia aqui..."></textarea>
+                        <small style="color: var(--text-muted);">Você pode usar HTML para formatação</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="card">
+                <h2 class="card-title">📊 Estatísticas</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Fotos</div>
+                        <input type="number" id="photos_count" class="stat-value" style="border: none; background: transparent; padding: 0;">
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Vídeos</div>
+                        <input type="number" id="videos_count" class="stat-value" style="border: none; background: transparent; padding: 0;">
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Likes</div>
+                        <input type="text" id="likes_count" class="stat-value" style="border: none; background: transparent; padding: 0;">
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Posts</div>
+                        <input type="number" id="posts_count" class="stat-value" style="border: none; background: transparent; padding: 0;">
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Mídia</div>
+                        <input type="number" id="media_count" class="stat-value" style="border: none; background: transparent; padding: 0;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Upload Modal -->
+    <div id="image-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Alterar Imagem</h2>
+                <button class="close-btn" onclick="closeImageModal()">×</button>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('upload')">📤 Upload</button>
+                <button class="tab" onclick="switchTab('url')">🔗 URL</button>
+            </div>
+
+            <div id="upload-tab" class="tab-content active">
+                <div class="form-group">
+                    <label>Selecione uma imagem</label>
+                    <input type="file" id="file-input" accept="image/*" style="padding: 0.5rem;">
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" onclick="uploadImage()">
+                    📤 Fazer Upload
+                </button>
+            </div>
+
+            <div id="url-tab" class="tab-content">
+                <div class="form-group">
+                    <label>Cole a URL da imagem</label>
+                    <input type="url" id="image-url" placeholder="https://exemplo.com/imagem.jpg">
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" onclick="updateImageUrl()">
+                    🔗 Usar URL
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- ADICIONAR ESTAS LINHAS NO <head> DO INDEX.HTML -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="/subscription-modal.js"></script>
+</head>
+<body>
+    <!-- 
+    INSTRUÇÕES DE INTEGRAÇÃO:
+    
+    1. Adicione os scripts acima no <head> do seu index.html
+    
+    2. Substitua os botões de Subscribe existentes pelo código abaixo
+    
+    3. Adicione o script de atualização de preço no final do arquivo, antes do </body>
+    -->
+    
+    <!-- BOTÃO PRINCIPAL DE SUBSCRIBE -->
+    <div class="b-offer-join">
+        <div role="button" tabindex="0" 
+             class="m-fluid-width m-rounded m-flex m-space-between m-lg g-btn subscription-trigger"
+             onclick="openSubscriptionModal(window.currentUsername)"
+             style="cursor: pointer;">
+            <span class="b-btn-text">Subscribe</span>
+            <span class="b-btn-text__small" id="monthly-price">$9.99 <span class="g-btn__new-line-text">per month</span></span>
+        </div>
+    </div>
+    
+    <!-- BOTÃO SECUNDÁRIO (dentro do conteúdo bloqueado) -->
+    <div class="g-btn__group">
+        <div role="button" tabindex="0" 
+             class="m-fluid-width m-rounded m-flex m-space-between g-btn subscription-trigger-secondary"
+             onclick="openSubscriptionModal(window.currentUsername)"
+             style="cursor: pointer;">
+            <span class="b-btn-text__center">Subscribe to see user's posts</span>
+        </div>
+    </div>
+    
+    <!-- SCRIPT DE ATUALIZAÇÃO DE PREÇO (adicionar antes do </body>) -->
+    <script>
+    // Armazenar username globalmente
+    window.currentUsername = window.location.pathname.split('/')[1] || 'babymatosao';
+    
+    // Atualizar preço do botão quando perfil carregar
+    const originalLoadProfile = window.loadProfile;
+    if (typeof originalLoadProfile === 'function') {
+        window.loadProfile = async function() {
+            await originalLoadProfile();
+            
+            // Pegar dados do perfil
+            const username = window.location.pathname.split('/')[1] || 'babymatosao';
+            try {
+                const response = await fetch(`/api/profile/${username}`);
+                const profile = await response.json();
+                
+                // Atualizar preço no botão
+                const priceElement = document.getElementById('monthly-price');
+                if (priceElement && profile.subscription_price) {
+                    priceElement.innerHTML = `$${profile.subscription_price.toFixed(2)} <span class="g-btn__new-line-text">per month</span>`;
+                }
+                
+                // Disparar evento personalizado
+                const event = new CustomEvent('profileLoaded', { detail: profile });
+                document.dispatchEvent(event);
+            } catch (error) {
+                console.error('Erro ao carregar preço:', error);
+            }
+        };
+    }
+    </script>
+</body>
+</html>
+
