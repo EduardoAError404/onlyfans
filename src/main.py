@@ -72,12 +72,53 @@ init_database()
 PAYMENT_SERVER_URL = os.getenv('PAYMENT_SERVER_URL', 'http://localhost:3000')
 
 @app.route('/api/subscription-plans/<username>')
-def proxy_subscription_plans(username):
-    """Proxy para buscar planos de assinatura do payment server"""
+def get_subscription_plans(username):
+    """
+    Retorna planos de assinatura calculados a partir do preço base do perfil
+    Não depende do payment server - calcula localmente
+    """
     try:
-        response = requests.get(f'{PAYMENT_SERVER_URL}/api/subscription-plans/{username}', timeout=5)
-        return jsonify(response.json()), response.status_code
+        # Buscar perfil do banco de dados
+        profile = Profile.query.filter_by(username=username).first()
+        
+        if not profile:
+            return jsonify({'error': 'Profile not found'}), 404
+        
+        # Obter preço base (mensal)
+        base_price = float(profile.subscription_price)
+        
+        # Calcular preços dos planos com descontos
+        plans = {
+            '1_month': {
+                'name': '1 mês',
+                'duration': 1,
+                'price': round(base_price, 2),
+                'discount': 0,
+                'total': round(base_price, 2),
+                'savings': 0
+            },
+            '6_months': {
+                'name': '6 meses',
+                'duration': 6,
+                'price': round(base_price * 6 * 0.80, 2),  # 20% OFF
+                'discount': 20,
+                'total': round(base_price * 6 * 0.80, 2),
+                'savings': round(base_price * 6 * 0.20, 2)
+            },
+            '12_months': {
+                'name': '12 meses',
+                'duration': 12,
+                'price': round(base_price * 12 * 0.65, 2),  # 35% OFF
+                'discount': 35,
+                'total': round(base_price * 12 * 0.65, 2),
+                'savings': round(base_price * 12 * 0.35, 2)
+            }
+        }
+        
+        return jsonify(plans), 200
+        
     except Exception as e:
+        print(f"❌ Erro ao calcular planos: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/create-checkout-session', methods=['POST'])
