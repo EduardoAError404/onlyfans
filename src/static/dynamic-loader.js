@@ -20,47 +20,6 @@ function hidePreloader() {
     }
 }
 
-// Função para pré-carregar imagens
-function preloadImages(profile) {
-    return new Promise((resolve) => {
-        const images = [];
-        const imageUrls = [];
-        
-        // Banner
-        if (profile.banner_image) {
-            const bannerUrl = profile.banner_image.startsWith('http') ? 
-                profile.banner_image : `/${profile.banner_image}`;
-            imageUrls.push(bannerUrl);
-        }
-        
-        // Profile image
-        if (profile.profile_image) {
-            const profileUrl = profile.profile_image.startsWith('http') ? 
-                profile.profile_image : `/${profile.profile_image}`;
-            imageUrls.push(profileUrl);
-        }
-        
-        if (imageUrls.length === 0) {
-            resolve();
-            return;
-        }
-        
-        let loadedCount = 0;
-        
-        imageUrls.forEach(url => {
-            const img = new Image();
-            img.onload = img.onerror = () => {
-                loadedCount++;
-                if (loadedCount === imageUrls.length) {
-                    resolve();
-                }
-            };
-            img.src = url;
-            images.push(img);
-        });
-    });
-}
-
 // Carregar dados do perfil da API
 async function loadProfile() {
     try {
@@ -73,11 +32,6 @@ async function loadProfile() {
         
         // Salvar no cache global
         window.profileCache = profile;
-        
-        // Pré-carregar imagens
-        console.log('🖼️ Pré-carregando imagens...');
-        await preloadImages(profile);
-        console.log('✅ Imagens carregadas');
         
         // Atualizar nome de exibição
         document.querySelectorAll('.g-user-name').forEach(el => {
