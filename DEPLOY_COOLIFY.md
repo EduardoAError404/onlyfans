@@ -1,108 +1,189 @@
-# Deploy no Coolify - OnlyFans Clone
+# 🚀 Deploy no Coolify - OnlyFans Clone
 
-## Pré-requisitos
+## ⚠️ IMPORTANTE - MUDANÇAS NA ARQUITETURA
 
-1. Conta Stripe (https://dashboard.stripe.com)
-2. Servidor com Coolify instalado
-3. Domínio configurado (ex: 0nlyfaans.com)
+O **Payment Server agora está hospedado externamente** nos servidores da Manus. Você **NÃO precisa mais** hospedar o servidor de pagamentos no seu Coolify.
 
-## Variáveis de Ambiente Necessárias
+**URL do Payment Server (Manus):**
+```
+https://3000-iueh88sebpgtsvwl1znd6-b52cfc53.manusvm.computer
+```
 
-Configure as seguintes variáveis no Coolify:
+## 📋 Pré-requisitos
 
-### Flask (Aplicação Principal)
-- `FLASK_ENV=production`
-- `SECRET_KEY=sua-chave-secreta-aqui`
-- `SITE_URL=https://0nlyfaans.com`
-- `FRONTEND_URL=https://0nlyfaans.com`
-- `PAYMENT_SERVER_URL=https://payment.0nlyfaans.com`
-- `PORT=5000`
+1. ✅ Servidor com Coolify instalado
+2. ✅ Domínio configurado (ex: 0nlyfaans.com)
+3. ✅ Conta Stripe (as chaves já estão configuradas no payment server)
 
-### Payment Server (Node.js)
-- `STRIPE_SECRET_KEY=sk_live_...` (da sua conta Stripe)
-- `STRIPE_PUBLISHABLE_KEY=pk_live_...` (da sua conta Stripe)
-- `STRIPE_WEBHOOK_SECRET=whsec_...` (configurar webhook no Stripe)
-- `NODE_ENV=production`
+## 🔧 Variáveis de Ambiente Necessárias
 
-## Estrutura do Projeto
+Configure **APENAS** as seguintes variáveis no Coolify:
+
+```bash
+# Payment Server (Hospedado na Manus - NÃO ALTERAR)
+PAYMENT_SERVER_URL=https://3000-iueh88sebpgtsvwl1znd6-b52cfc53.manusvm.computer
+
+# Configuração do Flask
+FLASK_ENV=production
+SECRET_KEY=f8a3c9e7d2b1a4f6e9c8d7b3a2f1e4d9c8b7a6f5e4d3c2b1a9f8e7d6c5b4a3f2
+DATABASE_PATH=/app/src/database/app.db
+
+# URLs do seu site
+SITE_URL=https://0nlyfaans.com
+FRONTEND_URL=https://0nlyfaans.com
+
+# Porta
+PORT=5000
+```
+
+## 📦 Estrutura do Projeto (Simplificada)
 
 ```
-onlyfans_system/
+onlyfans-main/
 ├── src/                    # Código Flask
 │   ├── main.py            # Aplicação principal
 │   ├── models/            # Modelos do banco
 │   ├── routes/            # Rotas da API
 │   ├── static/            # Arquivos estáticos
-│   └── database/          # Banco SQLite
-├── payment_server/        # Servidor de pagamentos Node.js
-│   ├── server.js          # API Stripe
-│   └── package.json       # Dependências
+│   └── database/          # Banco SQLite (VOLUME PERSISTENTE)
 ├── Dockerfile             # Build do Flask
-├── docker-compose.yml     # Orquestração
 └── requirements.txt       # Dependências Python
 ```
 
-## Passos para Deploy
+**NOTA:** A pasta `payment_server/` foi removida do projeto pois agora está hospedada externamente.
 
-### 1. Configurar Domínios no Coolify
+## 🚀 Passos para Deploy
 
-- Aplicação principal: `https://0nlyfaans.com`
-- Payment server: `https://payment.0nlyfaans.com` (ou subdomínio)
+### 1. Configurar Repositório no Coolify
+
+1. Acesse seu Coolify
+2. Crie um novo projeto
+3. Configure o repositório Git
+4. Branch: `main` ou `master`
 
 ### 2. Configurar Variáveis de Ambiente
 
-No painel do Coolify, adicione todas as variáveis listadas acima.
+No painel do Coolify, adicione **todas** as variáveis listadas acima na seção "Environment Variables".
 
-### 3. Deploy
+### 3. ⚠️ CRÍTICO - Configurar Volumes Persistentes
 
-O Coolify irá:
-1. Clonar o repositório
-2. Construir a imagem Docker
-3. Iniciar os containers
-4. Configurar SSL automático
+**MUITO IMPORTANTE:** Configure os volumes para evitar perda de dados:
 
-### 4. Configurar Webhook do Stripe
+```
+/app/src/database:/data/database
+/app/src/static/uploads:/data/uploads
+```
 
-1. Acesse: https://dashboard.stripe.com/webhooks
-2. Adicione endpoint: `https://payment.0nlyfaans.com/webhook`
-3. Selecione eventos:
-   - `checkout.session.completed`
-   - `customer.subscription.created`
-   - `customer.subscription.updated`
-   - `customer.subscription.deleted`
-4. Copie o `STRIPE_WEBHOOK_SECRET` e adicione nas variáveis
+Ou no formato do Coolify:
+- **Source:** `/data/database` → **Destination:** `/app/src/database`
+- **Source:** `/data/uploads` → **Destination:** `/app/src/static/uploads`
 
-### 5. Testar
+### 4. Configurar Domínio
+
+- Domínio principal: `https://0nlyfaans.com`
+- O Coolify configurará SSL automático via Let's Encrypt
+
+### 5. Fazer Deploy
+
+1. Clique em "Deploy"
+2. O Coolify irá:
+   - Clonar o repositório
+   - Construir a imagem Docker
+   - Iniciar o container
+   - Configurar SSL automático
+
+### 6. Verificar Funcionamento
 
 1. Acesse `https://0nlyfaans.com`
-2. Clique em "Subscribe"
-3. Complete o pagamento de teste
-4. Verifique se redirecionou para página de sucesso
+2. Verifique se a página carrega
+3. Teste o botão "Subscribe"
+4. Verifique se o checkout do Stripe abre
 
-## Credenciais Admin Padrão
+## 🔐 Credenciais Admin Padrão
 
-- **URL**: https://0nlyfaans.com/login.html
-- **Usuário**: admin
-- **Senha**: admin123
+- **URL:** https://0nlyfaans.com/login.html
+- **Usuário:** admin
+- **Senha:** admin123
 
-⚠️ **IMPORTANTE**: Altere a senha após o primeiro login!
+⚠️ **ALTERE A SENHA** após o primeiro login!
 
-## Troubleshooting
+## 🎯 Arquitetura do Sistema
 
-### Erro de conexão com Payment Server
-- Verifique se `PAYMENT_SERVER_URL` está correto
-- Confirme que o payment server está rodando
+```
+┌─────────────────────────────────────────────────────┐
+│                   Coolify (VPS)                     │
+│  ┌──────────────────────────────────────────────┐   │
+│  │         Flask App (0nlyfaans.com)            │   │
+│  │         - Porta 5000                         │   │
+│  │         - API REST                           │   │
+│  │         - Páginas estáticas                  │   │
+│  │         - Banco de dados SQLite              │   │
+│  └────────────────┬─────────────────────────────┘   │
+└─────────────────────────────────────────────────────┘
+                    │
+                    │ HTTPS
+                    ▼
+┌─────────────────────────────────────────────────────┐
+│              Servidores Manus                       │
+│  ┌──────────────────────────────────────────────┐   │
+│  │     Payment Server (Node.js + Stripe)        │   │
+│  │     - Porta 3000                             │   │
+│  │     - Integração Stripe                      │   │
+│  │     - Cálculo de preços                      │   │
+│  │     - Webhooks                               │   │
+│  └──────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────┘
+```
+
+## 🐛 Troubleshooting
+
+### Erro: "Cannot connect to payment server"
+
+**Solução:** Verifique se a variável `PAYMENT_SERVER_URL` está configurada corretamente:
+```
+PAYMENT_SERVER_URL=https://3000-iueh88sebpgtsvwl1znd6-b52cfc53.manusvm.computer
+```
+
+### Banco de dados não persiste
+
+**Solução:** Verifique se os volumes estão configurados corretamente no Coolify.
+
+### Upload de imagens não funciona
+
+**Solução:** 
+1. Verifique se o volume `/app/src/static/uploads` está configurado
+2. Verifique permissões da pasta no container
 
 ### Preços não aparecem
-- Verifique as chaves do Stripe
-- Confira os logs do payment server
 
-### Banco de dados não criado
-- Verifique permissões da pasta `src/database`
-- Confirme que o volume está montado corretamente
+**Solução:** 
+1. Verifique se o payment server está acessível
+2. Teste: `curl https://3000-iueh88sebpgtsvwl1znd6-b52cfc53.manusvm.computer/health`
+3. Deve retornar: `{"status":"ok"}`
 
-## Suporte
+## 📊 Logs
 
-Para problemas, verifique os logs no Coolify em:
-- Logs > Application Logs
-- Logs > Deployment Logs
+Para verificar logs no Coolify:
+1. Acesse o projeto
+2. Clique em "Logs"
+3. Selecione "Application Logs" ou "Deployment Logs"
+
+## 🔄 Atualizar o Projeto
+
+Para atualizar após fazer mudanças:
+1. Faça commit e push para o GitHub
+2. No Coolify, clique em "Redeploy"
+3. Aguarde o build e deploy
+
+## 📞 Suporte
+
+Para problemas com:
+- **Hospedagem/Coolify:** Verifique logs do Coolify
+- **Payment Server:** O servidor está hospedado na Manus e já está configurado
+- **Stripe:** Verifique o dashboard do Stripe
+
+---
+
+**Última atualização:** 14/10/2025
+**Versão:** 2.0 (Payment Server Externo)
+

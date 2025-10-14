@@ -72,8 +72,8 @@
             const plan = subscriptionPlans[0];
             const priceSpan = mainButton.querySelector('.b-btn-text__small');
             if (priceSpan) {
-                priceSpan.innerHTML = `$${plan.finalPrice.toFixed(2)} <span class="g-btn__new-line-text">per month</span>`;
-                console.log('✅ Botão 1 mês atualizado:', plan.finalPrice);
+                priceSpan.innerHTML = `$${plan.price.toFixed(2)} <span class="g-btn__new-line-text">per month</span>`;
+                console.log('✅ Botão 1 mês atualizado:', plan.price);
             }
             mainButton.onclick = () => openSubscribeModal('1-month');
             mainButton.style.cursor = 'pointer';
@@ -92,12 +92,12 @@
             // Atualizar texto e preço
             button.innerHTML = `
                 <span class="b-btn-text">6 months <span class="b-btn-text__small">(${plan.discount}% OFF)</span></span>
-                <span class="b-btn-text__small">$${plan.finalPrice.toFixed(2)} total</span>
+                <span class="b-btn-text__small">$${plan.total.toFixed(2)} total</span>
             `;
             
             button.onclick = () => openSubscribeModal('6-months');
             button.style.cursor = 'pointer';
-            console.log('✅ Botão 6 meses atualizado:', plan.finalPrice);
+            console.log('✅ Botão 6 meses atualizado:', plan.total);
         }
         
         if (bundleButtons[1] && subscriptionPlans[2]) {
@@ -107,12 +107,12 @@
             // Atualizar texto e preço
             button.innerHTML = `
                 <span class="b-btn-text">12 months <span class="b-btn-text__small">(${plan.discount}% OFF)</span></span>
-                <span class="b-btn-text__small">$${plan.finalPrice.toFixed(2)} total</span>
+                <span class="b-btn-text__small">$${plan.total.toFixed(2)} total</span>
             `;
             
             button.onclick = () => openSubscribeModal('12-months');
             button.style.cursor = 'pointer';
-            console.log('✅ Botão 12 meses atualizado:', plan.finalPrice);
+            console.log('✅ Botão 12 meses atualizado:', plan.total);
         }
         
         // Botão secundário (dentro do conteúdo bloqueado)
@@ -139,6 +139,9 @@
         }
         
         try {
+            // Obter username da URL
+            const username = getUsername();
+
             // Criar sessão de checkout
             const response = await fetch(`${PAYMENT_SERVER_URL}/api/create-checkout-session`, {
                 method: 'POST',
@@ -146,7 +149,7 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    username: currentProfile.username,
+                    username: username,
                     planId: planId,
                     customerEmail: email,
                     customerName: name
@@ -238,4 +241,3 @@
     }
     
 })();
-

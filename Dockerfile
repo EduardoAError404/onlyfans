@@ -23,5 +23,10 @@ RUN mkdir -p src/database src/static/uploads
 # Expor porta
 EXPOSE 5000
 
+# Healthcheck para o Coolify
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:5000/ || exit 1
+
 # Comando para iniciar
 CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:5000", "--timeout", "120", "--access-logfile", "-", "--error-logfile", "-", "src.main:app"]
+

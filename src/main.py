@@ -28,11 +28,22 @@ app.register_blueprint(profile_bp, url_prefix='/api')
 app.register_blueprint(auth_bp, url_prefix='/api')
 
 # Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
+# Suporta tanto caminho local (desenvolvimento) quanto volume compartilhado (produção)
+db_path = os.getenv('DATABASE_PATH', os.path.join(os.path.dirname(__file__), 'database', 'app.db'))
+app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{db_path}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
+# Log do caminho do banco de dados
+print(f'📁 Banco de dados configurado em: {db_path}')
+
 def init_database():
+    # Garantir que o diretório do banco de dados existe
+    db_dir = os.path.dirname(db_path)
+    if db_dir and not os.path.exists(db_dir):
+        os.makedirs(db_dir, exist_ok=True)
+        print(f'📁 Diretório do banco de dados criado: {db_dir}')
+    
     with app.app_context():
         db.create_all()
         
@@ -41,7 +52,7 @@ def init_database():
             default_profile = Profile(
                 username='babymatosao',
                 display_name='Victoria Matosa',
-                bio='''SUBSCRIBE <strong>NOW</strong> = WIN A HUGE <strong>GIFT</strong>! (REAL!) <br> &amp; INSTANT ACCESS TO OVER +1.5K MEDIA! 🔞 <br> <br> ➤ TIP MENU / SERVICIOS / SERVIÇOS: <br> <br> • Phone Calls <br> • Dick Rate | Avaliação <br> • Sexting | Sexo Virtual <br> • Chat / Talk to Me! <br> • Virtual Girlfriend Experience <br> • Videos/Pics Custom 🔞 <br> • Hot Anal Content <br> • Rebill/Resub EXCLUSIVE Gift <br> + And More! Join Now! <br> <br> <span class="m-editor-fc__blue-1"><strong>P.S</strong></span><span class="m-editor-fc__default"><strong>:</strong></span> I do not accept "Tip" as a payment method for Media. You've been warned.<br> <span class="m-editor-fc__blue-1"><strong>P.P.S.</strong></span><strong>:</strong> Services on "Tip Menu" will only be done if I agree. If that's the case, I will reply directly to you saying, expressly, that I am going to do it. Paying ahead of time without my express confirmation on text, using proper words, is entirely your responsibility.''',
+                bio='''SUBSCRIBE <strong>NOW</strong> = WIN A HUGE <strong>GIFT</strong>! (REAL!) <br> &amp; INSTANT ACCESS TO OVER +1.5K MEDIA! 🔞 <br> <br> ➤ TIP MENU / SERVICIOS / SERVIÇOS: <br> <br> • Phone Calls <br> • Dick Rate | Avaliação <br> • Sexting | Sexo Virtual <br> • Chat / Talk to Me! <br> • Virtual Girlfriend Experience <br> • Videos/Pics Custom 🔞 <br> • Hot Anal Content <br> • Rebill/Resub EXCLUSIVE Gift <br> + And More! Join Now! <br> <br> <span class="m-editor-fc__blue-1"><strong>P.S</strong></span><span class="m-editor-fc__default"><strong>:</strong></span> I do not accept "Tip" as a payment method for Media. You've been warned.<br> <span class="m-editor-fc__blue-1"><strong>P.P.S.</strong></span><strong>:</strong></span><strong>:</strong> Services on "Tip Menu" will only be done if I agree. If that's the case, I will reply directly to you saying, expressly, that I am going to do it. Paying ahead of time without my express confirmation on text, using proper words, is entirely your responsibility.''',
                 location='Brasil',
                 link='https://linktr.ee/babymatosa',
                 photos_count=1700,
@@ -123,7 +134,7 @@ def get_subscription_plans(username):
 
 @app.route('/api/create-checkout-session', methods=['POST'])
 def proxy_create_checkout():
-    """Proxy para criar sessão de checkout no Stripe"""
+    """Proxy para criar sessão de checkout no payment server"""
     try:
         response = requests.post(
             f'{PAYMENT_SERVER_URL}/api/create-checkout-session',
@@ -133,6 +144,7 @@ def proxy_create_checkout():
         )
         return jsonify(response.json()), response.status_code
     except Exception as e:
+        print(f'❌ Erro ao conectar com payment server: {str(e)}')
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/session/<session_id>')
