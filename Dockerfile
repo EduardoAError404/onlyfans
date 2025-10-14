@@ -15,7 +15,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar código da aplicação
 COPY src ./src
-COPY payment_server ./payment_server
 
 # Criar diretórios necessários
 RUN mkdir -p src/database src/static/uploads
