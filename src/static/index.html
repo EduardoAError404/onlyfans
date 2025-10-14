@@ -158,6 +158,59 @@
 // Cache global para dados do perfil
 window.profileCache = null;
 
+// Função para pré-carregar imagens
+function preloadImages(profile) {
+    return new Promise((resolve) => {
+        console.log('🖼️ Pré-carregando imagens...');
+        const images = [];
+        const imageUrls = [];
+        
+        // Banner
+        if (profile.banner_image) {
+            imageUrls.push(profile.banner_image);
+        }
+        
+        // Profile image
+        if (profile.profile_image) {
+            imageUrls.push(profile.profile_image);
+        }
+        
+        // Cover photo
+        if (profile.cover_photo) {
+            imageUrls.push(profile.cover_photo);
+        }
+        
+        if (imageUrls.length === 0) {
+            console.log('✅ Nenhuma imagem para pré-carregar');
+            resolve();
+            return;
+        }
+        
+        let loadedCount = 0;
+        
+        imageUrls.forEach(url => {
+            const img = new Image();
+            img.onload = img.onerror = () => {
+                loadedCount++;
+                if (loadedCount === imageUrls.length) {
+                    console.log('✅ Todas as imagens carregadas');
+                    resolve();
+                }
+            };
+            img.src = url;
+            images.push(img);
+        });
+        
+        // Timeout de segurança (3 segundos)
+        setTimeout(() => {
+            if (loadedCount < imageUrls.length) {
+                console.log('⚠️ Timeout no carregamento de imagens, continuando...');
+                resolve();
+            }
+        }, 3000);
+    });
+}
+
 // Função para esconder o preloader
 function hidePreloader() {
     console.log('🔍 hidePreloader() chamada');
@@ -182,7 +235,25 @@ async function loadProfile() {
     try {
         console.log('🔄 Carregando perfil...');
         
-        const response = await fetch('/api/profile');
+        // Pegar username da URL
+        const pathname = window.location.pathname;
+        const username = pathname.substring(1); // Remove a barra inicial
+        
+        // Se houver username na URL e não for um arquivo estático, usar API com username
+        const apiUrl = username && !username.includes('.') && !username.includes('/') 
+            ? `/api/profile/${username}`
+            : '/api/profile';
+        
+        console.log('📡 API URL:', apiUrl);
+        
+        const response = await fetch(apiUrl);
+        
+        if (!response.ok) {
+            console.error('❌ Perfil não encontrado');
+            hidePreloader();
+            return;
+        }
+        
         const profile = await response.json();
         
         console.log('✅ Perfil carregado:', profile);
@@ -284,6 +355,9 @@ async function loadProfile() {
         document.title = profile.display_name + ' OnlyFans';
         
         console.log('✅ Página atualizada com sucesso!');
+        
+        // Pré-carregar imagens antes de esconder preloader
+        await preloadImages(profile);
         
         // Esconder preloader
         console.log('🔍 Tentando esconder preloader...');
