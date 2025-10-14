@@ -36,6 +36,17 @@ def get_profile_by_id(profile_id):
         return jsonify(profile.to_dict()), 200
     return jsonify({'error': 'Profile not found'}), 404
 
+@profile_bp.route('/profile', methods=['GET'])
+def get_default_profile():
+    """Obtém perfil padrão (babymatosao) - USADO PELO DYNAMIC LOADER"""
+    profile = Profile.query.filter_by(username='babymatosao').first()
+    if profile:
+        data = profile.to_dict()
+        # Garantir que subscription_price está presente e é float
+        data['subscription_price'] = float(profile.subscription_price)
+        return jsonify(data), 200
+    return jsonify({'error': 'Profile not found'}), 404
+
 @profile_bp.route('/profile/<username>', methods=['GET'])
 def get_profile_by_username(username):
     """Obtém perfil por username (público) - USADO PELO PAYMENT SERVER"""
