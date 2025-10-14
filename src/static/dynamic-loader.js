@@ -1,10 +1,76 @@
+// Cache global para dados do perfil
+window.profileCache = null;
+
+// Função para esconder o preloader
+function hidePreloader() {
+    const preloader = document.getElementById('before_preloader');
+    if (preloader) {
+        preloader.style.opacity = '0';
+        preloader.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+            preloader.style.display = 'none';
+        }, 300);
+    }
+}
+
+// Função para pré-carregar imagens
+function preloadImages(profile) {
+    return new Promise((resolve) => {
+        const images = [];
+        const imageUrls = [];
+        
+        // Banner
+        if (profile.banner_image) {
+            const bannerUrl = profile.banner_image.startsWith('http') ? 
+                profile.banner_image : `/${profile.banner_image}`;
+            imageUrls.push(bannerUrl);
+        }
+        
+        // Profile image
+        if (profile.profile_image) {
+            const profileUrl = profile.profile_image.startsWith('http') ? 
+                profile.profile_image : `/${profile.profile_image}`;
+            imageUrls.push(profileUrl);
+        }
+        
+        if (imageUrls.length === 0) {
+            resolve();
+            return;
+        }
+        
+        let loadedCount = 0;
+        
+        imageUrls.forEach(url => {
+            const img = new Image();
+            img.onload = img.onerror = () => {
+                loadedCount++;
+                if (loadedCount === imageUrls.length) {
+                    resolve();
+                }
+            };
+            img.src = url;
+            images.push(img);
+        });
+    });
+}
+
 // Carregar dados do perfil da API
 async function loadProfile() {
     try {
+        console.log('🔄 Carregando perfil...');
+        
         const response = await fetch('/api/profile');
         const profile = await response.json();
         
-        console.log('Perfil carregado:', profile);
+        console.log('✅ Perfil carregado:', profile);
+        
+        // Salvar no cache global
+        window.profileCache = profile;
+        
+        // Pré-carregar imagens
+        console.log('🖼️ Pré-carregando imagens...');
+        await preloadImages(profile);
+        console.log('✅ Imagens carregadas');
         
         // Atualizar nome de exibição
         document.querySelectorAll('.g-user-name').forEach(el => {
@@ -99,10 +165,15 @@ async function loadProfile() {
         // Atualizar título da página
         document.title = profile.display_name + ' OnlyFans';
         
-        console.log('Página atualizada com sucesso!');
+        console.log('✅ Página atualizada com sucesso!');
+        
+        // Esconder preloader
+        hidePreloader();
         
     } catch (error) {
-        console.error('Erro ao carregar perfil:', error);
+        console.error('❌ Erro ao carregar perfil:', error);
+        // Esconder preloader mesmo em caso de erro
+        hidePreloader();
     }
 }
 
@@ -112,3 +183,4 @@ if (document.readyState === 'loading') {
 } else {
     loadProfile();
 }
+

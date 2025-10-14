@@ -190,13 +190,21 @@
         document.body.insertAdjacentHTML('beforeend', modalHTML);
     }
     
-    // Carregar dados do perfil
+    // Carregar dados do perfil (usa cache se disponível)
     async function loadProfileData() {
+        // Verificar se já temos os dados em cache
+        if (window.profileCache) {
+            profileData = window.profileCache;
+            console.log('✅ Usando dados do perfil do cache');
+            return;
+        }
+        
         const username = window.location.pathname.split('/').filter(Boolean)[0] || 'babymatosao';
         
         try {
             const response = await fetch(`/api/profile/${username}`);
             profileData = await response.json();
+            window.profileCache = profileData; // Salvar no cache
             console.log('✅ Dados do perfil carregados:', profileData);
         } catch (error) {
             console.error('❌ Erro ao carregar perfil:', error);

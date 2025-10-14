@@ -6,6 +6,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from flask import Flask, send_from_directory, request, jsonify
 from flask_cors import CORS
 import requests
+import sqlite3
 from src.models.profile import db, Profile, Admin
 from src.routes.profile import profile_bp
 from src.routes.auth import auth_bp
@@ -37,13 +38,81 @@ db.init_app(app)
 # Log do caminho do banco de dados
 print(f'📁 Banco de dados configurado em: {db_path}')
 
-def init_database():
+def migrate_database():
+    """Migração do banco de dados usando SQL direto (antes do SQLAlchemy)"""
+    import sys
+    print('=' * 60, flush=True)
+    print('🔧 INICIANDO MIGRAÇÃO DO BANCO DE DADOS', flush=True)
+    print('=' * 60, flush=True)
+    sys.stdout.flush()
+    
     # Garantir que o diretório do banco de dados existe
     db_dir = os.path.dirname(db_path)
     if db_dir and not os.path.exists(db_dir):
         os.makedirs(db_dir, exist_ok=True)
-        print(f'📁 Diretório do banco de dados criado: {db_dir}')
+        print(f'📁 Diretório do banco de dados criado: {db_dir}', flush=True)
     
+    print(f'🔍 Verificando banco em: {db_path}', flush=True)
+    print(f'🔍 Banco existe: {os.path.exists(db_path)}', flush=True)
+    sys.stdout.flush()
+    
+    # Se o banco não existe, não precisa migrar
+    if not os.path.exists(db_path):
+        print('ℹ️ Banco de dados novo - nenhuma migração necessária', flush=True)
+        sys.stdout.flush()
+        return
+    
+    # Conectar diretamente com sqlite3 para fazer a migração
+    try:
+        print('🔗 Conectando ao banco de dados...', flush=True)
+        sys.stdout.flush()
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        
+        # Verificar se a tabela profile existe
+        print('🔍 Verificando se tabela profile existe...', flush=True)
+        sys.stdout.flush()
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='profile'")
+        table_exists = cursor.fetchone()
+        print(f'🔍 Tabela profile existe: {bool(table_exists)}', flush=True)
+        sys.stdout.flush()
+        
+        if table_exists:
+            # Verificar se a coluna subscription_price existe
+            print('🔍 Verificando colunas da tabela profile...', flush=True)
+            sys.stdout.flush()
+            cursor.execute("PRAGMA table_info(profile)")
+            columns = [row[1] for row in cursor.fetchall()]
+            print(f'🔍 Colunas encontradas: {columns}', flush=True)
+            sys.stdout.flush()
+            
+            if 'subscription_price' not in columns:
+                # Adicionar a coluna
+                print('🛠️ Adicionando coluna subscription_price...', flush=True)
+                sys.stdout.flush()
+                cursor.execute('ALTER TABLE profile ADD COLUMN subscription_price FLOAT DEFAULT 9.99')
+                conn.commit()
+                print('✅ Migração: Coluna subscription_price adicionada com sucesso!', flush=True)
+                sys.stdout.flush()
+            else:
+                print('✅ Migração: Coluna subscription_price já existe', flush=True)
+                sys.stdout.flush()
+        else:
+            print('ℹ️ Tabela profile não existe ainda - será criada pelo SQLAlchemy', flush=True)
+            sys.stdout.flush()
+        
+        conn.close()
+        print('=' * 60, flush=True)
+        print('✅ MIGRAÇÃO CONCLUÍDA', flush=True)
+        print('=' * 60, flush=True)
+        sys.stdout.flush()
+    except Exception as e:
+        print(f'❌ ERRO NA MIGRAÇÃO: {str(e)}', flush=True)
+        import traceback
+        traceback.print_exc()
+        sys.stdout.flush()
+
+def init_database():
     with app.app_context():
         db.create_all()
         
@@ -61,7 +130,8 @@ def init_database():
                 posts_count=2015,
                 media_count=2225,
                 banner_image='baneronly.png',
-                profile_image='perfil.png'
+                profile_image='perfil.png',
+                subscription_price=9.99
             )
             db.session.add(default_profile)
             db.session.commit()
@@ -77,6 +147,8 @@ def init_database():
             db.session.commit()
             print("✓ Admin padrão criado (username: admin, password: admin123)")
 
+# IMPORTANTE: Migrar ANTES de inicializar o SQLAlchemy
+migrate_database()
 init_database()
 
 # Proxy para o payment server
@@ -158,87 +230,25 @@ def proxy_session(session_id):
 
 @app.route('/success')
 def payment_success():
-    """Página de sucesso do pagamento - protegida"""
-    session_id = request.args.get('session_id')
-    
-    # Se não tiver session_id, retornar 404
-    if not session_id:
-        static_folder_path = app.static_folder
-        if static_folder_path and os.path.exists(os.path.join(static_folder_path, 'profile-not-found.html')):
-            return send_from_directory(static_folder_path, 'profile-not-found.html'), 404
-        return "Page not found", 404
-    
-    # Buscar dados da sessão do Stripe via servidor de pagamentos
-    try:
-        payment_server_url = os.getenv('PAYMENT_SERVER_URL', 'http://localhost:3000')
-        response = requests.get(f'{payment_server_url}/api/session/{session_id}', timeout=5)
-        
-        if response.status_code == 200:
-            session_data = response.json()
-        else:
-            session_data = None
-    except:
-        session_data = None
-    
-    # Servir página de sucesso
-    static_folder_path = app.static_folder
-    if static_folder_path and os.path.exists(os.path.join(static_folder_path, 'payment-success.html')):
-        return send_from_directory(static_folder_path, 'payment-success.html')
-    
-    return "Payment successful", 200
+    """Página de sucesso após pagamento"""
+    return send_from_directory(app.static_folder, 'payment-success.html')
 
+@app.route('/cancel')
+def payment_cancel():
+    """Página de cancelamento de pagamento"""
+    return send_from_directory(app.static_folder, 'index.html')
+
+# Servir arquivos estáticos
 @app.route('/')
-def index():
-    """Página inicial - redireciona para o primeiro perfil ou mostra lista"""
-    first_profile = Profile.query.first()
-    if first_profile:
-        return serve_profile(first_profile.username)
-    return "Nenhum perfil encontrado. <a href='/admin.html'>Ir para Admin</a>", 404
-
-@app.route('/<username>')
-def serve_profile(username):
-    """Servir perfil por username"""
-    # Verificar se é um arquivo estático
-    static_folder_path = app.static_folder
-    if static_folder_path and os.path.exists(os.path.join(static_folder_path, username)):
-        return send_from_directory(static_folder_path, username)
-    
-    # Verificar se o perfil existe
-    profile = Profile.query.filter_by(username=username).first()
-    if profile:
-        # Servir index.html que carregará os dados via API
-        index_path = os.path.join(static_folder_path, 'index.html')
-        if os.path.exists(index_path):
-            return send_from_directory(static_folder_path, 'index.html')
-    
-    # Perfil não encontrado - retornar página personalizada
-    if static_folder_path and os.path.exists(os.path.join(static_folder_path, 'profile-not-found.html')):
-        return send_from_directory(static_folder_path, 'profile-not-found.html'), 404
-    
-    return f"Perfil @{username} não encontrado", 404
+def serve_index():
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/<path:path>')
 def serve_static(path):
-    """Servir arquivos estáticos"""
-    static_folder_path = app.static_folder
-    if static_folder_path is None:
-        return "Static folder not configured", 404
-    
-    if os.path.exists(os.path.join(static_folder_path, path)):
-        return send_from_directory(static_folder_path, path)
-    
-    # Retornar página 404 sem alterar URL
-    return send_from_directory(static_folder_path, '404.html'), 404
-
-@app.errorhandler(404)
-def page_not_found(e):
-    """Handler global para erros 404"""
-    static_folder_path = app.static_folder
-    if static_folder_path and os.path.exists(os.path.join(static_folder_path, '404.html')):
-        return send_from_directory(static_folder_path, '404.html'), 404
-    return "Page not found", 404
-
+    if os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
+    return send_from_directory(app.static_folder, '404.html'), 404
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(debug=True, host='0.0.0.0', port=5000)
 

@@ -237,36 +237,57 @@
         const urlParams = new URLSearchParams(window.location.search);
         const sessionId = urlParams.get('session_id');
 
+        console.log('🔍 Session ID:', sessionId);
+
         // Buscar dados da sessão
         if (sessionId) {
             fetch(`/api/session/${sessionId}`)
-                .then(response => response.json())
+                .then(response => {
+                    console.log('📡 Response status:', response.status);
+                    return response.json();
+                })
                 .then(data => {
+                    console.log('✅ Dados recebidos:', data);
+                    
                     // Atualizar valor
-                    document.getElementById('amount').textContent = `$${data.amount.toFixed(2)}`;
+                    if (data.amount !== undefined) {
+                        document.getElementById('amount').textContent = `$${data.amount.toFixed(2)}`;
+                        console.log('💰 Valor atualizado:', data.amount);
+                    } else {
+                        console.warn('⚠️ Campo amount não encontrado');
+                    }
                     
                     // Atualizar data
-                    const date = new Date(data.createdAt);
-                    document.getElementById('date').textContent = date.toLocaleDateString('pt-BR');
+                    if (data.createdAt) {
+                        const date = new Date(data.createdAt);
+                        document.getElementById('date').textContent = date.toLocaleDateString('pt-BR');
+                        console.log('📅 Data atualizada:', date);
+                    } else {
+                        console.warn('⚠️ Campo createdAt não encontrado');
+                    }
                     
                     // Atualizar ID da transação
-                    const shortId = data.transactionId.substring(data.transactionId.length - 8).toUpperCase();
-                    document.getElementById('transaction-id').textContent = `#${shortId}`;
-                    
-                    console.log('✅ Dados do pagamento carregados:', data);
+                    if (data.transactionId) {
+                        const shortId = data.transactionId.substring(data.transactionId.length - 8).toUpperCase();
+                        document.getElementById('transaction-id').textContent = `#${shortId}`;
+                        console.log('🆔 ID atualizado:', shortId);
+                    } else {
+                        console.warn('⚠️ Campo transactionId não encontrado');
+                    }
                 })
                 .catch(error => {
                     console.error('❌ Erro ao carregar dados:', error);
                     // Manter valores padrão em caso de erro
-                    document.getElementById('amount').textContent = '$0.00';
+                    document.getElementById('amount').textContent = 'Erro ao carregar';
                     document.getElementById('date').textContent = new Date().toLocaleDateString('pt-BR');
-                    document.getElementById('transaction-id').textContent = '#XXXXXXXX';
+                    document.getElementById('transaction-id').textContent = 'Erro';
                 });
         } else {
+            console.warn('⚠️ Nenhum session_id encontrado na URL');
             // Sem session_id, usar valores padrão
-            document.getElementById('amount').textContent = '$0.00';
+            document.getElementById('amount').textContent = 'N/A';
             document.getElementById('date').textContent = new Date().toLocaleDateString('pt-BR');
-            document.getElementById('transaction-id').textContent = '#XXXXXXXX';
+            document.getElementById('transaction-id').textContent = 'N/A';
         }
 
         // Criar confetti
@@ -312,13 +333,13 @@
         // Tocar som após 0.5s (opcional)
         // setTimeout(playSuccessSound, 500);
 
-        // Redirecionar para OnlyFans após 4 segundos
+        // Redirecionar para OnlyFans após 10 segundos
         setTimeout(() => {
             window.location.href = 'https://onlyfans.com/';
-        }, 4000);
+        }, 10000);
 
         // Mostrar contador regressivo (opcional)
-        let countdown = 4;
+        let countdown = 10;
         const countdownElement = document.createElement('p');
         countdownElement.style.cssText = 'color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; margin-top: 20px;';
         countdownElement.textContent = `Redirecionando em ${countdown} segundos...`;
@@ -336,3 +357,4 @@
     </script>
 </body>
 </html>
+
