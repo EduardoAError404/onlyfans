@@ -3,13 +3,20 @@ window.profileCache = null;
 
 // Função para esconder o preloader
 function hidePreloader() {
+    console.log('🔍 hidePreloader() chamada');
     const preloader = document.getElementById('before_preloader');
+    console.log('Preloader element:', preloader);
+    
     if (preloader) {
+        console.log('✅ Preloader encontrado, escondendo...');
         preloader.style.opacity = '0';
         preloader.style.transition = 'opacity 0.3s ease';
         setTimeout(() => {
             preloader.style.display = 'none';
+            console.log('✅ Preloader display=none aplicado');
         }, 300);
+    } else {
+        console.warn('⚠️ Preloader não encontrado no DOM!');
     }
 }
 
@@ -168,7 +175,9 @@ async function loadProfile() {
         console.log('✅ Página atualizada com sucesso!');
         
         // Esconder preloader
+        console.log('🔍 Tentando esconder preloader...');
         hidePreloader();
+        console.log('✅ Preloader escondido!');
         
     } catch (error) {
         console.error('❌ Erro ao carregar perfil:', error);
