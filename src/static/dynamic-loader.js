@@ -123,6 +123,22 @@ async function loadProfile() {
             }
         });
         
+        // Atualizar contadores da parte inferior (seção de subscribe)
+        const bottomPostsCount = document.getElementById('bottom-posts-count');
+        if (bottomPostsCount) {
+            bottomPostsCount.textContent = ' ' + profile.posts_count + ' ';
+        }
+        
+        const bottomPhotosCount = document.getElementById('bottom-photos-count');
+        if (bottomPhotosCount) {
+            bottomPhotosCount.textContent = ' ' + profile.photos_count + ' ';
+        }
+        
+        const bottomVideosCount = document.getElementById('bottom-videos-count');
+        if (bottomVideosCount) {
+            bottomVideosCount.textContent = ' ' + profile.videos_count + ' ';
+        }
+        
         // Atualizar título da página
         document.title = profile.display_name + ' OnlyFans';
         
@@ -146,4 +162,3 @@ if (document.readyState === 'loading') {
 } else {
     loadProfile();
 }
-
