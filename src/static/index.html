@@ -271,6 +271,32 @@ async function loadProfile() {
             el.textContent = profile.username;
         });
         
+        // Atualizar imagens
+        // Banner
+        const bannerImg = document.querySelector(".b-profile__header__cover-img");
+        if (bannerImg && profile.banner_image) {
+            bannerImg.src = profile.banner_image;
+            console.log("✅ Banner atualizado:", profile.banner_image);
+        }
+        
+        // Profile image (avatar)
+        const profileImgs = document.querySelectorAll(".g-avatar__img-wrapper img");
+        profileImgs.forEach(img => {
+            if (profile.profile_image) {
+                img.src = profile.profile_image;
+                console.log("✅ Profile image atualizado:", profile.profile_image);
+            }
+        });
+        
+        // Cover photo (se existir elemento específico)
+        if (profile.cover_photo) {
+            const coverImg = document.querySelector("[data-cover-photo]");
+            if (coverImg) {
+                coverImg.src = profile.cover_photo;
+                console.log("✅ Cover photo atualizado:", profile.cover_photo);
+            }
+        }
+        
         // Atualizar biografia
         const bioElement = document.getElementById('full-bio');
         if (bioElement) {
