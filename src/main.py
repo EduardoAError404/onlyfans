@@ -245,9 +245,17 @@ def serve_index():
 
 @app.route('/<path:path>')
 def serve_static(path):
+    # Se o arquivo existe, servir o arquivo
     if os.path.exists(os.path.join(app.static_folder, path)):
         return send_from_directory(app.static_folder, path)
-    return send_from_directory(app.static_folder, '404.html'), 404
+    
+    # Se começa com 'api/', retornar 404 JSON
+    if path.startswith('api/'):
+        return jsonify({'error': 'Not found'}), 404
+    
+    # Para qualquer outra rota (username), servir index.html
+    # O JavaScript vai detectar o username e buscar o perfil correto
+    return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
