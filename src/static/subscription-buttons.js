@@ -94,7 +94,7 @@
             const plan = subscriptionPlans[0];
             const priceSpan = mainButton.querySelector('.b-btn-text__small');
             if (priceSpan) {
-                priceSpan.innerHTML = `${currencySymbol}${plan.price.toFixed(2)} <span class="g-btn__new-line-text">per month</span>`;
+                priceSpan.innerHTML = `<span class="currency-symbol">${currencySymbol}</span>${plan.price.toFixed(2)} <span class="g-btn__new-line-text">per month</span>`;
                 console.log('✅ Botão 1 mês atualizado:', plan.price);
             }
             mainButton.onclick = () => openSubscribeModal('1-month');
@@ -114,7 +114,7 @@
             // Atualizar texto e preço
             button.innerHTML = `
                 <span class="b-btn-text">6 months <span class="b-btn-text__small">(${plan.discount}% OFF)</span></span>
-                <span class="b-btn-text__small">${currencySymbol}${plan.total.toFixed(2)} total</span>
+                <span class="b-btn-text__small"><span class="currency-symbol">${currencySymbol}</span>${plan.total.toFixed(2)} total</span>
             `;
             
             button.onclick = () => openSubscribeModal('6-months');
@@ -129,7 +129,7 @@
             // Atualizar texto e preço
             button.innerHTML = `
                 <span class="b-btn-text">12 months <span class="b-btn-text__small">(${plan.discount}% OFF)</span></span>
-                <span class="b-btn-text__small">${currencySymbol}${plan.total.toFixed(2)} total</span>
+                <span class="b-btn-text__small"><span class="currency-symbol">${currencySymbol}</span>${plan.total.toFixed(2)} total</span>
             `;
             
             button.onclick = () => openSubscribeModal('12-months');

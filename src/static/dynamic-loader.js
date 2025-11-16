@@ -67,7 +67,7 @@ async function loadProfile() {
         // Função para formatar o preço com a moeda correta
         const formatPrice = (price) => {
             const formattedNumber = price.toFixed(2).replace('.', ',');
-            return `${symbol}${formattedNumber}`;
+            return `<span class="currency-symbol">${symbol}</span>${formattedNumber}`;
         };
         
         // Buscar planos de assinatura (o servidor Flask calcula os descontos)
@@ -83,21 +83,21 @@ async function loadProfile() {
         // Atualizar preço mensal
         const monthlyPriceEl = document.getElementById('monthly-price-display');
         if (monthlyPriceEl) {
-            monthlyPriceEl.textContent = formatPrice(monthlyPlan.price);
-            console.log(`✅ Preço mensal atualizado: ${monthlyPriceEl.textContent}`);
+            monthlyPriceEl.innerHTML = formatPrice(monthlyPlan.price);
+            console.log(`✅ Preço mensal atualizado: ${monthlyPriceEl.innerHTML}`);
         }
         
         // Atualizar pacotes
         const sixMonthsPriceEl = document.getElementById('six-months-price-display');
         if (sixMonthsPriceEl) {
-            sixMonthsPriceEl.textContent = formatPrice(sixMonthsPlan.total);
-            console.log(`✅ Preço 6 meses atualizado: ${sixMonthsPriceEl.textContent}`);
+            sixMonthsPriceEl.innerHTML = formatPrice(sixMonthsPlan.total);
+            console.log(`✅ Preço 6 meses atualizado: ${sixMonthsPriceEl.innerHTML}`);
         }
         
         const twelveMonthsPriceEl = document.getElementById('twelve-months-price-display');
         if (twelveMonthsPriceEl) {
-            twelveMonthsPriceEl.textContent = formatPrice(twelveMonthsPlan.total);
-            console.log(`✅ Preço 12 meses atualizado: ${twelveMonthsPriceEl.textContent}`);
+            twelveMonthsPriceEl.innerHTML = formatPrice(twelveMonthsPlan.total);
+            console.log(`✅ Preço 12 meses atualizado: ${twelveMonthsPriceEl.innerHTML}`);
         }
         
         // Atualizar nome de exibição

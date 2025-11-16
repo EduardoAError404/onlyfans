@@ -1,0 +1,10 @@
+/* Fix para manter o símbolo da moeda em maiúsculas */
+.b-btn-text__small .currency-symbol {
+    text-transform: none !important;
+}
+
+/* Alternativa: aplicar diretamente no preço se necessário */
+#monthly-price-display,
+.monthly-price-display {
+    text-transform: none !important;
+}
