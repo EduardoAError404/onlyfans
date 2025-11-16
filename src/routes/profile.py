@@ -114,9 +114,9 @@ def update_profile(profile_id):
     profile = Profile.query.get(profile_id)
     if not profile:
         return jsonify({'error': 'Profile not found'}), 404
-    
+
     data = request.get_json()
-    
+
     # Atualizar campos básicos
     if 'display_name' in data:
         profile.display_name = data['display_name']
@@ -126,7 +126,7 @@ def update_profile(profile_id):
         profile.location = data['location']
     if 'link' in data:
         profile.link = data['link']
-    
+
     # Atualizar estatísticas
     if 'photos_count' in data:
         profile.photos_count = int(data['photos_count'])
@@ -138,16 +138,14 @@ def update_profile(profile_id):
         profile.posts_count = int(data['posts_count'])
     if 'media_count' in data:
         profile.media_count = int(data['media_count'])
-    
+
     # Atualizar imagens
     if 'banner_image' in data:
         profile.banner_image = data['banner_image']
     if 'profile_image' in data:
         profile.profile_image = data['profile_image']
-    
-    # ==========================================
+
     # ATUALIZAR PREÇO - PARTE CRÍTICA
-    # ==========================================
     if 'subscription_price' in data:
         try:
             new_price = float(data['subscription_price'])
@@ -156,30 +154,30 @@ def update_profile(profile_id):
             profile.subscription_price = new_price
             print(f"💰 Atualizando preço para: ${new_price}")
         except (ValueError, TypeError):
-	            return jsonify({'error': 'Invalid price format'}), 400
-	    
-	    # ATUALIZAR MOEDA - PARTE CRÍTICA
-	    if 'currency' in data:
-	        new_currency = data['currency'].upper()
-	        allowed_currencies = ['BRL', 'USD', 'EUR']
-	        if new_currency not in allowed_currencies:
-	            return jsonify({'error': f'Invalid currency: {new_currency}. Allowed: {", ".join(allowed_currencies)}'}), 400
-	        profile.currency = new_currency
-	        print(f"💵 Atualizando moeda para: {new_currency}")
-	        
-	    # Salvar no banco de dados com flush + commit + checkpoint
+            return jsonify({'error': 'Invalid price format'}), 400
+
+    # ATUALIZAR MOEDA - PARTE CRÍTICA
+    if 'currency' in data:
+        new_currency = data['currency'].upper()
+        allowed_currencies = ['BRL', 'USD', 'EUR']
+        if new_currency not in allowed_currencies:
+            return jsonify({'error': f'Invalid currency: {new_currency}. Allowed: {", ".join(allowed_currencies)}'}), 400
+        profile.currency = new_currency
+        print(f"💵 Atualizando moeda para: {new_currency}")
+
+    # Salvar no banco de dados com flush + commit + checkpoint
     try:
         db.session.flush()
         db.session.commit()
         db.session.execute(text('PRAGMA wal_checkpoint(TRUNCATE)'))
         db.session.commit()
         print(f"✅ Perfil {profile_id} atualizado com sucesso!")
-        
+
     except Exception as e:
         db.session.rollback()
         print(f"❌ Erro ao salvar: {str(e)}")
         return jsonify({'error': str(e)}), 500
-    
+
     return jsonify(profile.to_dict()), 200
 
 # ==========================================
