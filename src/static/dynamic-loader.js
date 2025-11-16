@@ -33,6 +33,47 @@ async function loadProfile() {
         // Salvar no cache global
         window.profileCache = profile;
         
+        // Mapeamento de moeda para símbolo
+        const currencySymbols = {
+            'USD': '$',
+            'BRL': 'R$',
+            'EUR': '€'
+        };
+        
+        const currency = profile.currency || 'USD';
+        const symbol = currencySymbols[currency] || '$';
+        const monthlyPrice = profile.subscription_price || 9.99;
+        
+        // Função para formatar o preço
+        const formatPrice = (price) => {
+            return `${symbol}${price.toFixed(2).replace('.', ',')}`;
+        };
+        
+        // Buscar planos de assinatura (o servidor Flask calcula os descontos)
+        const plansResponse = await fetch(`/api/subscription-plans/${profile.username}`);
+        const plansData = await plansResponse.json();
+        
+        const monthlyPlan = plansData.plans['1_month'];
+        const sixMonthsPlan = plansData.plans['6_months'];
+        const twelveMonthsPlan = plansData.plans['12_months'];
+        
+        // Atualizar preço mensal
+        const monthlyPriceEl = document.getElementById('monthly-price-display');
+        if (monthlyPriceEl) {
+            monthlyPriceEl.textContent = formatPrice(monthlyPlan.price);
+        }
+        
+        // Atualizar pacotes
+        const sixMonthsPriceEl = document.getElementById('six-months-price-display');
+        if (sixMonthsPriceEl) {
+            sixMonthsPriceEl.textContent = formatPrice(sixMonthsPlan.total);
+        }
+        
+        const twelveMonthsPriceEl = document.getElementById('twelve-months-price-display');
+        if (twelveMonthsPriceEl) {
+            twelveMonthsPriceEl.textContent = formatPrice(twelveMonthsPlan.total);
+        }
+        
         // Atualizar nome de exibição
         document.querySelectorAll('.g-user-name').forEach(el => {
             el.innerHTML = profile.display_name + ' <svg class="m-verified g-icon" data-icon-name=icon-verified aria-hidden=true><use href=#icon-verified xlink:href=#icon-verified></use></svg>';
