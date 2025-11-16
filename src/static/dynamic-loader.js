@@ -25,8 +25,45 @@ async function loadProfile() {
     try {
         console.log('🔄 Carregando perfil...');
         
-        const response = await fetch('/api/profile');
+        // 1. Obter o username da URL
+        const path = window.location.pathname;
+        const pathSegments = path.split('/').filter(segment => segment.length > 0);
+        
+        let apiUrl = '/api/profile'; // Rota padrão
+        
+        if (pathSegments.length > 0) {
+            // Se houver segmentos, o primeiro é o username
+            const username = pathSegments[0];
+            apiUrl = `/api/profile/${username}`; // Rota para perfil específico
+            console.log(`🔍 Carregando perfil para username: ${username} via ${apiUrl}`);
+        } else {
+            console.log(`🔍 Carregando perfil padrão via ${apiUrl}`);
+        }
+        
+        const response = await fetch(apiUrl);
         const profile = await response.json();
+        
+        // Mapeamento de moeda para símbolo
+        const currencySymbols = {
+            'USD': '$',
+            'BRL': 'R$',
+            'EUR': '€'
+        };
+        
+        const currency = profile.currency || 'USD';
+        const symbol = currencySymbols[currency] || '$';
+        const monthlyPrice = profile.subscription_price || 9.99;
+        
+        // Função para formatar o preço
+        const formatPrice = (price) => {
+            return `${symbol}${price.toFixed(2).replace('.', ',')}`;
+        };
+        
+        // Atualizar preço mensal
+        const monthlyPriceEl = document.getElementById('monthly-price-display');
+        if (monthlyPriceEl) {
+            monthlyPriceEl.textContent = formatPrice(monthlyPrice);
+        }
         
         console.log('✅ Perfil carregado:', profile);
         
