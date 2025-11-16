@@ -645,8 +645,15 @@
                         <input type="number" id="media_count" class="stat-value" style="border: none; background: transparent; padding: 0;">
                     </div>
                     <div class="stat-card">
-                        <div class="stat-label">💰 Preço/Mês (USD)</div>
-                        <input type="number" id="subscription_price" class="stat-value" style="border: none; background: transparent; padding: 0;" step="0.01" min="0">
+                        <div class="stat-label">💰 Preço/Mês</div>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <select id="currency_selector" class="stat-value" style="border: none; background: transparent; padding: 0; width: auto; font-weight: 700; font-size: 1.5rem; color: var(--accent);">
+                                <option value="USD">USD</option>
+                                <option value="BRL">BRL</option>
+                                <option value="EUR">EUR</option>
+                            </select>
+                            <input type="number" id="subscription_price" class="stat-value" style="border: none; background: transparent; padding: 0;" step="0.01" min="0">
+                        </div>
                     </div>
                 </div>
             </div>

@@ -156,9 +156,18 @@ def update_profile(profile_id):
             profile.subscription_price = new_price
             print(f"💰 Atualizando preço para: ${new_price}")
         except (ValueError, TypeError):
-            return jsonify({'error': 'Invalid price format'}), 400
-    
-    # Salvar no banco de dados com flush + commit + checkpoint
+	            return jsonify({'error': 'Invalid price format'}), 400
+	    
+	    # ATUALIZAR MOEDA - PARTE CRÍTICA
+	    if 'currency' in data:
+	        new_currency = data['currency'].upper()
+	        allowed_currencies = ['BRL', 'USD', 'EUR']
+	        if new_currency not in allowed_currencies:
+	            return jsonify({'error': f'Invalid currency: {new_currency}. Allowed: {", ".join(allowed_currencies)}'}), 400
+	        profile.currency = new_currency
+	        print(f"💵 Atualizando moeda para: {new_currency}")
+	        
+	    # Salvar no banco de dados com flush + commit + checkpoint
     try:
         db.session.flush()
         db.session.commit()

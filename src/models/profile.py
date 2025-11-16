@@ -29,6 +29,7 @@ class Profile(db.Model):
     
     # PRECIFICAÇÃO - Campo único e definitivo para o preço mensal
     subscription_price = db.Column(db.Float, nullable=False, default=9.99)
+    currency = db.Column(db.String(3), nullable=False, default='USD')
     
     def to_dict(self):
         """Converte o perfil para dicionário incluindo o preço"""
@@ -47,6 +48,7 @@ class Profile(db.Model):
             'banner_image': self.banner_image,
             'profile_image': self.profile_image,
             'subscription_price': float(self.subscription_price),  # Garantir que é float
+            'currency': self.currency,
             'profile_photo': f'/static/{self.profile_image}' if self.profile_image else None,
             'cover_photo': f'/static/{self.banner_image}' if self.banner_image else None
         }

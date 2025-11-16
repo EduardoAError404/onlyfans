@@ -87,7 +87,7 @@ def migrate_database():
             sys.stdout.flush()
             
             if 'subscription_price' not in columns:
-                # Adicionar a coluna
+                # Adicionar a coluna subscription_price
                 print('🛠️ Adicionando coluna subscription_price...', flush=True)
                 sys.stdout.flush()
                 cursor.execute('ALTER TABLE profile ADD COLUMN subscription_price FLOAT DEFAULT 9.99')
@@ -96,6 +96,18 @@ def migrate_database():
                 sys.stdout.flush()
             else:
                 print('✅ Migração: Coluna subscription_price já existe', flush=True)
+                sys.stdout.flush()
+                
+            if 'currency' not in columns:
+                # Adicionar a coluna currency
+                print('🛠️ Adicionando coluna currency...', flush=True)
+                sys.stdout.flush()
+                cursor.execute("ALTER TABLE profile ADD COLUMN currency VARCHAR(3) DEFAULT 'USD'")
+                conn.commit()
+                print('✅ Migração: Coluna currency adicionada com sucesso!', flush=True)
+                sys.stdout.flush()
+            else:
+                print('✅ Migração: Coluna currency já existe', flush=True)
                 sys.stdout.flush()
         else:
             print('ℹ️ Tabela profile não existe ainda - será criada pelo SQLAlchemy', flush=True)
@@ -131,7 +143,8 @@ def init_database():
                 media_count=2225,
                 banner_image='baneronly.png',
                 profile_image='perfil.png',
-                subscription_price=9.99
+                subscription_price=9.99,
+                currency='USD'
             )
             db.session.add(default_profile)
             db.session.commit()
