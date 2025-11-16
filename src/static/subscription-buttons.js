@@ -8,6 +8,7 @@
     let currentProfile = null;
     let subscriptionPlans = [];
     let stripe = null;
+    let currencySymbol = '$'; // Símbolo padrão, será atualizado dinamicamente
     
     // Inicializar Stripe
     function initStripe() {
@@ -31,6 +32,27 @@
         const username = getUsername();
         
         try {
+            // Carregar perfil para obter a moeda
+            const profileResponse = await fetch(`/api/profile/${username}`);
+            if (profileResponse.ok) {
+                const profile = await profileResponse.json();
+                
+                // Mapeamento de moeda para símbolo
+                const currencySymbols = {
+                    'USD': '$',
+                    'BRL': 'R$',
+                    'EUR': '€',
+                    'GBP': '£',
+                    'JPY': '¥',
+                    'AUD': 'A$',
+                    'CAD': 'C$'
+                };
+                
+                const currency = profile.currency || 'USD';
+                currencySymbol = currencySymbols[currency] || '$';
+                console.log(`💰 Moeda detectada: ${currency} - Símbolo: ${currencySymbol}`);
+            }
+            
             const response = await fetch(`${PAYMENT_SERVER_URL}/api/subscription-plans/${username}`);
             
             if (!response.ok) {
@@ -72,7 +94,7 @@
             const plan = subscriptionPlans[0];
             const priceSpan = mainButton.querySelector('.b-btn-text__small');
             if (priceSpan) {
-                priceSpan.innerHTML = `$${plan.price.toFixed(2)} <span class="g-btn__new-line-text">per month</span>`;
+                priceSpan.innerHTML = `${currencySymbol}${plan.price.toFixed(2)} <span class="g-btn__new-line-text">per month</span>`;
                 console.log('✅ Botão 1 mês atualizado:', plan.price);
             }
             mainButton.onclick = () => openSubscribeModal('1-month');
@@ -92,7 +114,7 @@
             // Atualizar texto e preço
             button.innerHTML = `
                 <span class="b-btn-text">6 months <span class="b-btn-text__small">(${plan.discount}% OFF)</span></span>
-                <span class="b-btn-text__small">$${plan.total.toFixed(2)} total</span>
+                <span class="b-btn-text__small">${currencySymbol}${plan.total.toFixed(2)} total</span>
             `;
             
             button.onclick = () => openSubscribeModal('6-months');
@@ -107,7 +129,7 @@
             // Atualizar texto e preço
             button.innerHTML = `
                 <span class="b-btn-text">12 months <span class="b-btn-text__small">(${plan.discount}% OFF)</span></span>
-                <span class="b-btn-text__small">$${plan.total.toFixed(2)} total</span>
+                <span class="b-btn-text__small">${currencySymbol}${plan.total.toFixed(2)} total</span>
             `;
             
             button.onclick = () => openSubscribeModal('12-months');

@@ -43,28 +43,6 @@ async function loadProfile() {
         const response = await fetch(apiUrl);
         const profile = await response.json();
         
-        // Mapeamento de moeda para símbolo
-        const currencySymbols = {
-            'USD': '$',
-            'BRL': 'R$',
-            'EUR': '€'
-        };
-        
-        const currency = profile.currency || 'USD';
-        const symbol = currencySymbols[currency] || '$';
-        const monthlyPrice = profile.subscription_price || 9.99;
-        
-        // Função para formatar o preço
-        const formatPrice = (price) => {
-            return `${symbol}${price.toFixed(2).replace('.', ',')}`;
-        };
-        
-        // Atualizar preço mensal
-        const monthlyPriceEl = document.getElementById('monthly-price-display');
-        if (monthlyPriceEl) {
-            monthlyPriceEl.textContent = formatPrice(monthlyPrice);
-        }
-        
         console.log('✅ Perfil carregado:', profile);
         
         // Salvar no cache global
@@ -74,16 +52,22 @@ async function loadProfile() {
         const currencySymbols = {
             'USD': '$',
             'BRL': 'R$',
-            'EUR': '€'
+            'EUR': '€',
+            'GBP': '£',
+            'JPY': '¥',
+            'AUD': 'A$',
+            'CAD': 'C$'
         };
         
         const currency = profile.currency || 'USD';
         const symbol = currencySymbols[currency] || '$';
-        const monthlyPrice = profile.subscription_price || 9.99;
         
-        // Função para formatar o preço
+        console.log(`💰 Moeda detectada: ${currency} - Símbolo: ${symbol}`);
+        
+        // Função para formatar o preço com a moeda correta
         const formatPrice = (price) => {
-            return `${symbol}${price.toFixed(2).replace('.', ',')}`;
+            const formattedNumber = price.toFixed(2).replace('.', ',');
+            return `${symbol}${formattedNumber}`;
         };
         
         // Buscar planos de assinatura (o servidor Flask calcula os descontos)
@@ -94,21 +78,26 @@ async function loadProfile() {
         const sixMonthsPlan = plansData.plans['6_months'];
         const twelveMonthsPlan = plansData.plans['12_months'];
         
+        console.log('📊 Planos carregados:', plansData);
+        
         // Atualizar preço mensal
         const monthlyPriceEl = document.getElementById('monthly-price-display');
         if (monthlyPriceEl) {
             monthlyPriceEl.textContent = formatPrice(monthlyPlan.price);
+            console.log(`✅ Preço mensal atualizado: ${monthlyPriceEl.textContent}`);
         }
         
         // Atualizar pacotes
         const sixMonthsPriceEl = document.getElementById('six-months-price-display');
         if (sixMonthsPriceEl) {
             sixMonthsPriceEl.textContent = formatPrice(sixMonthsPlan.total);
+            console.log(`✅ Preço 6 meses atualizado: ${sixMonthsPriceEl.textContent}`);
         }
         
         const twelveMonthsPriceEl = document.getElementById('twelve-months-price-display');
         if (twelveMonthsPriceEl) {
             twelveMonthsPriceEl.textContent = formatPrice(twelveMonthsPlan.total);
+            console.log(`✅ Preço 12 meses atualizado: ${twelveMonthsPriceEl.textContent}`);
         }
         
         // Atualizar nome de exibição
@@ -221,6 +210,7 @@ async function loadProfile() {
         document.title = profile.display_name + ' OnlyFans';
         
         console.log('✅ Página atualizada com sucesso!');
+        console.log(`💰 Símbolo da moeda aplicado: ${symbol}`);
         
         // Esconder preloader
         console.log('🔍 Tentando esconder preloader...');
