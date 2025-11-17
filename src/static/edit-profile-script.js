@@ -86,6 +86,7 @@ function populateForm(data) {
     document.getElementById('media_count').value = data.media_count || 0;
     document.getElementById('subscription_price').value = data.subscription_price || 9.99;
     document.getElementById('currency_selector').value = data.currency || 'USD';
+    document.getElementById('language_selector').value = data.language || 'en';
     
     // Atualizar previews de imagens
     const profileImg = document.getElementById('profile-preview');
@@ -121,7 +122,8 @@ async function saveProfile() {
         posts_count: parseInt(document.getElementById('posts_count').value) || 0,
         media_count: parseInt(document.getElementById('media_count').value) || 0,
         subscription_price: parseFloat(document.getElementById('subscription_price').value) || 9.99,
-        currency: document.getElementById('currency_selector').value
+        currency: document.getElementById('currency_selector').value,
+        language: document.getElementById('language_selector').value
     };
 
     try {

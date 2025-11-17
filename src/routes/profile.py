@@ -164,6 +164,15 @@ def update_profile(profile_id):
             return jsonify({'error': f'Invalid currency: {new_currency}. Allowed: {", ".join(allowed_currencies)}'}), 400
         profile.currency = new_currency
         print(f"💵 Atualizando moeda para: {new_currency}")
+    
+    # ATUALIZAR IDIOMA - INTERNACIONALIZAÇÃO
+    if 'language' in data:
+        new_language = data['language'].lower()
+        allowed_languages = ['en', 'pt', 'es']
+        if new_language not in allowed_languages:
+            return jsonify({'error': f'Invalid language: {new_language}. Allowed: {", ".join(allowed_languages)}'}), 400
+        profile.language = new_language
+        print(f"🌍 Atualizando idioma para: {new_language}")
 
     # Salvar no banco de dados com flush + commit + checkpoint
     try:

@@ -64,6 +64,13 @@ async function loadProfile() {
         
         console.log(`💰 Moeda detectada: ${currency} - Símbolo: ${symbol}`);
         
+        // Configurar idioma do i18n
+        const language = profile.language || 'en';
+        if (window.i18n) {
+            window.i18n.setLanguage(language);
+            console.log(`🌍 Idioma configurado: ${language}`);
+        }
+        
         // Função para formatar o preço com a moeda correta
         const formatPrice = (price) => {
             const formattedNumber = price.toFixed(2).replace('.', ',');

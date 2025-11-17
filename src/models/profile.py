@@ -31,6 +31,9 @@ class Profile(db.Model):
     subscription_price = db.Column(db.Float, nullable=False, default=9.99)
     currency = db.Column(db.String(3), nullable=False, default='USD')
     
+    # INTERNACIONALIZAÇÃO - Idioma do perfil
+    language = db.Column(db.String(2), nullable=False, default='en')  # 'en', 'pt', 'es'
+    
     def to_dict(self):
         """Converte o perfil para dicionário incluindo o preço"""
         return {
@@ -49,6 +52,7 @@ class Profile(db.Model):
             'profile_image': self.profile_image,
             'subscription_price': float(self.subscription_price),  # Garantir que é float
             'currency': self.currency,
+            'language': self.language,
             'profile_photo': f'/static/{self.profile_image}' if self.profile_image else None,
             'cover_photo': f'/static/{self.banner_image}' if self.banner_image else None
         }
