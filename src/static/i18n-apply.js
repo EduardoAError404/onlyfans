@@ -35,24 +35,15 @@
             element.innerHTML = translation;
         });
         
-        // Traduzir textos hardcoded específicos (sem data-i18n)
-        // "per month" nos botões de assinatura
-        document.querySelectorAll('.g-btn__new-line-text').forEach(element => {
-            if (element.textContent.trim() === 'per month') {
-                element.textContent = window.i18n.t('subscription.perMonth');
-            }
-        });
+        // Traduzir textos hardcoded específicos que NÃO têm data-i18n
+        // (per month e total agora têm data-i18n no HTML)
         
-        // "total" nos botões de bundle
+        // "OFF" nos descontos (ainda hardcoded)
         document.querySelectorAll('.b-btn-text__small').forEach(element => {
             const text = element.textContent.trim();
-            if (text.includes('total')) {
-                // Manter o preço, trocar apenas "total"
-                element.innerHTML = element.innerHTML.replace(/total/g, window.i18n.t('subscription.total'));
-            }
             if (text.includes('OFF')) {
                 // Traduzir desconto: "(20% OFF)" -> "(20% de desconto)"
-                const match = text.match(/(\d+%)/);  
+                const match = text.match(/(\d+%)/);
                 if (match) {
                     const percentage = match[1];
                     element.textContent = `(${percentage} ${window.i18n.t('subscription.discount')})`;
@@ -60,7 +51,7 @@
             }
         });
         
-        // "SUBSCRIBE" no botão principal
+        // "SUBSCRIBE" no botão principal (ainda hardcoded)
         document.querySelectorAll('.b-btn-text__center').forEach(element => {
             if (element.textContent.trim() === 'SUBSCRIBE') {
                 element.textContent = window.i18n.t('subscription.subscribe').toUpperCase();
