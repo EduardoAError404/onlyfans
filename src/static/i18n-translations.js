@@ -12,6 +12,21 @@ const translations = {
             likes: 'Curtidas'
         },
         
+        // Interface Geral
+        ui: {
+            cookies: 'Usamos cookies para executar este site. Veja nosso',
+            cookieNotice: 'Aviso de Cookies',
+            onlyNecessary: 'Apenas Cookies Necessários',
+            acceptAll: 'Aceitar Todos',
+            helpSupport: 'Ajuda e suporte',
+            darkMode: 'Modo escuro',
+            login: 'Entrar',
+            availableNow: 'Disponível agora',
+            moreInfo: 'Mais informações',
+            subscriptionBundles: 'Pacotes de assinatura',
+            subscribeToSee: 'Assine para ver as postagens do usuário'
+        },
+        
         // Botões de Assinatura
         subscription: {
             subscribe: 'Assinar',
@@ -64,6 +79,21 @@ const translations = {
             likes: 'Likes'
         },
         
+        // General Interface
+        ui: {
+            cookies: 'We use cookies to run this website. See our',
+            cookieNotice: 'Cookie Notice',
+            onlyNecessary: 'Only Necessary Cookies',
+            acceptAll: 'Accept All',
+            helpSupport: 'Help and support',
+            darkMode: 'Dark mode',
+            login: 'Login',
+            availableNow: 'Available now',
+            moreInfo: 'More info',
+            subscriptionBundles: 'Subscription bundles',
+            subscribeToSee: 'Subscribe to see user\'s posts'
+        },
+        
         // Subscription Buttons
         subscription: {
             subscribe: 'Subscribe',
@@ -114,6 +144,21 @@ const translations = {
             photos: 'Fotos',
             videos: 'Videos',
             likes: 'Me gusta'
+        },
+        
+        // Interfaz General
+        ui: {
+            cookies: 'Usamos cookies para ejecutar este sitio web. Ver nuestro',
+            cookieNotice: 'Aviso de Cookies',
+            onlyNecessary: 'Solo Cookies Necesarias',
+            acceptAll: 'Aceptar Todas',
+            helpSupport: 'Ayuda y soporte',
+            darkMode: 'Modo oscuro',
+            login: 'Iniciar sesión',
+            availableNow: 'Disponible ahora',
+            moreInfo: 'Más información',
+            subscriptionBundles: 'Paquetes de suscripción',
+            subscribeToSee: 'Suscríbete para ver las publicaciones del usuario'
         },
         
         // Botones de Suscripción
