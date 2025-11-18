@@ -94,7 +94,7 @@
             const plan = subscriptionPlans[0];
             const priceSpan = mainButton.querySelector('.b-btn-text__small');
             if (priceSpan) {
-                priceSpan.innerHTML = `<span class="currency-symbol">${currencySymbol}</span>${plan.price.toFixed(2)} <span class="g-btn__new-line-text">per month</span>`;
+                priceSpan.innerHTML = `<span class="currency-symbol">${currencySymbol}</span>${plan.price.toFixed(2)} <span class="g-btn__new-line-text">${window.i18n.t('subscription.perMonth')}</span>`;
                 console.log('✅ Botão 1 mês atualizado:', plan.price);
             }
             mainButton.onclick = () => openSubscribeModal('1-month');
@@ -113,8 +113,8 @@
             
             // Atualizar texto e preço
             button.innerHTML = `
-                <span class="b-btn-text">6 months <span class="b-btn-text__small">(${plan.discount}% OFF)</span></span>
-                <span class="b-btn-text__small"><span class="currency-symbol">${currencySymbol}</span>${plan.total.toFixed(2)} total</span>
+                <span class="b-btn-text">${window.i18n.t('subscription.sixMonths')} <span class="b-btn-text__small">(${plan.discount}% ${window.i18n.t('subscription.off')})</span></span>
+                <span class="b-btn-text__small"><span class="currency-symbol">${currencySymbol}</span>${plan.total.toFixed(2)} ${window.i18n.t('subscription.total')}</span>
             `;
             
             button.onclick = () => openSubscribeModal('6-months');
@@ -128,8 +128,8 @@
             
             // Atualizar texto e preço
             button.innerHTML = `
-                <span class="b-btn-text">12 months <span class="b-btn-text__small">(${plan.discount}% OFF)</span></span>
-                <span class="b-btn-text__small"><span class="currency-symbol">${currencySymbol}</span>${plan.total.toFixed(2)} total</span>
+                <span class="b-btn-text">${window.i18n.t('subscription.twelveMonths')} <span class="b-btn-text__small">(${plan.discount}% ${window.i18n.t('subscription.off')})</span></span>
+                <span class="b-btn-text__small"><span class="currency-symbol">${currencySymbol}</span>${plan.total.toFixed(2)} ${window.i18n.t('subscription.total')}</span>
             `;
             
             button.onclick = () => openSubscribeModal('12-months');

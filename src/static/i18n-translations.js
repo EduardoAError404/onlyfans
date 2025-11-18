@@ -38,6 +38,7 @@ const translations = {
             twelveMonths: '12 meses',
             discount20: '(20% de desconto)',
             discount35: '(35% de desconto)',
+            off: 'de desconto',
             total: 'total',
             subscribeToSee: 'Assine para ver as publicações do usuário'
         },
@@ -133,6 +134,7 @@ const translations = {
             twelveMonths: '12 months',
             discount20: '(20% OFF)',
             discount35: '(35% OFF)',
+            off: 'OFF',
             total: 'total',
             subscribeToSee: 'Subscribe to see user\'s posts'
         },
@@ -228,6 +230,7 @@ const translations = {
             twelveMonths: '12 meses',
             discount20: '(20% de descuento)',
             discount35: '(35% de descuento)',
+            off: 'de descuento',
             total: 'total',
             subscribeToSee: 'Suscríbete para ver las publicaciones del usuario'
         },

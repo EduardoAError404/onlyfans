@@ -196,9 +196,9 @@ async function loadProfile() {
         tabElements.forEach(el => {
             const text = el.textContent.trim();
             if (text.includes('posts') || text.match(/^\d+$/)) {
-                el.textContent = ' ' + profile.posts_count + ' posts ';
+                el.textContent = ' ' + profile.posts_count + ' ' + window.i18n.t('profile.posts') + ' ';
             } else if (text.includes('Media')) {
-                el.textContent = ' ' + profile.media_count + ' Media ';
+                el.textContent = ' ' + profile.media_count + ' ' + window.i18n.t('profile.media') + ' ';
             }
         });
         

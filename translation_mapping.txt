@@ -1,0 +1,68 @@
+MAPEAMENTO COMPLETO DE TRADUÇÕES - OnlyFans Interface
+=====================================================
+
+CATEGORIA: UI (Interface Geral)
+--------------------------------
+1. "We use cookies to run this website. See our" → ui.cookies
+2. "Cookie Notice" → ui.cookieNotice
+3. "Only Necessary Cookies" → ui.onlyNecessary
+4. "Accept All" → ui.acceptAll
+5. "Help and support" → ui.helpSupport
+6. "Dark mode" → ui.darkMode
+7. "English" → ui.language (dinâmico, não traduzir)
+8. "Login" → ui.login
+9. "Home" → ui.home
+
+CATEGORIA: PROFILE (Perfil)
+---------------------------
+10. "Victoria Matosa" → profile.name (dinâmico, não traduzir)
+11. "@babymatosao" → profile.username (dinâmico, não traduzir)
+12. "Available now" → profile.availableNow
+13. "Brasil" → profile.location (dinâmico, não traduzir)
+14. "https://linktr.ee/babymatosa" → profile.link (dinâmico, não traduzir)
+15. "More info" → profile.moreInfo
+16. "2015 posts" → profile.postsCount (dinâmico, formato: "{count} posts")
+17. "2225 Media" → profile.mediaCount (dinâmico, formato: "{count} Media")
+
+CATEGORIA: SUBSCRIPTION (Assinatura)
+------------------------------------
+18. "Subscription" → subscription.title
+19. "Subscribe" → subscription.subscribe
+20. "per month" → subscription.perMonth
+21. "Subscription bundles" → subscription.bundles
+22. "6 months" → subscription.sixMonths
+23. "12 months" → subscription.twelveMonths
+24. "(20% OFF)" → subscription.discount20
+25. "(35% OFF)" → subscription.discount35
+26. "total" → subscription.total
+27. "Subscribe to see user's posts" → subscription.subscribeToSee
+
+CATEGORIA: CONTENT (Conteúdo/Descrição)
+---------------------------------------
+28. "SUBSCRIBE" → content.subscribeNow
+29. "NOW" → content.now
+30. "= WIN A HUGE" → content.winHuge
+31. "GIFT" → content.gift
+32. "! (REAL!)" → content.real
+33. "& INSTANT ACCESS TO OVER +1.5K MEDIA! 🔞" → content.instantAccess
+34. "➤ TIP MENU / SERVICIOS / SERVIÇOS:" → content.tipMenuTitle
+35. "• Phone Calls" → content.service1
+36. "• Dick Rate | Avaliação" → content.service2
+37. "• Sexting | Sexo Virtual" → content.service3
+38. "• Chat / Talk to Me!" → content.service4
+39. "• Virtual Girlfriend Experience" → content.service5
+40. "• Videos/Pics Custom 🔞" → content.service6
+41. "• Hot Anal Content" → content.service7
+42. "• Rebill/Resub EXCLUSIVE Gift" → content.service8
+43. "+ And More! Join Now!" → content.andMore
+44. "I do not accept \"Tip\" as a payment method for Media. You've been warned." → content.tipWarning
+45. "Services on \"Tip Menu\" will only be done if I agree..." → content.serviceDisclaimer
+
+CATEGORIA: META (Metadados)
+---------------------------
+46. "Victoria Matosa OnlyFans" → meta.title (não traduzir, é title da página)
+47. "OnlyFans" → meta.siteName (não traduzir, é nome do site)
+
+TOTAL: 47 textos identificados
+Textos dinâmicos (não traduzir): 8
+Textos para traduzir: 39

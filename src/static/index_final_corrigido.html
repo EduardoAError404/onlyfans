@@ -5529,12 +5529,12 @@
                     </div>
                     <div data-v-d35ea06e data-v-ac7333e2 class="list-offers b-with-over-separator m-offer-bottom-gap-reset m-main-details mb-0">
                       <div data-v-d35ea06e class="b-offer-wrapper m-reset-mb m-start-campaign">
-                        <div class="b-section-title m-row g-text-uppercase g-gray-text" data-i18n="subscription.title">
+                        <div class="b-section-title m-row g-text-uppercase g-gray-text">
                           Subscription
                         </div>
                         <div class="b-offer-join">
                           <div role="button" tabindex="0" class="m-fluid-width m-rounded m-flex m-space-between m-lg g-btn">
-                            <span class="b-btn-text" data-i18n="subscription.subscribe">Subscribe</span>
+                            <span class="b-btn-text">Subscribe</span>
                             <span class="b-btn-text__small">
                               <span id="monthly-price-display">$8.90</span>
                               <span class="g-btn__new-line-text" data-i18n="subscription.perMonth">per month</span>
@@ -5634,7 +5634,7 @@
                     <div data-v-5001ca40 data-v-24c614aa class="mt-1">
                       <div data-v-5001ca40 data-v-24c614aa class="g-btn__group">
                         <div data-v-5001ca40 role="button" tabindex="0" class="m-fluid-width m-rounded m-flex m-space-between g-btn" data-v-24c614aa>
-                          <span class="b-btn-text__center" data-i18n="subscription.subscribeToSee">Subscribe to see user's posts</span>
+                          <span class="b-btn-text__center">Subscribe to see user's posts</span>
                         </div>
                       </div>
                     </div>
@@ -9664,7 +9664,9 @@
 
               // Se houver username na URL e não for um arquivo estático, usar API com username
               const apiUrl = username && !username.includes('.') && !username.includes('/') 
-                  ? `/api/profile/${username}`
+                  ? `/api/profile/$ {
+        username
+      }`
                   : '/api/profile';
 
 
