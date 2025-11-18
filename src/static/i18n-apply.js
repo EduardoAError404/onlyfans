@@ -35,28 +35,8 @@
             element.innerHTML = translation;
         });
         
-        // Traduzir textos hardcoded específicos que NÃO têm data-i18n
-        // (per month e total agora têm data-i18n no HTML)
-        
-        // "OFF" nos descontos (ainda hardcoded)
-        document.querySelectorAll('.b-btn-text__small').forEach(element => {
-            const text = element.textContent.trim();
-            if (text.includes('OFF')) {
-                // Traduzir desconto: "(20% OFF)" -> "(20% de desconto)"
-                const match = text.match(/(\d+%)/);
-                if (match) {
-                    const percentage = match[1];
-                    element.textContent = `(${percentage} ${window.i18n.t('subscription.discount')})`;
-                }
-            }
-        });
-        
-        // "SUBSCRIBE" no botão principal (ainda hardcoded)
-        document.querySelectorAll('.b-btn-text__center').forEach(element => {
-            if (element.textContent.trim() === 'SUBSCRIBE') {
-                element.textContent = window.i18n.t('subscription.subscribe').toUpperCase();
-            }
-        });
+        // TODOS os textos agora têm data-i18n no HTML
+        // Não é mais necessário traduzir manualmente
         
         console.log('✅ Traduções aplicadas!');
     }
