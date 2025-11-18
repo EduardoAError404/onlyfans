@@ -1,18 +1,10 @@
-// Sistema de Internacionalização (i18n) para OnlyFans Clone
-// Traduções para Português, Inglês e Espanhol
+// Sistema de Internacionalização (i18n) - OnlyFans
+// Traduções completas para Português, Inglês e Espanhol
+// TODOS os textos da interface estão traduzidos aqui
 
 const translations = {
     pt: {
-        // Navegação e Menu
-        nav: {
-            posts: 'Posts',
-            media: 'Mídia',
-            photos: 'Fotos',
-            videos: 'Vídeos',
-            likes: 'Curtidas'
-        },
-        
-        // Interface Geral
+        // ===== INTERFACE GERAL =====
         ui: {
             cookies: 'Usamos cookies para executar este site. Veja nosso',
             cookieNotice: 'Aviso de Cookies',
@@ -21,30 +13,67 @@ const translations = {
             helpSupport: 'Ajuda e suporte',
             darkMode: 'Modo escuro',
             login: 'Entrar',
+            home: 'Início'
+        },
+        
+        // ===== PERFIL =====
+        profile: {
             availableNow: 'Disponível agora',
             moreInfo: 'Mais informações',
-            subscriptionBundles: 'Pacotes de assinatura',
-            subscribeToSee: 'Assine para ver as postagens do usuário'
-        },
-        
-        // Botões de Assinatura
-        subscription: {
-            subscribe: 'Assinar',
-            perMonth: 'por mês',
-            total: 'total',
-            months: 'meses',
-            month: 'mês',
-            discount: 'OFF'
-        },
-        
-        // Informações do Perfil
-        profile: {
+            lessInfo: 'Menos informações',
+            posts: 'publicações',
+            media: 'Mídia',
             location: 'Localização',
             website: 'Website',
             joined: 'Entrou em'
         },
         
-        // Checkout
+        // ===== ASSINATURA =====
+        subscription: {
+            title: 'Assinatura',
+            subscribe: 'Assinar',
+            perMonth: 'por mês',
+            bundles: 'Pacotes de assinatura',
+            sixMonths: '6 meses',
+            twelveMonths: '12 meses',
+            discount20: '(20% de desconto)',
+            discount35: '(35% de desconto)',
+            total: 'total',
+            subscribeToSee: 'Assine para ver as publicações do usuário'
+        },
+        
+        // ===== CONTEÚDO/DESCRIÇÃO =====
+        content: {
+            subscribeNow: 'ASSINE',
+            now: 'AGORA',
+            winHuge: '= GANHE UM ENORME',
+            gift: 'PRESENTE',
+            real: '! (DE VERDADE!)',
+            instantAccess: '& ACESSO INSTANTÂNEO A MAIS DE +1.5K MÍDIAS! 🔞',
+            tipMenuTitle: '➤ MENU DE GORJETAS / SERVICIOS / SERVIÇOS:',
+            service1: '• Ligações Telefônicas',
+            service2: '• Avaliação de Dick | Dick Rate',
+            service3: '• Sexting | Sexo Virtual',
+            service4: '• Chat / Converse Comigo!',
+            service5: '• Experiência de Namorada Virtual',
+            service6: '• Vídeos/Fotos Personalizados 🔞',
+            service7: '• Conteúdo Anal Quente',
+            service8: '• Presente EXCLUSIVO para Renovação/Reassinatura',
+            andMore: '+ E Mais! Participe Agora!',
+            tipWarning: 'Não aceito "Gorjeta" como método de pagamento para Mídia. Você foi avisado.',
+            serviceDisclaimer: 'Serviços no "Menu de Gorjetas" só serão feitos se eu concordar. Se for o caso, responderei diretamente dizendo, expressamente, que vou fazê-lo. Pagar antecipadamente sem minha confirmação expressa por texto, usando palavras adequadas, é inteiramente de sua responsabilidade.'
+        },
+        
+        // ===== NAVEGAÇÃO =====
+        nav: {
+            posts: 'Publicações',
+            media: 'Mídia',
+            photos: 'Fotos',
+            videos: 'Vídeos',
+            likes: 'Curtidas'
+        },
+        
+        // ===== CHECKOUT =====
         checkout: {
             title: 'Finalizar Assinatura',
             selectPlan: 'Selecione um Plano',
@@ -60,7 +89,7 @@ const translations = {
             cancel: 'Cancelar'
         },
         
-        // Mensagens
+        // ===== MENSAGENS =====
         messages: {
             loading: 'Carregando...',
             error: 'Erro ao carregar',
@@ -70,16 +99,7 @@ const translations = {
     },
     
     en: {
-        // Navigation and Menu
-        nav: {
-            posts: 'Posts',
-            media: 'Media',
-            photos: 'Photos',
-            videos: 'Videos',
-            likes: 'Likes'
-        },
-        
-        // General Interface
+        // ===== GENERAL INTERFACE =====
         ui: {
             cookies: 'We use cookies to run this website. See our',
             cookieNotice: 'Cookie Notice',
@@ -88,30 +108,67 @@ const translations = {
             helpSupport: 'Help and support',
             darkMode: 'Dark mode',
             login: 'Login',
+            home: 'Home'
+        },
+        
+        // ===== PROFILE =====
+        profile: {
             availableNow: 'Available now',
             moreInfo: 'More info',
-            subscriptionBundles: 'Subscription bundles',
-            subscribeToSee: 'Subscribe to see user\'s posts'
-        },
-        
-        // Subscription Buttons
-        subscription: {
-            subscribe: 'Subscribe',
-            perMonth: 'per month',
-            total: 'total',
-            months: 'months',
-            month: 'month',
-            discount: 'OFF'
-        },
-        
-        // Profile Information
-        profile: {
+            lessInfo: 'Less Info',
+            posts: 'posts',
+            media: 'Media',
             location: 'Location',
             website: 'Website',
             joined: 'Joined'
         },
         
-        // Checkout
+        // ===== SUBSCRIPTION =====
+        subscription: {
+            title: 'Subscription',
+            subscribe: 'Subscribe',
+            perMonth: 'per month',
+            bundles: 'Subscription bundles',
+            sixMonths: '6 months',
+            twelveMonths: '12 months',
+            discount20: '(20% OFF)',
+            discount35: '(35% OFF)',
+            total: 'total',
+            subscribeToSee: 'Subscribe to see user\'s posts'
+        },
+        
+        // ===== CONTENT/DESCRIPTION =====
+        content: {
+            subscribeNow: 'SUBSCRIBE',
+            now: 'NOW',
+            winHuge: '= WIN A HUGE',
+            gift: 'GIFT',
+            real: '! (REAL!)',
+            instantAccess: '& INSTANT ACCESS TO OVER +1.5K MEDIA! 🔞',
+            tipMenuTitle: '➤ TIP MENU / SERVICIOS / SERVIÇOS:',
+            service1: '• Phone Calls',
+            service2: '• Dick Rate | Avaliação',
+            service3: '• Sexting | Sexo Virtual',
+            service4: '• Chat / Talk to Me!',
+            service5: '• Virtual Girlfriend Experience',
+            service6: '• Videos/Pics Custom 🔞',
+            service7: '• Hot Anal Content',
+            service8: '• Rebill/Resub EXCLUSIVE Gift',
+            andMore: '+ And More! Join Now!',
+            tipWarning: 'I do not accept "Tip" as a payment method for Media. You\'ve been warned.',
+            serviceDisclaimer: 'Services on "Tip Menu" will only be done if I agree. If that\'s the case, I will reply directly to you saying, expressly, that I am going to do it. Paying ahead of time without my express confirmation on text, using proper words, is entirely your responsibility.'
+        },
+        
+        // ===== NAVIGATION =====
+        nav: {
+            posts: 'Posts',
+            media: 'Media',
+            photos: 'Photos',
+            videos: 'Videos',
+            likes: 'Likes'
+        },
+        
+        // ===== CHECKOUT =====
         checkout: {
             title: 'Complete Subscription',
             selectPlan: 'Select a Plan',
@@ -127,7 +184,7 @@ const translations = {
             cancel: 'Cancel'
         },
         
-        // Messages
+        // ===== MESSAGES =====
         messages: {
             loading: 'Loading...',
             error: 'Error loading',
@@ -137,16 +194,7 @@ const translations = {
     },
     
     es: {
-        // Navegación y Menú
-        nav: {
-            posts: 'Publicaciones',
-            media: 'Medios',
-            photos: 'Fotos',
-            videos: 'Videos',
-            likes: 'Me gusta'
-        },
-        
-        // Interfaz General
+        // ===== INTERFAZ GENERAL =====
         ui: {
             cookies: 'Usamos cookies para ejecutar este sitio web. Ver nuestro',
             cookieNotice: 'Aviso de Cookies',
@@ -155,30 +203,67 @@ const translations = {
             helpSupport: 'Ayuda y soporte',
             darkMode: 'Modo oscuro',
             login: 'Iniciar sesión',
+            home: 'Inicio'
+        },
+        
+        // ===== PERFIL =====
+        profile: {
             availableNow: 'Disponible ahora',
             moreInfo: 'Más información',
-            subscriptionBundles: 'Paquetes de suscripción',
-            subscribeToSee: 'Suscríbete para ver las publicaciones del usuario'
-        },
-        
-        // Botones de Suscripción
-        subscription: {
-            subscribe: 'Suscribirse',
-            perMonth: 'por mes',
-            total: 'total',
-            months: 'meses',
-            month: 'mes',
-            discount: 'DESC'
-        },
-        
-        // Información del Perfil
-        profile: {
+            lessInfo: 'Menos información',
+            posts: 'publicaciones',
+            media: 'Medios',
             location: 'Ubicación',
             website: 'Sitio web',
             joined: 'Se unió'
         },
         
-        // Checkout
+        // ===== SUSCRIPCIÓN =====
+        subscription: {
+            title: 'Suscripción',
+            subscribe: 'Suscribirse',
+            perMonth: 'por mes',
+            bundles: 'Paquetes de suscripción',
+            sixMonths: '6 meses',
+            twelveMonths: '12 meses',
+            discount20: '(20% de descuento)',
+            discount35: '(35% de descuento)',
+            total: 'total',
+            subscribeToSee: 'Suscríbete para ver las publicaciones del usuario'
+        },
+        
+        // ===== CONTENIDO/DESCRIPCIÓN =====
+        content: {
+            subscribeNow: 'SUSCRIBIRSE',
+            now: 'AHORA',
+            winHuge: '= GANA UN ENORME',
+            gift: 'REGALO',
+            real: '! (¡DE VERDAD!)',
+            instantAccess: '& ¡ACCESO INSTANTÁNEO A MÁS DE +1.5K MEDIOS! 🔞',
+            tipMenuTitle: '➤ MENÚ DE PROPINAS / SERVICIOS / SERVIÇOS:',
+            service1: '• Llamadas Telefónicas',
+            service2: '• Calificación de Dick | Dick Rate',
+            service3: '• Sexting | Sexo Virtual',
+            service4: '• Chat / ¡Habla Conmigo!',
+            service5: '• Experiencia de Novia Virtual',
+            service6: '• Videos/Fotos Personalizados 🔞',
+            service7: '• Contenido Anal Caliente',
+            service8: '• Regalo EXCLUSIVO por Renovación/Resuscripción',
+            andMore: '+ ¡Y Más! ¡Únete Ahora!',
+            tipWarning: 'No acepto "Propina" como método de pago para Medios. Has sido advertido.',
+            serviceDisclaimer: 'Los servicios en el "Menú de Propinas" solo se realizarán si estoy de acuerdo. Si ese es el caso, te responderé directamente diciendo, expresamente, que lo voy a hacer. Pagar por adelantado sin mi confirmación expresa por texto, usando palabras adecuadas, es completamente tu responsabilidad.'
+        },
+        
+        // ===== NAVEGACIÓN =====
+        nav: {
+            posts: 'Publicaciones',
+            media: 'Medios',
+            photos: 'Fotos',
+            videos: 'Videos',
+            likes: 'Me gusta'
+        },
+        
+        // ===== CHECKOUT =====
         checkout: {
             title: 'Completar Suscripción',
             selectPlan: 'Seleccione un Plan',
@@ -194,71 +279,51 @@ const translations = {
             cancel: 'Cancelar'
         },
         
-        // Mensajes
+        // ===== MENSAJES =====
         messages: {
             loading: 'Cargando...',
             error: 'Error al cargar',
             success: '¡Éxito!',
-            subscribed: '¡Suscripción exitosa!'
+            subscribed: '¡Suscripción realizada con éxito!'
         }
     }
 };
 
-// Classe para gerenciar traduções
-class I18n {
-    constructor() {
-        this.currentLanguage = 'en'; // Idioma padrão
-        this.translations = translations;
-    }
+// Sistema de i18n
+window.i18n = {
+    currentLanguage: 'en', // Idioma padrão
     
-    // Define o idioma atual
+    // Definir idioma
     setLanguage(lang) {
-        if (this.translations[lang]) {
+        if (translations[lang]) {
             this.currentLanguage = lang;
             console.log(`🌍 Idioma alterado para: ${lang}`);
-            return true;
+        } else {
+            console.warn(`⚠️ Idioma '${lang}' não encontrado. Usando '${this.currentLanguage}'.`);
         }
-        console.warn(`⚠️ Idioma '${lang}' não encontrado. Usando '${this.currentLanguage}'.`);
-        return false;
-    }
+    },
     
-    // Obtém uma tradução por chave (ex: 'nav.posts')
+    // Obter tradução
     t(key) {
         const keys = key.split('.');
-        let value = this.translations[this.currentLanguage];
+        let value = translations[this.currentLanguage];
         
         for (const k of keys) {
-            if (value && typeof value === 'object') {
+            if (value && value[k]) {
                 value = value[k];
             } else {
                 console.warn(`⚠️ Chave de tradução não encontrada: ${key}`);
-                return key; // Retorna a chave se não encontrar
+                return key;
             }
         }
         
-        return value || key;
-    }
+        return value;
+    },
     
-    // Obtém o idioma atual
+    // Obter idioma atual
     getLanguage() {
         return this.currentLanguage;
     }
-    
-    // Verifica se um idioma está disponível
-    hasLanguage(lang) {
-        return !!this.translations[lang];
-    }
-    
-    // Lista todos os idiomas disponíveis
-    getAvailableLanguages() {
-        return Object.keys(this.translations);
-    }
-}
+};
 
-// Instância global do i18n
-const i18n = new I18n();
-
-// Exportar para uso global
-if (typeof window !== 'undefined') {
-    window.i18n = i18n;
-}
+console.log('🌍 i18n-translations.js carregado');
