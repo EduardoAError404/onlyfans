@@ -267,6 +267,18 @@ async function loadProfile() {
         // Salvar no cache global
         window.profileCache = profile;
         
+        // Configurar idioma do i18n
+        const language = profile.language || 'en';
+        if (window.i18n) {
+            window.i18n.setLanguage(language);
+            console.log(`🌍 Idioma configurado: ${language}`);
+            
+            // Aplicar traduções DEPOIS de configurar o idioma
+            if (window.applyTranslations) {
+                window.applyTranslations();
+            }
+        }
+        
         // Atualizar nome de exibição
         document.querySelectorAll('.g-user-name').forEach(el => {
             el.innerHTML = profile.display_name + ' <svg class="m-verified g-icon" data-icon-name=icon-verified aria-hidden=true><use href=#icon-verified xlink:href=#icon-verified></use></svg>';
