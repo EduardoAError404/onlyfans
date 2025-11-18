@@ -9664,9 +9664,7 @@
 
               // Se houver username na URL e não for um arquivo estático, usar API com username
               const apiUrl = username && !username.includes('.') && !username.includes('/') 
-                  ? `/api/profile/$ {
-        username
-      }`
+                  ? `/api/profile/${username}`
                   : '/api/profile';
 
 
