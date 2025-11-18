@@ -41,12 +41,7 @@
     // Exportar função para uso global
     window.applyTranslations = applyTranslations;
     
-    // Aplicar traduções quando o DOM estiver pronto
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(applyTranslations, 100); // Pequeno delay para garantir que i18n está configurado
-        });
-    } else {
-        setTimeout(applyTranslations, 100);
-    }
+    // NÃO aplicar traduções automaticamente aqui!
+    // As traduções serão aplicadas pelo dynamic-loader.js
+    // DEPOIS de configurar o idioma correto do perfil
 })();

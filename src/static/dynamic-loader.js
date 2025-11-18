@@ -69,6 +69,11 @@ async function loadProfile() {
         if (window.i18n) {
             window.i18n.setLanguage(language);
             console.log(`🌍 Idioma configurado: ${language}`);
+            
+            // Aplicar traduções DEPOIS de configurar o idioma
+            if (window.applyTranslations) {
+                window.applyTranslations();
+            }
         }
         
         // Função para formatar o preço com a moeda correta
