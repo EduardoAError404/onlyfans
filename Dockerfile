@@ -16,6 +16,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiar código da aplicação
 COPY src ./src
 
+# Copiar scripts de migração e entrypoint
+COPY migrate_add_language.py ./
+COPY entrypoint.sh ./
+RUN chmod +x entrypoint.sh migrate_add_language.py
+
 # Criar diretórios necessários
 RUN mkdir -p src/database src/static/uploads
 
@@ -26,6 +31,6 @@ EXPOSE 5000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
     CMD curl -f http://localhost:5000/ || exit 1
 
-# Comando para iniciar
-CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:5000", "--timeout", "120", "--access-logfile", "-", "--error-logfile", "-", "src.main:app"]
+# Comando para iniciar (usa entrypoint para executar migrações)
+CMD ["./entrypoint.sh"]
 
