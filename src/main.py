@@ -3,7 +3,7 @@ import sys
 # DON'T CHANGE THIS !!!
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from flask import Flask, send_from_directory, request, jsonify
+from flask import Flask, send_from_directory, request, jsonify, abort
 from flask_cors import CORS
 import requests
 import sqlite3
@@ -11,6 +11,7 @@ from src.models.profile import db, Profile, Admin
 from src.routes.profile import profile_bp
 from src.routes.auth import auth_bp
 from werkzeug.security import generate_password_hash
+from werkzeug.exceptions import HTTPException
 from dotenv import load_dotenv
 
 # Carregar variáveis de ambiente
@@ -20,6 +21,22 @@ app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'sta
 app.config['SECRET_KEY'] = 'f8a3c9e7d2b1a4f6e9c8d7b3a2f1e4d9c8b7a6f5e4d3c2b1a9f8e7d6c5b4a3f2'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload
 CORS(app, supports_credentials=True)
+
+# Função para simular conexão recusada
+def refuse_connection():
+    """Fecha a conexão abruptamente sem enviar resposta HTTP"""
+    # Retornar resposta vazia sem headers, simulando conexão recusada
+    from flask import Response
+    import sys
+    # Forçar fechamento da conexão sem enviar resposta
+    response = Response('', status=444)
+    response.headers.clear()
+    return response
+
+# Handler de erro 444 (connection closed)
+@app.errorhandler(444)
+def handle_444(e):
+    return refuse_connection()
 
 # Criar pasta de uploads se não existir
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'static', 'uploads')
@@ -254,7 +271,8 @@ def payment_cancel():
 # Servir arquivos estáticos
 @app.route('/')
 def serve_index():
-    return send_from_directory(app.static_folder, 'index.html')
+    """Recusar conexão no domínio raiz"""
+    return refuse_connection()
 
 @app.route('/<path:path>')
 def serve_static(path):
@@ -266,9 +284,19 @@ def serve_static(path):
     if path.startswith('api/'):
         return jsonify({'error': 'Not found'}), 404
     
-    # Para qualquer outra rota (username), servir index.html
-    # O JavaScript vai detectar o username e buscar o perfil correto
-    return send_from_directory(app.static_folder, 'index.html')
+    # Para qualquer outra rota (username), verificar se o perfil existe
+    # Remover barra final se existir
+    username = path.rstrip('/')
+    
+    # Verificar se o perfil existe no banco de dados
+    profile = Profile.query.filter_by(username=username).first()
+    
+    if profile:
+        # Perfil existe - servir index.html
+        return send_from_directory(app.static_folder, 'index.html')
+    else:
+        # Perfil não existe - recusar conexão
+        return refuse_connection()
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
