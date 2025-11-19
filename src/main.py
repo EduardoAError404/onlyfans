@@ -22,14 +22,15 @@ app.config['SECRET_KEY'] = 'f8a3c9e7d2b1a4f6e9c8d7b3a2f1e4d9c8b7a6f5e4d3c2b1a9f8
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload
 CORS(app, supports_credentials=True)
 
-# Função para simular conexão recusada
+# Função para simular site fora do ar
 def refuse_connection():
-    """Fecha a conexão abruptamente sem enviar resposta HTTP"""
-    # Usar abort(400) com resposta vazia para simular conexão recusada
-    # Navegadores interpretam como erro de conexão
-    from flask import Response
-    response = Response('', status=400)
+    """Retorna HTTP 503 para simular site fora do ar"""
+    # HTTP 503 Service Unavailable sem body
+    # Navegador mostrará mensagem de erro genérica
+    from flask import make_response
+    response = make_response('', 503)
     response.headers.clear()
+    response.headers['Connection'] = 'close'
     return response
 
 # Criar pasta de uploads se não existir
