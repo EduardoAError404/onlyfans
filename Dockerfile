@@ -29,7 +29,7 @@ EXPOSE 5000
 
 # Healthcheck para o Coolify
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD curl -f http://localhost:5000/ || exit 1
+    CMD curl -f http://localhost:5000/health || exit 1
 
 # Comando para iniciar (usa entrypoint para executar migrações)
 CMD ["./entrypoint.sh"]

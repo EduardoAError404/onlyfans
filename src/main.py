@@ -25,18 +25,12 @@ CORS(app, supports_credentials=True)
 # Função para simular conexão recusada
 def refuse_connection():
     """Fecha a conexão abruptamente sem enviar resposta HTTP"""
-    # Retornar resposta vazia sem headers, simulando conexão recusada
+    # Usar abort(400) com resposta vazia para simular conexão recusada
+    # Navegadores interpretam como erro de conexão
     from flask import Response
-    import sys
-    # Forçar fechamento da conexão sem enviar resposta
-    response = Response('', status=444)
+    response = Response('', status=400)
     response.headers.clear()
     return response
-
-# Handler de erro 444 (connection closed)
-@app.errorhandler(444)
-def handle_444(e):
-    return refuse_connection()
 
 # Criar pasta de uploads se não existir
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'static', 'uploads')
@@ -267,6 +261,12 @@ def payment_success():
 def payment_cancel():
     """Página de cancelamento de pagamento"""
     return send_from_directory(app.static_folder, 'index.html')
+
+# Rota de healthcheck para Docker/Coolify
+@app.route('/health')
+def health_check():
+    """Endpoint de healthcheck para monitoramento"""
+    return jsonify({'status': 'healthy', 'service': 'onlyfans-clone'}), 200
 
 # Servir arquivos estáticos
 @app.route('/')
