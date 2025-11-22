@@ -106,6 +106,26 @@ const translations = {
             notAvailable: 'N/A'
         },
         
+        // ===== MODAL DE ASSINATURA =====
+        modal: {
+            subscribeTitle: 'Assine e obtenha estes benefícios:',
+            benefit1: 'Acesso completo ao conteúdo deste usuário',
+            benefit2: 'Mensagem direta com este usuário',
+            benefit3: 'Cancele sua assinatura a qualquer momento',
+            loginToSubscribe: 'Faça login para assinar',
+            name: 'Nome',
+            email: 'Email',
+            password: 'Senha',
+            login: 'Entrar',
+            termsText: 'Ao fazer login e usar o OnlyFans, você concorda com nossos',
+            termsLink: 'Termos de Serviço',
+            privacyLink: 'Política de Privacidade',
+            confirmAge: 'e confirma que tem pelo menos 18 anos.',
+            forgotPassword: 'Esqueceu a senha?',
+            signUp: 'Cadastre-se no OnlyFans',
+            close: 'Fechar'
+        },
+        
         // ===== MENSAGENS =====
         messages: {
             loading: 'Carregando...',
@@ -218,6 +238,26 @@ const translations = {
             notAvailable: 'N/A'
         },
         
+        // ===== SUBSCRIPTION MODAL =====
+        modal: {
+            subscribeTitle: 'Subscribe and get these benefits:',
+            benefit1: 'Full access to this user\'s content',
+            benefit2: 'Direct message with this user',
+            benefit3: 'Cancel your subscription at any time',
+            loginToSubscribe: 'Log in to subscribe',
+            name: 'Name',
+            email: 'Email',
+            password: 'Password',
+            login: 'Log in',
+            termsText: 'By logging in and using OnlyFans, you agree to our',
+            termsLink: 'Terms of Service',
+            privacyLink: 'Privacy Policy',
+            confirmAge: 'and confirm that you are at least 18 years old.',
+            forgotPassword: 'Forgot password?',
+            signUp: 'Sign up for OnlyFans',
+            close: 'Close'
+        },
+        
         // ===== MESSAGES =====
         messages: {
             loading: 'Loading...',
@@ -328,6 +368,26 @@ const translations = {
             redirectingNow: 'Redirigiendo...',
             errorLoading: 'Error al cargar',
             notAvailable: 'N/D'
+        },
+        
+        // ===== MODAL DE SUSCRIPCIÓN =====
+        modal: {
+            subscribeTitle: 'Suscríbete y obtén estos beneficios:',
+            benefit1: 'Acceso completo al contenido de este usuario',
+            benefit2: 'Mensaje directo con este usuario',
+            benefit3: 'Cancela tu suscripción en cualquier momento',
+            loginToSubscribe: 'Inicia sesión para suscribirte',
+            name: 'Nombre',
+            email: 'Email',
+            password: 'Contraseña',
+            login: 'Iniciar sesión',
+            termsText: 'Al iniciar sesión y usar OnlyFans, aceptas nuestros',
+            termsLink: 'Términos de Servicio',
+            privacyLink: 'Política de Privacidad',
+            confirmAge: 'y confirmas que tienes al menos 18 años.',
+            forgotPassword: '¿Olvidaste tu contraseña?',
+            signUp: 'Regístrate en OnlyFans',
+            close: 'Cerrar'
         },
         
         // ===== MENSAJES =====

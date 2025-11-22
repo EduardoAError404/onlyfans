@@ -71,7 +71,7 @@
                                     </div>
                                 </div>
                                 <div data-v-697a21f8="" class="b-modal__user__desc">
-                                    <div data-v-697a21f8="" class="b-modal__user__desc__title">
+                                    <div data-v-697a21f8="" class="b-modal__user__desc__title" data-i18n="modal.subscribeTitle">
                                         Subscribe and get these benefits:
                                     </div>
                                     <ul data-v-697a21f8="" class="b-modal__list">
@@ -81,7 +81,7 @@
                                                     <use href="#icon-done" xlink:href="#icon-done"></use>
                                                 </svg>
                                             </div>
-                                            <div data-v-697a21f8="" class="b-modal__list__title">
+                                            <div data-v-697a21f8="" class="b-modal__list__title" data-i18n="modal.benefit1">
                                                 Full access to this user's content
                                             </div>
                                         </li>
@@ -91,7 +91,7 @@
                                                     <use href="#icon-done" xlink:href="#icon-done"></use>
                                                 </svg>
                                             </div>
-                                            <div data-v-697a21f8="" class="b-modal__list__title">
+                                            <div data-v-697a21f8="" class="b-modal__list__title" data-i18n="modal.benefit2">
                                                 Direct message with this user
                                             </div>
                                         </li>
@@ -101,7 +101,7 @@
                                                     <use href="#icon-done" xlink:href="#icon-done"></use>
                                                 </svg>
                                             </div>
-                                            <div data-v-697a21f8="" class="b-modal__list__title">
+                                            <div data-v-697a21f8="" class="b-modal__list__title" data-i18n="modal.benefit3">
                                                 Cancel your subscription at any time
                                             </div>
                                         </li>
@@ -110,7 +110,7 @@
                             </div>
                         </div>
                         <form data-v-451b4fbe="" data-v-697a21f8="" novalidate="novalidate" class="b-loginreg__form m-main-form g-sides-gaps m-form-subscriptions" id="auth-form">
-                            <h3 data-v-451b4fbe="" id="form-title">Log in to subscribe</h3>
+                            <h3 data-v-451b4fbe="" id="form-title" data-i18n="modal.loginToSubscribe">Log in to subscribe</h3>
                             
                             <!-- Campo Nome (oculto inicialmente) -->
                             <div data-v-4e723aa7="" data-v-451b4fbe="" class="g-input__wrapper input-text-field m-empty" id="name-field-wrapper" style="display: none;">
@@ -122,7 +122,7 @@
                                                     <legend style="width: 0px;"><span class="notranslate">&ZeroWidthSpace;</span></legend>
                                                 </fieldset>
                                                 <div class="v-text-field__slot">
-                                                    <label for="input-name" class="v-label theme--light" style="left: 0px; right: auto; position: absolute;">Name</label>
+                                                    <label for="input-name" class="v-label theme--light" style="left: 0px; right: auto; position: absolute;" data-i18n="modal.name">Name</label>
                                                     <input at-attr="input" autocomplete="name" name="name" id="input-name" type="text">
                                                 </div>
                                             </div>
@@ -141,7 +141,7 @@
                                                     <legend style="width: 0px;"><span class="notranslate">&ZeroWidthSpace;</span></legend>
                                                 </fieldset>
                                                 <div class="v-text-field__slot">
-                                                    <label for="input-email" class="v-label theme--light" style="left: 0px; right: auto; position: absolute;">Email</label>
+                                                    <label for="input-email" class="v-label theme--light" style="left: 0px; right: auto; position: absolute;" data-i18n="modal.email">Email</label>
                                                     <input at-attr="input" autocomplete="on" name="email" required="required" id="input-email" type="email">
                                                 </div>
                                             </div>
@@ -160,7 +160,7 @@
                                                     <legend style="width: 0px;"><span class="notranslate">&ZeroWidthSpace;</span></legend>
                                                 </fieldset>
                                                 <div class="v-text-field__slot">
-                                                    <label for="input-password" class="v-label theme--light" style="left: 0px; right: auto; position: absolute;">Password</label>
+                                                    <label for="input-password" class="v-label theme--light" style="left: 0px; right: auto; position: absolute;" data-i18n="modal.password">Password</label>
                                                     <input at-attr="input" autocomplete="on" name="password" required="required" id="input-password" type="password">
                                                 </div>
                                             </div>
@@ -169,7 +169,7 @@
                                 </div>
                             </div>
                             
-                            <button data-v-451b4fbe="" type="submit" at-attr="submit" class="g-btn m-rounded m-block m-md mb-0" id="submit-btn">
+                            <button data-v-451b4fbe="" type="submit" at-attr="submit" class="g-btn m-rounded m-block m-md mb-0" id="submit-btn" data-i18n="modal.login">
                                 Log in
                             </button>
                             
@@ -182,12 +182,12 @@
                             
                             <div data-v-451b4fbe="" class="b-loginreg__links">
                                 <span data-v-451b4fbe="">
-                                    <button data-v-451b4fbe="" type="button" at-attr="forgot_password" class="g-btn m-flat forgot m-reset-width m-no-uppercase m-default-font-weight">
+                                    <button data-v-451b4fbe="" type="button" at-attr="forgot_password" class="g-btn m-flat forgot m-reset-width m-no-uppercase m-default-font-weight" data-i18n="modal.forgotPassword">
                                         Forgot password?
                                     </button>
                                 </span>
                                 <span data-v-451b4fbe="">
-                                    <button data-v-451b4fbe="" at-attr="sign_up" type="button" class="g-btn m-flat m-reset-width m-no-uppercase m-default-font-weight" id="toggle-mode-btn">
+                                    <button data-v-451b4fbe="" at-attr="sign_up" type="button" class="g-btn m-flat m-reset-width m-no-uppercase m-default-font-weight" id="toggle-mode-btn" data-i18n="modal.signUp">
                                         Sign up for OnlyFans
                                     </button>
                                 </span>
@@ -196,7 +196,7 @@
                     </div>
                 </div>
                 <footer id="ModalSubscribe___BV_modal_footer_" class="modal-footer g-border-top">
-                    <button data-v-697a21f8="" type="button" class="g-btn m-flat m-btn-gaps m-reset-width" id="close-modal-btn">
+                    <button data-v-697a21f8="" type="button" class="g-btn m-flat m-btn-gaps m-reset-width" id="close-modal-btn" data-i18n="modal.close">
                         Close
                     </button>
                 </footer>
