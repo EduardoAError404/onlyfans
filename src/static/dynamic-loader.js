@@ -203,22 +203,42 @@ async function loadProfile() {
         });
         
         // Atualizar contadores da parte inferior (seção de subscribe)
+        console.log('🔍 Atualizando contadores inferiores...');
+        console.log('Dados do perfil:', {
+            media_count: profile.media_count,
+            photos_count: profile.photos_count,
+            videos_count: profile.videos_count
+        });
+        
         // Primeiro ícone (papelzinho) = MEDIA (fotos + vídeos)
         const bottomPostsCount = document.getElementById('bottom-posts-count');
+        console.log('bottomPostsCount element:', bottomPostsCount);
         if (bottomPostsCount) {
-            bottomPostsCount.textContent = profile.media_count || (profile.photos_count + profile.videos_count);
+            const mediaCount = profile.media_count || (profile.photos_count + profile.videos_count);
+            bottomPostsCount.textContent = mediaCount;
+            console.log('✅ Media count atualizado:', mediaCount);
+        } else {
+            console.warn('⚠️ Elemento bottom-posts-count NÃO encontrado!');
         }
         
         // Segundo ícone (foto) = FOTOS
         const bottomPhotosCount = document.getElementById('bottom-photos-count');
+        console.log('bottomPhotosCount element:', bottomPhotosCount);
         if (bottomPhotosCount) {
             bottomPhotosCount.textContent = profile.photos_count;
+            console.log('✅ Photos count atualizado:', profile.photos_count);
+        } else {
+            console.warn('⚠️ Elemento bottom-photos-count NÃO encontrado!');
         }
         
         // Terceiro ícone (vídeo) = VÍDEOS
         const bottomVideosCount = document.getElementById('bottom-videos-count');
+        console.log('bottomVideosCount element:', bottomVideosCount);
         if (bottomVideosCount) {
             bottomVideosCount.textContent = profile.videos_count;
+            console.log('✅ Videos count atualizado:', profile.videos_count);
+        } else {
+            console.warn('⚠️ Elemento bottom-videos-count NÃO encontrado!');
         }
         
         // Atualizar título da página
