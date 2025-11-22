@@ -44,6 +44,11 @@
     // Exportar função para uso global
     window.applyTranslations = applyTranslations;
     
+    // Também adicionar ao objeto i18n para facilitar acesso
+    if (window.i18n) {
+        window.i18n.applyTranslations = applyTranslations;
+    }
+    
     // NÃO aplicar traduções automaticamente aqui!
     // As traduções serão aplicadas pelo dynamic-loader.js
     // DEPOIS de configurar o idioma correto do perfil

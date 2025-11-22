@@ -209,6 +209,14 @@
         `;
         
         document.body.insertAdjacentHTML('beforeend', modalHTML);
+        
+        // Aplicar traduções i18n ao modal após inserir no DOM
+        if (window.i18n && window.i18n.applyTranslations) {
+            console.log('🌍 Aplicando traduções i18n ao modal...');
+            window.i18n.applyTranslations();
+        } else {
+            console.warn('⚠️ Sistema i18n não encontrado');
+        }
     }
     
     // Atualizar modal com dados do perfil
