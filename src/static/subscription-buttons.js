@@ -10,6 +10,31 @@
     let stripe = null;
     let currencySymbol = '$'; // Símbolo padrão, será atualizado dinamicamente
     
+    // Função para animar contador de preço
+    function animateCounter(element, targetValue, duration = 800) {
+        const startValue = 0;
+        const startTime = performance.now();
+        
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Easing function (easeOutCubic) para animação suave
+            const easeProgress = 1 - Math.pow(1 - progress, 3);
+            const currentValue = startValue + (targetValue - startValue) * easeProgress;
+            
+            element.textContent = currentValue.toFixed(2);
+            
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            } else {
+                element.textContent = targetValue.toFixed(2);
+            }
+        }
+        
+        requestAnimationFrame(update);
+    }
+    
     // Inicializar Stripe
     function initStripe() {
         if (typeof Stripe !== 'undefined') {
@@ -94,7 +119,15 @@
             const plan = subscriptionPlans[0];
             const priceSpan = mainButton.querySelector('.b-btn-text__small');
             if (priceSpan) {
-                priceSpan.innerHTML = `<span class="currency-symbol">${currencySymbol}</span>${plan.price.toFixed(2)} <span class="g-btn__new-line-text">${window.i18n.t('subscription.perMonth')}</span>`;
+                // Criar estrutura com span para animação
+                priceSpan.innerHTML = `<span class="currency-symbol">${currencySymbol}</span><span class="price-value">0.00</span> <span class="g-btn__new-line-text">${window.i18n.t('subscription.perMonth')}</span>`;
+                
+                // Animar contador
+                const priceValueSpan = priceSpan.querySelector('.price-value');
+                if (priceValueSpan) {
+                    animateCounter(priceValueSpan, plan.price);
+                }
+                
                 console.log('✅ Botão 1 mês atualizado:', plan.price);
             }
             mainButton.onclick = () => openSubscribeModal('1-month');
@@ -114,8 +147,14 @@
             // Atualizar texto e preço
             button.innerHTML = `
                 <span class="b-btn-text">${window.i18n.t('subscription.sixMonths')} <span class="b-btn-text__small">(${plan.discount}% ${window.i18n.t('subscription.off')})</span></span>
-                <span class="b-btn-text__small"><span class="currency-symbol">${currencySymbol}</span>${plan.total.toFixed(2)} ${window.i18n.t('subscription.total')}</span>
+                <span class="b-btn-text__small"><span class="currency-symbol">${currencySymbol}</span><span class="price-value">0.00</span> ${window.i18n.t('subscription.total')}</span>
             `;
+            
+            // Animar contador
+            const priceValueSpan = button.querySelector('.price-value');
+            if (priceValueSpan) {
+                animateCounter(priceValueSpan, plan.total, 1000);
+            }
             
             button.onclick = () => openSubscribeModal('6-months');
             button.style.cursor = 'pointer';
@@ -129,8 +168,14 @@
             // Atualizar texto e preço
             button.innerHTML = `
                 <span class="b-btn-text">${window.i18n.t('subscription.twelveMonths')} <span class="b-btn-text__small">(${plan.discount}% ${window.i18n.t('subscription.off')})</span></span>
-                <span class="b-btn-text__small"><span class="currency-symbol">${currencySymbol}</span>${plan.total.toFixed(2)} ${window.i18n.t('subscription.total')}</span>
+                <span class="b-btn-text__small"><span class="currency-symbol">${currencySymbol}</span><span class="price-value">0.00</span> ${window.i18n.t('subscription.total')}</span>
             `;
+            
+            // Animar contador
+            const priceValueSpan = button.querySelector('.price-value');
+            if (priceValueSpan) {
+                animateCounter(priceValueSpan, plan.total, 1200);
+            }
             
             button.onclick = () => openSubscribeModal('12-months');
             button.style.cursor = 'pointer';
