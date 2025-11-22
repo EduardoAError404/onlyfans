@@ -203,19 +203,22 @@ async function loadProfile() {
         });
         
         // Atualizar contadores da parte inferior (seção de subscribe)
+        // Primeiro ícone (papelzinho) = MEDIA (fotos + vídeos)
         const bottomPostsCount = document.getElementById('bottom-posts-count');
         if (bottomPostsCount) {
-            bottomPostsCount.textContent = ' ' + profile.posts_count + ' ';
+            bottomPostsCount.textContent = profile.media_count || (profile.photos_count + profile.videos_count);
         }
         
+        // Segundo ícone (foto) = FOTOS
         const bottomPhotosCount = document.getElementById('bottom-photos-count');
         if (bottomPhotosCount) {
-            bottomPhotosCount.textContent = ' ' + profile.photos_count + ' ';
+            bottomPhotosCount.textContent = profile.photos_count;
         }
         
+        // Terceiro ícone (vídeo) = VÍDEOS
         const bottomVideosCount = document.getElementById('bottom-videos-count');
         if (bottomVideosCount) {
-            bottomVideosCount.textContent = ' ' + profile.videos_count + ' ';
+            bottomVideosCount.textContent = profile.videos_count;
         }
         
         // Atualizar título da página
