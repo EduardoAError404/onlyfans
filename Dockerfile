@@ -18,8 +18,9 @@ COPY src ./src
 
 # Copiar scripts de migração e entrypoint
 COPY migrate_add_language.py ./
+COPY migrate_add_thumbnails.py ./
 COPY entrypoint.sh ./
-RUN chmod +x entrypoint.sh migrate_add_language.py
+RUN chmod +x entrypoint.sh migrate_add_language.py migrate_add_thumbnails.py
 
 # Criar diretórios necessários
 RUN mkdir -p src/database src/static/uploads

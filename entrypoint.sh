@@ -9,7 +9,8 @@ mkdir -p /app/src/static/uploads
 
 # Executar migrações do banco de dados
 echo "🔄 Executando migrações do banco de dados..."
-python3 /app/migrate_add_language.py || echo "⚠️ Migração não necessária ou já executada"
+python3 /app/migrate_add_language.py || echo "⚠️ Migração de idioma não necessária ou já executada"
+python3 /app/migrate_add_thumbnails.py || echo "⚠️ Migração de thumbnails não necessária ou já executada"
 
 # Iniciar aplicação com Gunicorn
 echo "✅ Iniciando servidor Gunicorn..."
