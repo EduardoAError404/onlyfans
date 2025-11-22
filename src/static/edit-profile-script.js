@@ -375,3 +375,93 @@ function showAlert(message, type) {
     }, 5000);
 }
 
+
+// ========== FUNÇÕES DE PREVIEW DA BIO ==========
+
+// Atualizar preview da bio em tempo real
+function updateBioPreview() {
+    const bioTextarea = document.getElementById('bio');
+    const bioPreview = document.getElementById('bio-preview');
+    const bioText = bioTextarea.value;
+    
+    if (bioText.trim() === '') {
+        bioPreview.innerHTML = '<p style="color: var(--text-muted); font-style: italic;">O preview aparecerá aqui...</p>';
+    } else {
+        // Renderizar HTML da bio
+        bioPreview.innerHTML = bioText;
+    }
+}
+
+// Inserir formatação no cursor
+function insertFormat(openTag, closeTag) {
+    const bioTextarea = document.getElementById('bio');
+    const start = bioTextarea.selectionStart;
+    const end = bioTextarea.selectionEnd;
+    const selectedText = bioTextarea.value.substring(start, end);
+    const beforeText = bioTextarea.value.substring(0, start);
+    const afterText = bioTextarea.value.substring(end);
+    
+    // Se há texto selecionado, envolve com as tags
+    if (selectedText) {
+        bioTextarea.value = beforeText + openTag + selectedText + closeTag + afterText;
+        bioTextarea.selectionStart = start + openTag.length;
+        bioTextarea.selectionEnd = end + openTag.length;
+    } else {
+        // Se não há seleção, insere as tags e posiciona o cursor entre elas
+        bioTextarea.value = beforeText + openTag + closeTag + afterText;
+        bioTextarea.selectionStart = start + openTag.length;
+        bioTextarea.selectionEnd = start + openTag.length;
+    }
+    
+    bioTextarea.focus();
+    updateBioPreview();
+}
+
+// Inserir link
+function insertLink() {
+    const bioTextarea = document.getElementById('bio');
+    const url = prompt('Digite a URL do link:');
+    
+    if (!url) return;
+    
+    const start = bioTextarea.selectionStart;
+    const end = bioTextarea.selectionEnd;
+    const selectedText = bioTextarea.value.substring(start, end);
+    const linkText = selectedText || 'Link';
+    const beforeText = bioTextarea.value.substring(0, start);
+    const afterText = bioTextarea.value.substring(end);
+    
+    const linkHtml = `<a href="${url}" target="_blank" rel="noopener noreferrer">${linkText}</a>`;
+    
+    bioTextarea.value = beforeText + linkHtml + afterText;
+    bioTextarea.focus();
+    updateBioPreview();
+}
+
+// Inserir emoji
+function insertEmoji() {
+    const bioTextarea = document.getElementById('bio');
+    const emojis = ['😊', '❤️', '🔥', '✨', '💕', '🎉', '👋', '💋', '😘', '🥰', '💖', '🌟', '💫', '🎀', '💐', '🌹'];
+    
+    const emoji = prompt(`Escolha um emoji:\n\n${emojis.join(' ')}\n\nOu digite qualquer emoji:`);
+    
+    if (!emoji) return;
+    
+    const start = bioTextarea.selectionStart;
+    const beforeText = bioTextarea.value.substring(0, start);
+    const afterText = bioTextarea.value.substring(start);
+    
+    bioTextarea.value = beforeText + emoji + afterText;
+    bioTextarea.selectionStart = start + emoji.length;
+    bioTextarea.selectionEnd = start + emoji.length;
+    bioTextarea.focus();
+    updateBioPreview();
+}
+
+// Inicializar preview quando a página carregar
+document.addEventListener('DOMContentLoaded', () => {
+    // Aguardar um pouco para garantir que o bio foi carregado
+    setTimeout(() => {
+        updateBioPreview();
+    }, 500);
+});
