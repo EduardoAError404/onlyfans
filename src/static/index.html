@@ -407,7 +407,7 @@
 
     }
     strong {
-      font-weight:500
+      font-weight:700  /* Mudado de 500 para 700 para negrito real */
     }
     img {
       -webkit-user-select:none;
@@ -5114,16 +5114,28 @@
     }
     
     /* Suporte a formatação HTML na bio */
-    .b-user-info__text strong {
+    .b-user-info__text strong,
+    .b-user-info__text b,
+    .b-user-info__text p strong,
+    .b-user-info__text p b,
+    #full-bio strong,
+    #full-bio b {
       font-weight: 700 !important;
       color: #fff !important;
     }
     
-    .b-user-info__text em {
+    .b-user-info__text em,
+    .b-user-info__text i,
+    .b-user-info__text p em,
+    .b-user-info__text p i,
+    #full-bio em,
+    #full-bio i {
       font-style: italic !important;
     }
     
-    .b-user-info__text u {
+    .b-user-info__text u,
+    .b-user-info__text p u,
+    #full-bio u {
       text-decoration: underline !important;
     }
     
@@ -7124,7 +7136,7 @@
             text-decoration:inherit
           }
           b,strong {
-            font-weight:bolder
+            font-weight:700  /* Mudado de 'bolder' para 700 (valor absoluto) */
           }
           code,kbd,pre,samp {
             font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
