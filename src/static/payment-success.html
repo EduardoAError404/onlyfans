@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagamento Aprovado ✓</title>
+    <title data-i18n="paymentSuccess.title">Pagamento Aprovado ✓</title>
     <style>
         * {
             margin: 0;
@@ -207,24 +207,24 @@
             </svg>
         </div>
 
-        <h1>Pagamento Aprovado!</h1>
-        <p>Sua transação foi processada com sucesso</p>
+        <h1 data-i18n="paymentSuccess.title">Pagamento Aprovado!</h1>
+        <p data-i18n="paymentSuccess.subtitle">Sua transação foi processada com sucesso</p>
 
         <div class="details">
             <div>
-                <span>Valor:</span>
+                <span data-i18n="paymentSuccess.amount">Valor:</span>
                 <span id="amount">Carregando...</span>
             </div>
             <div>
-                <span>Método:</span>
-                <span id="payment-method">Cartão de Crédito</span>
+                <span data-i18n="paymentSuccess.method">Método:</span>
+                <span id="payment-method" data-i18n="paymentSuccess.creditCard">Cartão de Crédito</span>
             </div>
             <div>
-                <span>Data:</span>
+                <span data-i18n="paymentSuccess.date">Data:</span>
                 <span id="date">Carregando...</span>
             </div>
             <div>
-                <span>ID da Transação:</span>
+                <span data-i18n="paymentSuccess.transactionId">ID da Transação:</span>
                 <span id="transaction-id">Carregando...</span>
             </div>
         </div>
@@ -232,9 +232,40 @@
         
     </div>
 
+    <!-- Carregar sistema i18n -->
+    <script src="/i18n-translations.js"></script>
+    <script src="/i18n-apply.js"></script>
+
     <script>
-        // Buscar session_id da URL
+        // Detectar idioma do perfil (pode vir de query param ou localStorage)
         const urlParams = new URLSearchParams(window.location.search);
+        const profileLanguage = urlParams.get('lang') || localStorage.getItem('profileLanguage') || 'en';
+        
+        // Definir idioma
+        if (window.i18n) {
+            window.i18n.setLanguage(profileLanguage);
+            console.log(`🌍 Idioma do checkout: ${profileLanguage}`);
+        }
+
+        // Aplicar traduções manualmente aos elementos
+        function applyTranslations() {
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (window.i18n) {
+                    const translation = window.i18n.t(key);
+                    if (element.tagName === 'TITLE') {
+                        element.textContent = translation;
+                    } else {
+                        element.textContent = translation;
+                    }
+                }
+            });
+        }
+
+        // Aplicar traduções ao carregar
+        window.addEventListener('load', applyTranslations);
+
+        // Buscar session_id da URL
         const sessionId = urlParams.get('session_id');
 
         console.log('🔍 Session ID:', sessionId);
@@ -260,7 +291,8 @@
                     // Atualizar data
                     if (data.createdAt) {
                         const date = new Date(data.createdAt);
-                        document.getElementById('date').textContent = date.toLocaleDateString('pt-BR');
+                        const locale = profileLanguage === 'pt' ? 'pt-BR' : profileLanguage === 'es' ? 'es-ES' : 'en-US';
+                        document.getElementById('date').textContent = date.toLocaleDateString(locale);
                         console.log('📅 Data atualizada:', date);
                     } else {
                         console.warn('⚠️ Campo createdAt não encontrado');
@@ -278,16 +310,18 @@
                 .catch(error => {
                     console.error('❌ Erro ao carregar dados:', error);
                     // Manter valores padrão em caso de erro
-                    document.getElementById('amount').textContent = 'Erro ao carregar';
-                    document.getElementById('date').textContent = new Date().toLocaleDateString('pt-BR');
-                    document.getElementById('transaction-id').textContent = 'Erro';
+                    document.getElementById('amount').textContent = window.i18n ? window.i18n.t('paymentSuccess.errorLoading') : 'Erro ao carregar';
+                    const locale = profileLanguage === 'pt' ? 'pt-BR' : profileLanguage === 'es' ? 'es-ES' : 'en-US';
+                    document.getElementById('date').textContent = new Date().toLocaleDateString(locale);
+                    document.getElementById('transaction-id').textContent = window.i18n ? window.i18n.t('paymentSuccess.errorLoading') : 'Erro';
                 });
         } else {
             console.warn('⚠️ Nenhum session_id encontrado na URL');
             // Sem session_id, usar valores padrão
-            document.getElementById('amount').textContent = 'N/A';
-            document.getElementById('date').textContent = new Date().toLocaleDateString('pt-BR');
-            document.getElementById('transaction-id').textContent = 'N/A';
+            document.getElementById('amount').textContent = window.i18n ? window.i18n.t('paymentSuccess.notAvailable') : 'N/A';
+            const locale = profileLanguage === 'pt' ? 'pt-BR' : profileLanguage === 'es' ? 'es-ES' : 'en-US';
+            document.getElementById('date').textContent = new Date().toLocaleDateString(locale);
+            document.getElementById('transaction-id').textContent = window.i18n ? window.i18n.t('paymentSuccess.notAvailable') : 'N/A';
         }
 
         // Criar confetti
@@ -342,19 +376,30 @@
         let countdown = 10;
         const countdownElement = document.createElement('p');
         countdownElement.style.cssText = 'color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; margin-top: 20px;';
-        countdownElement.textContent = `Redirecionando em ${countdown} segundos...`;
+        
+        // Função para atualizar texto do countdown com tradução
+        function updateCountdownText() {
+            if (countdown > 0 && window.i18n) {
+                const redirectingText = window.i18n.t('paymentSuccess.redirecting');
+                const secondsText = window.i18n.t('paymentSuccess.seconds');
+                countdownElement.textContent = `${redirectingText} ${countdown} ${secondsText}`;
+            } else if (countdown <= 0 && window.i18n) {
+                countdownElement.textContent = window.i18n.t('paymentSuccess.redirectingNow');
+            } else {
+                countdownElement.textContent = `Redirecionando em ${countdown} segundos...`;
+            }
+        }
+        
+        updateCountdownText();
         document.querySelector('.container').appendChild(countdownElement);
 
         const countdownInterval = setInterval(() => {
             countdown--;
-            if (countdown > 0) {
-                countdownElement.textContent = `Redirecionando em ${countdown} segundos...`;
-            } else {
-                countdownElement.textContent = 'Redirecionando...';
+            updateCountdownText();
+            if (countdown <= 0) {
                 clearInterval(countdownInterval);
             }
         }, 1000);
     </script>
 </body>
 </html>
-

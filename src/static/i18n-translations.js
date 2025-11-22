@@ -90,6 +90,22 @@ const translations = {
             cancel: 'Cancelar'
         },
         
+        // ===== PAYMENT SUCCESS =====
+        paymentSuccess: {
+            title: 'Pagamento Aprovado!',
+            subtitle: 'Sua transação foi processada com sucesso',
+            amount: 'Valor:',
+            method: 'Método:',
+            date: 'Data:',
+            transactionId: 'ID da Transação:',
+            creditCard: 'Cartão de Crédito',
+            redirecting: 'Redirecionando em',
+            seconds: 'segundos...',
+            redirectingNow: 'Redirecionando...',
+            errorLoading: 'Erro ao carregar',
+            notAvailable: 'N/A'
+        },
+        
         // ===== MENSAGENS =====
         messages: {
             loading: 'Carregando...',
@@ -186,6 +202,22 @@ const translations = {
             cancel: 'Cancel'
         },
         
+        // ===== PAYMENT SUCCESS =====
+        paymentSuccess: {
+            title: 'Payment Approved!',
+            subtitle: 'Your transaction was processed successfully',
+            amount: 'Amount:',
+            method: 'Method:',
+            date: 'Date:',
+            transactionId: 'Transaction ID:',
+            creditCard: 'Credit Card',
+            redirecting: 'Redirecting in',
+            seconds: 'seconds...',
+            redirectingNow: 'Redirecting...',
+            errorLoading: 'Error loading',
+            notAvailable: 'N/A'
+        },
+        
         // ===== MESSAGES =====
         messages: {
             loading: 'Loading...',
@@ -280,6 +312,22 @@ const translations = {
             processing: 'Procesando...',
             securePayment: 'Pago Seguro',
             cancel: 'Cancelar'
+        },
+        
+        // ===== PAYMENT SUCCESS =====
+        paymentSuccess: {
+            title: '¡Pago Aprobado!',
+            subtitle: 'Su transacción fue procesada con éxito',
+            amount: 'Monto:',
+            method: 'Método:',
+            date: 'Fecha:',
+            transactionId: 'ID de Transacción:',
+            creditCard: 'Tarjeta de Crédito',
+            redirecting: 'Redirigiendo en',
+            seconds: 'segundos...',
+            redirectingNow: 'Redirigiendo...',
+            errorLoading: 'Error al cargar',
+            notAvailable: 'N/D'
         },
         
         // ===== MENSAJES =====
