@@ -231,24 +231,31 @@
         const coverImg = document.getElementById('modal-cover-img');
         const avatarImg = document.getElementById('modal-avatar-img');
         
+        // Usar imagens já carregadas na página ao invés de buscar novamente do servidor
         if (coverImg) {
-            if (profileData.cover_photo) {
+            // Tentar pegar imagem já carregada do banner da página
+            const pageBanner = document.querySelector('.banner-image, [data-full-src*="banner"]');
+            if (pageBanner && pageBanner.src) {
+                // Usar imagem real se já estiver carregada, senão usar thumbnail
+                coverImg.src = pageBanner.dataset.fullSrc || pageBanner.src;
+            } else if (profileData.cover_photo) {
                 coverImg.src = profileData.cover_photo;
-                console.log('✅ Cover photo atualizada:', profileData.cover_photo);
             } else {
                 coverImg.src = '/static/default-cover.jpg';
-                console.log('⚠️ Cover photo não encontrada, usando padrão');
             }
             coverImg.alt = profileData.display_name || profileData.username;
         }
         
         if (avatarImg) {
-            if (profileData.profile_photo) {
+            // Tentar pegar imagem já carregada do avatar da página
+            const pageAvatar = document.querySelector('.profile-image, [data-full-src*="profile"]');
+            if (pageAvatar && pageAvatar.src) {
+                // Usar imagem real se já estiver carregada, senão usar thumbnail
+                avatarImg.src = pageAvatar.dataset.fullSrc || pageAvatar.src;
+            } else if (profileData.profile_photo) {
                 avatarImg.src = profileData.profile_photo;
-                console.log('✅ Avatar atualizado:', profileData.profile_photo);
             } else {
                 avatarImg.src = '/static/default-avatar.jpg';
-                console.log('⚠️ Avatar não encontrado, usando padrão');
             }
             avatarImg.alt = profileData.display_name || profileData.username;
         }

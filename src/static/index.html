@@ -9964,16 +9964,32 @@
                   const lazyImages = document.querySelectorAll('.progressive-lazy');
                   lazyImages.forEach(img => {
                       if (img.dataset.fullSrc) {
-                          const fullImg = new Image();
-                          fullImg.onload = () => {
-                              img.style.transition = 'opacity 0.5s ease-in-out';
-                              img.style.opacity = '0';
-                              setTimeout(() => {
+                          // Criar nova imagem para verificar cache
+                          const testImg = new Image();
+                          testImg.src = img.dataset.fullSrc;
+                          
+                          // Verificar se imagem já está em cache (complete = true imediatamente)
+                          const checkCache = () => {
+                              if (testImg.complete) {
+                                  // Imagem já está em cache, carregar diretamente sem transição
                                   img.src = img.dataset.fullSrc;
-                                  img.style.opacity = '1';
-                              }, 100);
+                                  img.classList.remove('progressive-lazy');
+                              } else {
+                                  // Imagem não está em cache, fazer lazy loading com transição
+                                  testImg.onload = () => {
+                                      img.style.transition = 'opacity 0.5s ease-in-out';
+                                      img.style.opacity = '0';
+                                      setTimeout(() => {
+                                          img.src = img.dataset.fullSrc;
+                                          img.style.opacity = '1';
+                                          img.classList.remove('progressive-lazy');
+                                      }, 100);
+                                  };
+                              }
                           };
-                          fullImg.src = img.dataset.fullSrc;
+                          
+                          // Executar verificação após pequeno delay para garantir que complete seja atualizado
+                          setTimeout(checkCache, 10);
                       }
                   });
               }, 500);
