@@ -225,7 +225,7 @@
     
     // Tentar atualizar botões com retry
     function tryUpdateButtons(attempts = 0) {
-        const maxAttempts = 10;
+        const maxAttempts = 20; // Aumentado para 20 tentativas
         
         if (attempts >= maxAttempts) {
             console.log('❌ Não foi possível encontrar os botões após', maxAttempts, 'tentativas');
@@ -236,7 +236,8 @@
         
         if (!bundleContainer || !subscriptionPlans || subscriptionPlans.length === 0) {
             console.log(`⏳ Tentativa ${attempts + 1}/${maxAttempts} - Aguardando elementos...`);
-            setTimeout(() => tryUpdateButtons(attempts + 1), 500);
+            // Reduzido de 500ms para 100ms para atualizar mais rápido
+            setTimeout(() => tryUpdateButtons(attempts + 1), 100);
             return;
         }
         
@@ -249,7 +250,8 @@
             console.log('📄 DOM carregado');
             initStripe();
             loadPlans().then(() => {
-                setTimeout(() => tryUpdateButtons(), 500);
+                // Removido delay inicial, começa imediatamente
+                tryUpdateButtons();
             });
             checkPaymentStatus();
         });
@@ -257,7 +259,8 @@
         console.log('📄 DOM já estava carregado');
         initStripe();
         loadPlans().then(() => {
-            setTimeout(() => tryUpdateButtons(), 500);
+            // Removido delay inicial, começa imediatamente
+            tryUpdateButtons();
         });
         checkPaymentStatus();
     }

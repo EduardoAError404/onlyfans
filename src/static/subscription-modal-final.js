@@ -358,7 +358,7 @@
                 return true; // Não mostrar erro se estiver vazio
             }
             if (!isValidPassword(value)) {
-                showFieldError(inputId, 'Password must be at least 6 characters');
+                showFieldError(inputId, window.i18n ? window.i18n.t('modal.passwordMinLength') : 'Password must be at least 6 characters');
                 return false;
             }
         } else if (inputId === 'input-name') {
