@@ -9607,9 +9607,6 @@
       function preloadImages(profile)  {
 
           return new Promise((resolve) =>  {
-
-              console.log('🖼️ Pré-carregando imagens...');
-
               const images = [];
 
               const imageUrls = [];
@@ -9637,14 +9634,9 @@
       }
 
               if (imageUrls.length === 0)  {
-
-                  console.log('✅ Nenhuma imagem para pré-carregar');
-
                   resolve();
-
                   return;
-
-      }
+              }
 
               let loadedCount = 0;
 
@@ -9658,12 +9650,8 @@
                       loadedCount++;
 
                       if (loadedCount === imageUrls.length)  {
-
-                          console.log('✅ Todas as imagens carregadas');
-
                           resolve();
-
-      }
+                      }
 
       };
 
@@ -9678,12 +9666,8 @@
               setTimeout(() =>  {
 
                   if (loadedCount < imageUrls.length)  {
-
-                      console.log('⚠️ Timeout no carregamento de imagens, continuando...');
-
                       resolve();
-
-      }
+                  }
 
       }, 3000);
 
@@ -9693,78 +9677,37 @@
 
       // Função para esconder o preloader
       function hidePreloader()  {
-
-          console.log('🔍 hidePreloader() chamada');
-
           const preloader = document.getElementById('before_preloader');
-
-          console.log('Preloader element:', preloader);
-
-
           if (preloader)  {
-
-              console.log('✅ Preloader encontrado, escondendo...');
-
               preloader.style.opacity = '0';
-
               preloader.style.transition = 'opacity 0.3s ease';
-
               setTimeout(() =>  {
-
                   preloader.style.display = 'none';
-
-                  console.log('✅ Preloader display=none aplicado');
-
-      }, 300);
-
-      } else  {
-
-              console.warn('⚠️ Preloader não encontrado no DOM!');
-
-      }
-
+              }, 300);
+          }
       }
 
       // Carregar dados do perfil da API
       async function loadProfile()  {
 
           try  {
-
-              console.log('🔄 Carregando perfil...');
-
-
               // Pegar username da URL
               const pathname = window.location.pathname;
-
               const username = pathname.substring(1);
-       // Remove a barra inicial
 
               // Se houver username na URL e não for um arquivo estático, usar API com username
               const apiUrl = username && !username.includes('.') && !username.includes('/') 
                   ? `/api/profile/${username}`
                   : '/api/profile';
 
-
-              console.log('📡 API URL:', apiUrl);
-
-
               const response = await fetch(apiUrl);
 
-
               if (!response.ok)  {
-
-                  console.error('❌ Perfil não encontrado');
-
                   hidePreloader();
-
                   return;
-
-      }
+              }
 
               const profile = await response.json();
-
-
-              console.log('✅ Perfil carregado:', profile);
 
 
               // Salvar no cache global
@@ -9775,22 +9718,12 @@
               const language = profile.language || 'en';
 
               if (window.i18n)  {
-
                   window.i18n.setLanguage(language);
-
-                  console.log(`🌍 Idioma configurado: $ {
-        language
-      }`);
-
-
                   // Aplicar traduções DEPOIS de configurar o idioma
                   if (window.applyTranslations)  {
-
                       window.applyTranslations();
-
-      }
-
-      }
+                  }
+              }
 
               // Atualizar nome de exibição
               document.querySelectorAll('.g-user-name').forEach(el =>  {
@@ -9813,12 +9746,8 @@
               const bannerImg = document.querySelector(".b-profile__header__cover-img");
 
               if (bannerImg && profile.banner_image)  {
-
                   bannerImg.src = profile.banner_image;
-
-                  console.log("✅ Banner atualizado:", profile.banner_image);
-
-      }
+              }
 
               // Profile image (avatar)
               const profileImgs = document.querySelectorAll(".g-avatar__img-wrapper img");
@@ -9826,12 +9755,8 @@
               profileImgs.forEach(img =>  {
 
                   if (profile.profile_image)  {
-
                       img.src = profile.profile_image;
-
-                      console.log("✅ Profile image atualizado:", profile.profile_image);
-
-      }
+                  }
 
       });
 
@@ -9842,12 +9767,8 @@
                   const coverImg = document.querySelector("[data-cover-photo]");
 
                   if (coverImg)  {
-
                       coverImg.src = profile.cover_photo;
-
-                      console.log("✅ Cover photo atualizado:", profile.cover_photo);
-
-      }
+                  }
 
       }
 
@@ -9867,8 +9788,6 @@
                       pTag.querySelectorAll('[data-i18n]').forEach(el => {
                           el.removeAttribute('data-i18n');
                       });
-                      
-                      console.log('✅ Bio atualizada:', profile.bio);
 
       }
 
@@ -10008,57 +9927,22 @@
               document.title = profile.display_name + ' OnlyFans';
 
 
-              console.log('✅ Página atualizada com sucesso!');
-
-
               // Atualizar contadores da parte inferior (seção de subscribe)
-              console.log('\n========================================')
-;              console.log('🔍 ATUALIZANDO CONTADORES INFERIORES...');
-              console.log('========================================');
-              console.log('Dados do perfil:', {
-                  media_count: profile.media_count,
-                  photos_count: profile.photos_count,
-                  videos_count: profile.videos_count
-              });
-              
-              // Primeiro ícone (papelzinho) = MEDIA (fotos + vídeos)
               const bottomPostsCount = document.getElementById('bottom-posts-count');
-              console.log('bottomPostsCount element:', bottomPostsCount);
               if (bottomPostsCount) {
                   const mediaCount = profile.media_count || (profile.photos_count + profile.videos_count);
-                  console.log('Valor ANTES:', bottomPostsCount.textContent);
                   bottomPostsCount.textContent = mediaCount;
-                  console.log('Valor DEPOIS:', bottomPostsCount.textContent);
-                  console.log('✅ Media count atualizado:', mediaCount);
-              } else {
-                  console.warn('⚠️ Elemento bottom-posts-count NÃO encontrado!');
               }
               
-              // Segundo ícone (foto) = FOTOS
               const bottomPhotosCount = document.getElementById('bottom-photos-count');
-              console.log('bottomPhotosCount element:', bottomPhotosCount);
               if (bottomPhotosCount) {
-                  console.log('Valor ANTES:', bottomPhotosCount.textContent);
                   bottomPhotosCount.textContent = profile.photos_count;
-                  console.log('Valor DEPOIS:', bottomPhotosCount.textContent);
-                  console.log('✅ Photos count atualizado:', profile.photos_count);
-              } else {
-                  console.warn('⚠️ Elemento bottom-photos-count NÃO encontrado!');
               }
               
-              // Terceiro ícone (vídeo) = VÍDEOS
               const bottomVideosCount = document.getElementById('bottom-videos-count');
-              console.log('bottomVideosCount element:', bottomVideosCount);
               if (bottomVideosCount) {
-                  console.log('Valor ANTES:', bottomVideosCount.textContent);
                   bottomVideosCount.textContent = profile.videos_count;
-                  console.log('Valor DEPOIS:', bottomVideosCount.textContent);
-                  console.log('✅ Videos count atualizado:', profile.videos_count);
-              } else {
-                  console.warn('⚠️ Elemento bottom-videos-count NÃO encontrado!');
               }
-              
-              console.log('========================================\n');
 
 
               // Pré-carregar imagens antes de esconder preloader
@@ -10066,20 +9950,12 @@
 
 
               // Esconder preloader
-              console.log('🔍 Tentando esconder preloader...');
-
               hidePreloader();
-
-              console.log('✅ Preloader escondido!');
 
 
       } catch (error)  {
-
-              console.error('❌ Erro ao carregar perfil:', error);
-
               // Esconder preloader mesmo em caso de erro
               hidePreloader();
-
       }
 
       }

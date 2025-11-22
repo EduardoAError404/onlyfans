@@ -3,28 +3,19 @@ window.profileCache = null;
 
 // Função para esconder o preloader
 function hidePreloader() {
-    console.log('🔍 hidePreloader() chamada');
     const preloader = document.getElementById('before_preloader');
-    console.log('Preloader element:', preloader);
-    
     if (preloader) {
-        console.log('✅ Preloader encontrado, escondendo...');
         preloader.style.opacity = '0';
         preloader.style.transition = 'opacity 0.3s ease';
         setTimeout(() => {
             preloader.style.display = 'none';
-            console.log('✅ Preloader display=none aplicado');
         }, 300);
-    } else {
-        console.warn('⚠️ Preloader não encontrado no DOM!');
     }
 }
 
 // Carregar dados do perfil da API
 async function loadProfile() {
     try {
-        console.log('🔄 Carregando perfil...');
-        
         // 1. Obter o username da URL
         const path = window.location.pathname;
         const pathSegments = path.split('/').filter(segment => segment.length > 0);
@@ -35,15 +26,10 @@ async function loadProfile() {
             // Se houver segmentos, o primeiro é o username
             const username = pathSegments[0];
             apiUrl = `/api/profile/${username}`; // Rota para perfil específico
-            console.log(`🔍 Carregando perfil para username: ${username} via ${apiUrl}`);
-        } else {
-            console.log(`🔍 Carregando perfil padrão via ${apiUrl}`);
         }
         
         const response = await fetch(apiUrl);
         const profile = await response.json();
-        
-        console.log('✅ Perfil carregado:', profile);
         
         // Salvar no cache global
         window.profileCache = profile;
@@ -62,13 +48,10 @@ async function loadProfile() {
         const currency = profile.currency || 'USD';
         const symbol = currencySymbols[currency] || '$';
         
-        console.log(`💰 Moeda detectada: ${currency} - Símbolo: ${symbol}`);
-        
         // Configurar idioma do i18n
         const language = profile.language || 'en';
         if (window.i18n) {
             window.i18n.setLanguage(language);
-            console.log(`🌍 Idioma configurado: ${language}`);
             
             // Aplicar traduções DEPOIS de configurar o idioma
             if (window.applyTranslations) {
@@ -90,26 +73,21 @@ async function loadProfile() {
         const sixMonthsPlan = plansData.plans['6_months'];
         const twelveMonthsPlan = plansData.plans['12_months'];
         
-        console.log('📊 Planos carregados:', plansData);
-        
         // Atualizar preço mensal
         const monthlyPriceEl = document.getElementById('monthly-price-display');
         if (monthlyPriceEl) {
             monthlyPriceEl.innerHTML = formatPrice(monthlyPlan.price);
-            console.log(`✅ Preço mensal atualizado: ${monthlyPriceEl.innerHTML}`);
         }
         
         // Atualizar pacotes
         const sixMonthsPriceEl = document.getElementById('six-months-price-display');
         if (sixMonthsPriceEl) {
             sixMonthsPriceEl.innerHTML = formatPrice(sixMonthsPlan.total);
-            console.log(`✅ Preço 6 meses atualizado: ${sixMonthsPriceEl.innerHTML}`);
         }
         
         const twelveMonthsPriceEl = document.getElementById('twelve-months-price-display');
         if (twelveMonthsPriceEl) {
             twelveMonthsPriceEl.innerHTML = formatPrice(twelveMonthsPlan.total);
-            console.log(`✅ Preço 12 meses atualizado: ${twelveMonthsPriceEl.innerHTML}`);
         }
         
         // Atualizar nome de exibição
@@ -202,68 +180,30 @@ async function loadProfile() {
             }
         });
         
-        console.log('✅ Página atualizada com sucesso!');
-        console.log(`💰 Símbolo da moeda aplicado: ${symbol}`);
-        
         // Atualizar contadores da parte inferior (seção de subscribe)
-        console.log('\n========================================');
-        console.log('🔍 ATUALIZANDO CONTADORES INFERIORES...');
-        console.log('========================================');
-        console.log('Dados do perfil:', {
-            media_count: profile.media_count,
-            photos_count: profile.photos_count,
-            videos_count: profile.videos_count
-        });
-        
-        // Primeiro ícone (papelzinho) = MEDIA (fotos + vídeos)
         const bottomPostsCount = document.getElementById('bottom-posts-count');
-        console.log('bottomPostsCount element:', bottomPostsCount);
         if (bottomPostsCount) {
             const mediaCount = profile.media_count || (profile.photos_count + profile.videos_count);
-            console.log('Valor ANTES:', bottomPostsCount.textContent);
             bottomPostsCount.textContent = mediaCount;
-            console.log('Valor DEPOIS:', bottomPostsCount.textContent);
-            console.log('✅ Media count atualizado:', mediaCount);
-        } else {
-            console.warn('⚠️ Elemento bottom-posts-count NÃO encontrado!');
         }
         
-        // Segundo ícone (foto) = FOTOS
         const bottomPhotosCount = document.getElementById('bottom-photos-count');
-        console.log('bottomPhotosCount element:', bottomPhotosCount);
         if (bottomPhotosCount) {
-            console.log('Valor ANTES:', bottomPhotosCount.textContent);
             bottomPhotosCount.textContent = profile.photos_count;
-            console.log('Valor DEPOIS:', bottomPhotosCount.textContent);
-            console.log('✅ Photos count atualizado:', profile.photos_count);
-        } else {
-            console.warn('⚠️ Elemento bottom-photos-count NÃO encontrado!');
         }
         
-        // Terceiro ícone (vídeo) = VÍDEOS
         const bottomVideosCount = document.getElementById('bottom-videos-count');
-        console.log('bottomVideosCount element:', bottomVideosCount);
         if (bottomVideosCount) {
-            console.log('Valor ANTES:', bottomVideosCount.textContent);
             bottomVideosCount.textContent = profile.videos_count;
-            console.log('Valor DEPOIS:', bottomVideosCount.textContent);
-            console.log('✅ Videos count atualizado:', profile.videos_count);
-        } else {
-            console.warn('⚠️ Elemento bottom-videos-count NÃO encontrado!');
         }
-        
-        console.log('========================================\n');
         
         // Atualizar título da página
         document.title = profile.display_name + ' OnlyFans';
         
         // Esconder preloader
-        console.log('🔍 Tentando esconder preloader...');
         hidePreloader();
-        console.log('✅ Preloader escondido!');
         
     } catch (error) {
-        console.error('❌ Erro ao carregar perfil:', error);
         // Esconder preloader mesmo em caso de erro
         hidePreloader();
     }
