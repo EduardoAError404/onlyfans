@@ -202,8 +202,13 @@ async function loadProfile() {
             }
         });
         
+        console.log('✅ Página atualizada com sucesso!');
+        console.log(`💰 Símbolo da moeda aplicado: ${symbol}`);
+        
         // Atualizar contadores da parte inferior (seção de subscribe)
-        console.log('🔍 Atualizando contadores inferiores...');
+        console.log('\n========================================');
+        console.log('🔍 ATUALIZANDO CONTADORES INFERIORES...');
+        console.log('========================================');
         console.log('Dados do perfil:', {
             media_count: profile.media_count,
             photos_count: profile.photos_count,
@@ -215,7 +220,9 @@ async function loadProfile() {
         console.log('bottomPostsCount element:', bottomPostsCount);
         if (bottomPostsCount) {
             const mediaCount = profile.media_count || (profile.photos_count + profile.videos_count);
+            console.log('Valor ANTES:', bottomPostsCount.textContent);
             bottomPostsCount.textContent = mediaCount;
+            console.log('Valor DEPOIS:', bottomPostsCount.textContent);
             console.log('✅ Media count atualizado:', mediaCount);
         } else {
             console.warn('⚠️ Elemento bottom-posts-count NÃO encontrado!');
@@ -225,7 +232,9 @@ async function loadProfile() {
         const bottomPhotosCount = document.getElementById('bottom-photos-count');
         console.log('bottomPhotosCount element:', bottomPhotosCount);
         if (bottomPhotosCount) {
+            console.log('Valor ANTES:', bottomPhotosCount.textContent);
             bottomPhotosCount.textContent = profile.photos_count;
+            console.log('Valor DEPOIS:', bottomPhotosCount.textContent);
             console.log('✅ Photos count atualizado:', profile.photos_count);
         } else {
             console.warn('⚠️ Elemento bottom-photos-count NÃO encontrado!');
@@ -235,17 +244,18 @@ async function loadProfile() {
         const bottomVideosCount = document.getElementById('bottom-videos-count');
         console.log('bottomVideosCount element:', bottomVideosCount);
         if (bottomVideosCount) {
+            console.log('Valor ANTES:', bottomVideosCount.textContent);
             bottomVideosCount.textContent = profile.videos_count;
+            console.log('Valor DEPOIS:', bottomVideosCount.textContent);
             console.log('✅ Videos count atualizado:', profile.videos_count);
         } else {
             console.warn('⚠️ Elemento bottom-videos-count NÃO encontrado!');
         }
         
+        console.log('========================================\n');
+        
         // Atualizar título da página
         document.title = profile.display_name + ' OnlyFans';
-        
-        console.log('✅ Página atualizada com sucesso!');
-        console.log(`💰 Símbolo da moeda aplicado: ${symbol}`);
         
         // Esconder preloader
         console.log('🔍 Tentando esconder preloader...');
