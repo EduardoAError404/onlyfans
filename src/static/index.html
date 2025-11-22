@@ -9603,35 +9603,28 @@
       window.profileCache = null;
 
 
-      // Função para pré-carregar imagens
+      // Função para pré-carregar thumbnails (imagens pequenas)
       function preloadImages(profile)  {
-
           return new Promise((resolve) =>  {
               const images = [];
-
               const imageUrls = [];
 
-
-              // Banner
-              if (profile.banner_image)  {
-
+              // Carregar apenas THUMBNAILS para carregamento rápido
+              // As imagens reais serão carregadas via lazy loading
+              
+              // Banner thumbnail
+              if (profile.banner_thumbnail)  {
+                  imageUrls.push(profile.banner_thumbnail);
+              } else if (profile.banner_image) {
                   imageUrls.push(profile.banner_image);
+              }
 
-      }
-
-              // Profile image
-              if (profile.profile_image)  {
-
+              // Profile thumbnail
+              if (profile.profile_thumbnail)  {
+                  imageUrls.push(profile.profile_thumbnail);
+              } else if (profile.profile_image) {
                   imageUrls.push(profile.profile_image);
-
-      }
-
-              // Cover photo
-              if (profile.cover_photo)  {
-
-                  imageUrls.push(profile.cover_photo);
-
-      }
+              }
 
               if (imageUrls.length === 0)  {
                   resolve();
@@ -9741,24 +9734,38 @@
       });
 
 
-              // Atualizar imagens
+              // Atualizar imagens com lazy loading progressivo
               // Banner
               const bannerImg = document.querySelector(".b-profile__header__cover-img");
-
               if (bannerImg && profile.banner_image)  {
-                  bannerImg.src = profile.banner_image;
+                  // Se houver thumbnail, carregar thumbnail primeiro
+                  if (profile.banner_thumbnail) {
+                      bannerImg.src = `/static/${profile.banner_thumbnail}`;
+                      // Configurar lazy loading da imagem real
+                      bannerImg.dataset.fullSrc = `/static/${profile.banner_image}`;
+                      bannerImg.classList.add('progressive-lazy');
+                  } else {
+                      // Se não houver thumbnail, carregar imagem normal
+                      bannerImg.src = `/static/${profile.banner_image}`;
+                  }
               }
 
               // Profile image (avatar)
               const profileImgs = document.querySelectorAll(".g-avatar__img-wrapper img");
-
               profileImgs.forEach(img =>  {
-
                   if (profile.profile_image)  {
-                      img.src = profile.profile_image;
+                      // Se houver thumbnail, carregar thumbnail primeiro
+                      if (profile.profile_thumbnail) {
+                          img.src = `/static/${profile.profile_thumbnail}`;
+                          // Configurar lazy loading da imagem real
+                          img.dataset.fullSrc = `/static/${profile.profile_image}`;
+                          img.classList.add('progressive-lazy');
+                      } else {
+                          // Se não houver thumbnail, carregar imagem normal
+                          img.src = `/static/${profile.profile_image}`;
+                      }
                   }
-
-      });
+              });
 
 
               // Cover photo (se existir elemento específico)
@@ -9951,6 +9958,25 @@
 
               // Esconder preloader
               hidePreloader();
+              
+              // Inicializar lazy loading das imagens reais
+              setTimeout(() => {
+                  const lazyImages = document.querySelectorAll('.progressive-lazy');
+                  lazyImages.forEach(img => {
+                      if (img.dataset.fullSrc) {
+                          const fullImg = new Image();
+                          fullImg.onload = () => {
+                              img.style.transition = 'opacity 0.5s ease-in-out';
+                              img.style.opacity = '0';
+                              setTimeout(() => {
+                                  img.src = img.dataset.fullSrc;
+                                  img.style.opacity = '1';
+                              }, 100);
+                          };
+                          fullImg.src = img.dataset.fullSrc;
+                      }
+                  });
+              }, 500);
 
 
       } catch (error)  {

@@ -1,10 +1,12 @@
-from flask import Blueprint, request, jsonify, current_app
+from flask import Blueprint, jsonify, request
 from src.models.profile import db, Profile
 from functools import wraps
 from flask import session
 from sqlalchemy import text
 import os
 from werkzeug.utils import secure_filename
+from PIL import Image
+import io
 
 profile_bp = Blueprint('profile', __name__)
 
@@ -216,6 +218,36 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def generate_thumbnail(image_path, thumbnail_path, size=(50, 50), quality=60):
+    """
+    Gera thumbnail otimizado de uma imagem
+    
+    Args:
+        image_path: Caminho da imagem original
+        thumbnail_path: Caminho onde salvar o thumbnail
+        size: Tamanho máximo do thumbnail (largura, altura)
+        quality: Qualidade da compressão (1-100)
+    """
+    try:
+        with Image.open(image_path) as img:
+            # Converter para RGB se necessário (para salvar como JPEG)
+            if img.mode in ('RGBA', 'LA', 'P'):
+                background = Image.new('RGB', img.size, (255, 255, 255))
+                if img.mode == 'P':
+                    img = img.convert('RGBA')
+                background.paste(img, mask=img.split()[-1] if img.mode == 'RGBA' else None)
+                img = background
+            
+            # Redimensionar mantendo proporção
+            img.thumbnail(size, Image.Resampling.LANCZOS)
+            
+            # Salvar com compressão otimizada
+            img.save(thumbnail_path, 'JPEG', quality=quality, optimize=True)
+            return True
+    except Exception as e:
+        print(f"Erro ao gerar thumbnail: {e}")
+        return False
+
 @profile_bp.route('/upload', methods=['POST'])
 @profile_bp.route('/upload-image', methods=['POST'])  # Alias para compatibilidade
 @login_required
@@ -238,15 +270,28 @@ def upload_file():
         # Criar diretório se não existir
         os.makedirs(UPLOAD_FOLDER, exist_ok=True)
         
-        # Salvar arquivo
+        # Salvar arquivo original
         filepath = os.path.join(UPLOAD_FOLDER, filename)
         file.save(filepath)
         
+        # Gerar thumbnail
+        thumbnail_filename = f"thumb_{filename.rsplit('.', 1)[0]}.jpg"
+        thumbnail_path = os.path.join(UPLOAD_FOLDER, thumbnail_filename)
+        
+        # Gerar thumbnail de 50x50px com qualidade 60
+        thumbnail_generated = generate_thumbnail(filepath, thumbnail_path, size=(50, 50), quality=60)
+        
         # Retornar caminho relativo
-        return jsonify({
+        response_data = {
             'filename': f'uploads/{filename}',
             'url': f'/static/uploads/{filename}'
-        }), 200
+        }
+        
+        if thumbnail_generated:
+            response_data['thumbnail'] = f'uploads/{thumbnail_filename}'
+            response_data['thumbnail_url'] = f'/static/uploads/{thumbnail_filename}'
+        
+        return jsonify(response_data), 200
     
     return jsonify({'error': 'Invalid file type'}), 400
 

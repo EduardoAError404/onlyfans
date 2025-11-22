@@ -27,6 +27,10 @@ class Profile(db.Model):
     banner_image = db.Column(db.String(200), default="baneronly.png")
     profile_image = db.Column(db.String(200), default="perfil.png")
     
+    # Thumbnails (versões otimizadas para carregamento rápido)
+    banner_thumbnail = db.Column(db.String(200), nullable=True)
+    profile_thumbnail = db.Column(db.String(200), nullable=True)
+    
     # PRECIFICAÇÃO - Campo único e definitivo para o preço mensal
     subscription_price = db.Column(db.Float, nullable=False, default=9.99)
     currency = db.Column(db.String(3), nullable=False, default='USD')
@@ -50,6 +54,8 @@ class Profile(db.Model):
             'media_count': self.media_count,
             'banner_image': self.banner_image,
             'profile_image': self.profile_image,
+            'banner_thumbnail': self.banner_thumbnail,
+            'profile_thumbnail': self.profile_thumbnail,
             'subscription_price': float(self.subscription_price),  # Garantir que é float
             'currency': self.currency,
             'language': self.language,
