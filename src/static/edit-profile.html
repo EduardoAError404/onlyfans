@@ -562,7 +562,7 @@
 
         .bio-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 45% 55%;  /* Preview maior para ver melhor */
             gap: 1.5rem;
         }
 
@@ -579,14 +579,16 @@
         }
 
         .bio-preview {
-            min-height: 120px;
-            padding: 1rem;
+            min-height: 200px;  /* Aumentado de 120px para 200px */
+            padding: 1.5rem;    /* Aumentado de 1rem para 1.5rem */
             background: var(--bg-tertiary);
             border: 2px solid var(--border);
             border-radius: 0.5rem;
             color: var(--text-primary);
             overflow-wrap: break-word;
             word-wrap: break-word;
+            white-space: pre-wrap;  /* Adicionar quebras de linha */
+            line-height: 1.6;       /* Melhor legibilidade */
         }
 
         .bio-preview p {

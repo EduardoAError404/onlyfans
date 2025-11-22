@@ -5114,14 +5114,28 @@
     }
     
     /* Suporte a formatação HTML na bio */
+    /* Especificidade máxima para garantir que funcione */
     .b-user-info__text strong,
     .b-user-info__text b,
     .b-user-info__text p strong,
     .b-user-info__text p b,
+    .b-user-info__text > p strong,
+    .b-user-info__text > p b,
+    div.b-user-info__text strong,
+    div.b-user-info__text b,
+    div.b-user-info__text p strong,
+    div.b-user-info__text p b,
     #full-bio strong,
-    #full-bio b {
+    #full-bio b,
+    #full-bio p strong,
+    #full-bio p b,
+    [data-v-ac7333e2] .b-user-info__text strong,
+    [data-v-ac7333e2] .b-user-info__text b,
+    [data-v-ac7333e2] .b-user-info__text p strong,
+    [data-v-ac7333e2] .b-user-info__text p b {
       font-weight: 700 !important;
       color: #fff !important;
+      font-style: normal !important;
     }
     
     .b-user-info__text em,
