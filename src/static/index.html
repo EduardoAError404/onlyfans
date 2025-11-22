@@ -5102,6 +5102,52 @@
     .sf-hidden {
       display:none!important
     }
+    
+    /* ========== CSS CUSTOMIZADO PARA BIO ========== */
+    
+    /* Corrigir formatação da bio */
+    .b-user-info__text p {
+      white-space: pre-wrap !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      line-height: 1.6 !important;
+    }
+    
+    /* Suporte a formatação HTML na bio */
+    .b-user-info__text strong {
+      font-weight: 700 !important;
+      color: #fff !important;
+    }
+    
+    .b-user-info__text em {
+      font-style: italic !important;
+    }
+    
+    .b-user-info__text u {
+      text-decoration: underline !important;
+    }
+    
+    .b-user-info__text a {
+      color: #0091ea !important;
+      text-decoration: none !important;
+    }
+    
+    .b-user-info__text a:hover {
+      text-decoration: underline !important;
+    }
+    
+    /* Espaçamento entre parágrafos */
+    .b-user-info__text p + p {
+      margin-top: 0.5rem !important;
+    }
+    
+    /* Emojis */
+    .b-user-info__text img.emoji {
+      width: 1.2em !important;
+      height: 1.2em !important;
+      vertical-align: middle !important;
+      display: inline !important;
+    }
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
