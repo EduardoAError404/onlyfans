@@ -173,11 +173,10 @@
                                 Log in
                             </button>
                             
-                            <div data-v-451b4fbe="" class="b-loginreg__form__issues">
-                                By logging in and using OnlyFans, you agree to our 
-                                <a href="https://onlyfans.com/terms">Terms of Service</a> and 
-                                <a href="https://onlyfans.com/privacy">Privacy Policy</a>, 
-                                and confirm that you are at least 18 years old.
+                            <div data-v-451b4fbe="" class="b-loginreg__form__issues" id="terms-text">
+                                <span data-i18n="modal.termsPrefix">By logging in and using OnlyFans, you agree to our</span> 
+                                <a href="https://onlyfans.com/terms" data-i18n="modal.termsService">Terms of Service</a> <span data-i18n="modal.and">and</span> 
+                                <a href="https://onlyfans.com/privacy" data-i18n="modal.privacyPolicy">Privacy Policy</a><span data-i18n="modal.termsAge">, and confirm that you are at least 18 years old.</span>
                             </div>
                             
                             <div data-v-451b4fbe="" class="b-loginreg__links">
@@ -378,29 +377,29 @@
         
         // Validar email
         if (email === '') {
-            showFieldError('input-email', 'Email is required');
+            showFieldError('input-email', window.i18n ? window.i18n.t('modal.emailRequired') : 'Email is required');
             isValid = false;
         } else if (!isValidEmail(email)) {
-            showFieldError('input-email', 'Please enter a valid email address');
+            showFieldError('input-email', window.i18n ? window.i18n.t('modal.emailInvalid') : 'Please enter a valid email address');
             isValid = false;
         }
         
         // Validar senha
         if (password === '') {
-            showFieldError('input-password', 'Password is required');
+            showFieldError('input-password', window.i18n ? window.i18n.t('modal.passwordRequired') : 'Password is required');
             isValid = false;
         } else if (!isValidPassword(password)) {
-            showFieldError('input-password', 'Password must be at least 6 characters');
+            showFieldError('input-password', window.i18n ? window.i18n.t('modal.passwordMinLength') : 'Password must be at least 6 characters');
             isValid = false;
         }
         
         // Validar nome (apenas no modo Sign Up)
         if (isSignUpMode) {
             if (name === '') {
-                showFieldError('input-name', 'Name is required');
+                showFieldError('input-name', window.i18n ? window.i18n.t('modal.nameRequired') : 'Name is required');
                 isValid = false;
             } else if (!isValidName(name)) {
-                showFieldError('input-name', 'Name must be at least 2 characters');
+                showFieldError('input-name', window.i18n ? window.i18n.t('modal.nameRequired') : 'Name must be at least 2 characters');
                 isValid = false;
             }
         }
@@ -572,15 +571,15 @@
         const toggleBtn = document.getElementById('toggle-mode-btn');
         
         if (isSignUpMode) {
-            title.textContent = 'Create your account';
+            title.textContent = window.i18n ? window.i18n.t('modal.createAccount') : 'Create your account';
             nameField.style.display = 'block';
-            submitBtn.textContent = 'Sign Up';
-            toggleBtn.textContent = 'Log in to subscribe';
+            submitBtn.textContent = window.i18n ? window.i18n.t('modal.signUpButton') : 'Sign Up';
+            toggleBtn.textContent = window.i18n ? window.i18n.t('modal.loginToSubscribe') : 'Log in to subscribe';
         } else {
-            title.textContent = 'Log in to subscribe';
+            title.textContent = window.i18n ? window.i18n.t('modal.loginToSubscribe') : 'Log in to subscribe';
             nameField.style.display = 'none';
-            submitBtn.textContent = 'Log in';
-            toggleBtn.textContent = 'Sign up for OnlyFans';
+            submitBtn.textContent = window.i18n ? window.i18n.t('modal.login') : 'Log in';
+            toggleBtn.textContent = window.i18n ? window.i18n.t('modal.signUp') : 'Sign up for OnlyFans';
         }
         
         // Atualizar estado do botão ao mudar de modo

@@ -123,7 +123,19 @@ const translations = {
             confirmAge: 'e confirma que tem pelo menos 18 anos.',
             forgotPassword: 'Esqueceu a senha?',
             signUp: 'Cadastre-se no OnlyFans',
-            close: 'Fechar'
+            close: 'Fechar',
+            termsPrefix: 'Ao fazer login e usar o OnlyFans, você concorda com nossos',
+            termsService: 'Termos de Serviço',
+            and: 'e',
+            privacyPolicy: 'Política de Privacidade',
+            termsAge: ', e confirma que tem pelo menos 18 anos.',
+            createAccount: 'Crie sua conta',
+            signUpButton: 'Cadastrar',
+            nameRequired: 'Nome é obrigatório',
+            emailRequired: 'Email é obrigatório',
+            emailInvalid: 'Email inválido',
+            passwordRequired: 'Senha é obrigatória',
+            passwordMinLength: 'Senha deve ter pelo menos 6 caracteres'
         },
         
         // ===== MENSAGENS =====
@@ -255,7 +267,19 @@ const translations = {
             confirmAge: 'and confirm that you are at least 18 years old.',
             forgotPassword: 'Forgot password?',
             signUp: 'Sign up for OnlyFans',
-            close: 'Close'
+            close: 'Close',
+            termsPrefix: 'By logging in and using OnlyFans, you agree to our',
+            termsService: 'Terms of Service',
+            and: 'and',
+            privacyPolicy: 'Privacy Policy',
+            termsAge: ', and confirm that you are at least 18 years old.',
+            createAccount: 'Create your account',
+            signUpButton: 'Sign Up',
+            nameRequired: 'Name is required',
+            emailRequired: 'Email is required',
+            emailInvalid: 'Invalid email',
+            passwordRequired: 'Password is required',
+            passwordMinLength: 'Password must be at least 6 characters'
         },
         
         // ===== MESSAGES =====
@@ -387,7 +411,19 @@ const translations = {
             confirmAge: 'y confirmas que tienes al menos 18 años.',
             forgotPassword: '¿Olvidaste tu contraseña?',
             signUp: 'Regístrate en OnlyFans',
-            close: 'Cerrar'
+            close: 'Cerrar',
+            termsPrefix: 'Al iniciar sesión y usar OnlyFans, aceptas nuestros',
+            termsService: 'Términos de Servicio',
+            and: 'y',
+            privacyPolicy: 'Política de Privacidad',
+            termsAge: ', y confirmas que tienes al menos 18 años.',
+            createAccount: 'Crea tu cuenta',
+            signUpButton: 'Registrarse',
+            nameRequired: 'El nombre es obligatorio',
+            emailRequired: 'El email es obligatorio',
+            emailInvalid: 'Email inválido',
+            passwordRequired: 'La contraseña es obligatoria',
+            passwordMinLength: 'La contraseña debe tener al menos 6 caracteres'
         },
         
         // ===== MENSAJES =====
